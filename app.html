@@ -286,6 +286,19 @@
 
         .team-name {
             font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .team-logo {
+            width: 24px;
+            height: 24px;
+            object-fit: contain;
+        }
+
+        .team-logo.hidden {
+            display: none;
         }
 
         .team-tier {
@@ -673,7 +686,13 @@
                                         return teamData && quarterStats ? `
                                             <li class="team-item">
                                                 <div>
-                                                    <div class="team-name">${teamData.name}</div>
+                                                    <div class="team-name">
+                                                        <img src="https://a.espncdn.com/combiner/i?img=/i/teamlogos/mlb/500/${team.abbrev}.png&h=24&w=24"
+                                                             alt=""
+                                                             class="team-logo"
+                                                             onerror="this.classList.add('hidden')">
+                                                        ${teamData.name}
+                                                    </div>
                                                     <div class="team-record">${quarterStats.wins}-${quarterStats.losses} (${(quarterStats.winPct * 100).toFixed(1)}%)</div>
                                                 </div>
                                                 <span class="team-tier tier-${team.tier}">T${team.tier}</span>
@@ -723,7 +742,13 @@
                                     return teamData && quarterStats ? `
                                         <li class="team-item">
                                             <div>
-                                                <div class="team-name">${teamData.name}</div>
+                                                <div class="team-name">
+                                                    <img src="https://a.espncdn.com/combiner/i?img=/i/teamlogos/mlb/500/${team.abbrev}.png&h=24&w=24"
+                                                         alt=""
+                                                         class="team-logo"
+                                                         onerror="this.classList.add('hidden')">
+                                                    ${teamData.name}
+                                                </div>
                                                 <div class="team-record">${quarterStats.wins}-${quarterStats.losses} (${(quarterStats.winPct * 100).toFixed(1)}%)</div>
                                             </div>
                                             <span class="team-tier tier-${team.tier}">T${team.tier}</span>
