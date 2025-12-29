@@ -481,6 +481,123 @@
             display: none;
         }
 
+        /* Manual Picks Section */
+        .manual-picks-section {
+            margin-top: 3rem;
+        }
+
+        .manual-picks-section h2 {
+            font-family: 'Playball', cursive;
+            font-size: 2rem;
+            color: var(--navy);
+            margin-bottom: 0.5rem;
+            text-align: center;
+        }
+
+        .manual-picks-subtitle {
+            text-align: center;
+            color: var(--navy-lighter);
+            font-size: 0.9rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .manual-picks-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+        }
+
+        .manual-pick-card {
+            background: var(--white);
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 20px rgba(15, 28, 46, 0.06);
+            border-top: 4px solid var(--gold);
+        }
+
+        .manual-pick-card h3 {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.5rem;
+            color: var(--navy);
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+
+        .quarter-picks-container {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .quarter-picks-row {
+            background: var(--cream);
+            padding: 0.75rem;
+            border-radius: 8px;
+        }
+
+        .quarter-picks-header {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1rem;
+            color: var(--gold);
+            margin-bottom: 0.5rem;
+            letter-spacing: 0.05em;
+        }
+
+        .picks-chips-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .pick-chip {
+            background: var(--white);
+            padding: 0.5rem 0.75rem;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--navy);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            border: 2px solid transparent;
+            transition: all 0.2s;
+        }
+
+        .pick-chip.burned {
+            opacity: 0.6;
+            border-color: var(--red);
+            background: #ffe8ec;
+            position: relative;
+        }
+
+        .pick-chip.burned::after {
+            content: "BURNED";
+            font-size: 0.65rem;
+            color: var(--red);
+            font-weight: 700;
+            margin-left: 0.25rem;
+            padding: 0.1rem 0.3rem;
+            background: var(--white);
+            border-radius: 3px;
+        }
+
+        .pick-chip-logo {
+            width: 20px;
+            height: 20px;
+            object-fit: contain;
+        }
+
+        .pick-chip-logo.hidden {
+            display: none;
+        }
+
+        .no-picks-yet {
+            color: var(--navy-lighter);
+            font-style: italic;
+            font-size: 0.85rem;
+        }
+
         /* Loading State */
         .loading {
             text-align: center;
@@ -581,6 +698,13 @@
             <h2>Team Tiers</h2>
             <p class="tiers-updated" id="tiersUpdated">Loading...</p>
             <div id="tiers-content" class="loading">Loading tier data...</div>
+        </div>
+
+        <!-- Manual Picks by Player -->
+        <div class="manual-picks-section">
+            <h2>Manual Picks by Player</h2>
+            <p class="manual-picks-subtitle">Teams selected manually each quarter (2 per quarter)</p>
+            <div id="manual-picks-content" class="loading">Loading manual picks...</div>
         </div>
     </div>
 
@@ -687,6 +811,7 @@
             renderRosters();
             renderStandings();
             renderTiers();
+            renderManualPicks();
         }
 
         // Calculate season totals
@@ -996,6 +1121,63 @@
             `;
 
             document.getElementById('tiers-content').innerHTML = html;
+        }
+
+        // Render manual picks by player
+        function renderManualPicks() {
+            const players = allData.players.players;
+
+            const picksHtml = players.map(player => {
+                const quarters = ['Q1', 'Q2', 'Q3', 'Q4'];
+
+                return `
+                    <div class="manual-pick-card">
+                        <h3>${player.name}</h3>
+                        <div class="quarter-picks-container">
+                            ${quarters.map(quarter => {
+                                const quarterData = player.quarters[quarter];
+                                const manualPicks = quarterData?.manualPicks || [];
+                                const burnedTeams = player.burnedTeams || [];
+
+                                if (manualPicks.length === 0) {
+                                    return `
+                                        <div class="quarter-picks-row">
+                                            <div class="quarter-picks-header">${quarter}</div>
+                                            <div class="no-picks-yet">No picks selected yet</div>
+                                        </div>
+                                    `;
+                                }
+
+                                return `
+                                    <div class="quarter-picks-row">
+                                        <div class="quarter-picks-header">${quarter}</div>
+                                        <div class="picks-chips-container">
+                                            ${manualPicks.map(teamAbbrev => {
+                                                const team = allData.standings.teams[teamAbbrev];
+                                                const isBurned = burnedTeams.includes(teamAbbrev);
+
+                                                return team ? `
+                                                    <div class="pick-chip ${isBurned ? 'burned' : ''}">
+                                                        <img src="https://a.espncdn.com/combiner/i?img=/i/teamlogos/mlb/500/${getESPNAbbrev(teamAbbrev)}.png&h=20&w=20"
+                                                             alt=""
+                                                             class="pick-chip-logo"
+                                                             onerror="this.classList.add('hidden')">
+                                                        ${team.name}
+                                                    </div>
+                                                ` : '';
+                                            }).join('')}
+                                        </div>
+                                    </div>
+                                `;
+                            }).join('')}
+                        </div>
+                    </div>
+                `;
+            }).join('');
+
+            document.getElementById('manual-picks-content').innerHTML = `
+                <div class="manual-picks-grid">${picksHtml}</div>
+            `;
         }
 
         // Quarter selector event handlers
