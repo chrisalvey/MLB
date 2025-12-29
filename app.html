@@ -713,6 +713,9 @@
         let currentQuarter = 'SEASON';
         let allData = {};
 
+        // Constants
+        const QUARTERS = ['Q1', 'Q2', 'Q3', 'Q4'];
+
         // Map team abbreviations to ESPN CDN abbreviations
         function getESPNAbbrev(abbrev) {
             const espnMap = {
@@ -723,6 +726,14 @@
                 'TBR': 'TB'
             };
             return espnMap[abbrev] || abbrev;
+        }
+
+        // Render team logo HTML
+        function renderTeamLogo(abbrev, size = 24, cssClass = 'team-logo') {
+            return `<img src="https://a.espncdn.com/combiner/i?img=/i/teamlogos/mlb/500/${getESPNAbbrev(abbrev)}.png&h=${size}&w=${size}"
+                         alt=""
+                         class="${cssClass}"
+                         onerror="this.classList.add('hidden')">`;
         }
 
         // Calculate percentage complete for a date range
@@ -751,7 +762,7 @@
             const quarters = allData.quarters.quarters;
 
             // Update Q1-Q4
-            ['Q1', 'Q2', 'Q3', 'Q4'].forEach(q => {
+            QUARTERS.forEach(q => {
                 const quarter = quarters[q];
                 const statusEl = document.getElementById(`${q.toLowerCase()}-status`);
 
@@ -817,7 +828,6 @@
         // Calculate season totals
         function calculateSeasonTotals() {
             const seasonScores = {};
-            const quarters = ['Q1', 'Q2', 'Q3', 'Q4'];
 
             allData.players.players.forEach(player => {
                 let totalWins = 0;
@@ -826,7 +836,7 @@
                 let totalGames = 0;
                 let allTeams = [];
 
-                quarters.forEach(quarter => {
+                QUARTERS.forEach(quarter => {
                     const quarterScore = allData.standings.playerScores[quarter]?.[player.id];
                     if (quarterScore) {
                         // Get quarterly team stats
@@ -918,10 +928,9 @@
                 if (currentQuarter === 'SEASON') {
                     // Show all teams from all quarters for season view
                     const seasonScore = calculateSeasonTotals()[player.id];
-                    const allQuarters = ['Q1', 'Q2', 'Q3', 'Q4'];
                     const allTeams = [];
 
-                    allQuarters.forEach(q => {
+                    QUARTERS.forEach(q => {
                         const quarterRoster = player.quarters[q];
                         if (quarterRoster) {
                             allTeams.push({ quarter: q, teams: [
@@ -952,10 +961,7 @@
                                             <li class="team-item">
                                                 <div>
                                                     <div class="team-name">
-                                                        <img src="https://a.espncdn.com/combiner/i?img=/i/teamlogos/mlb/500/${getESPNAbbrev(team.abbrev)}.png&h=24&w=24"
-                                                             alt=""
-                                                             class="team-logo"
-                                                             onerror="this.classList.add('hidden')">
+                                                        ${renderTeamLogo(team.abbrev)}
                                                         ${teamData.name}
                                                     </div>
                                                     <div class="team-record">${quarterStats.wins}-${quarterStats.losses} (${(quarterStats.winPct * 100).toFixed(1)}%)</div>
@@ -1008,10 +1014,7 @@
                                         <li class="team-item">
                                             <div>
                                                 <div class="team-name">
-                                                    <img src="https://a.espncdn.com/combiner/i?img=/i/teamlogos/mlb/500/${getESPNAbbrev(team.abbrev)}.png&h=24&w=24"
-                                                         alt=""
-                                                         class="team-logo"
-                                                         onerror="this.classList.add('hidden')">
+                                                    ${renderTeamLogo(team.abbrev)}
                                                     ${teamData.name}
                                                 </div>
                                                 <div class="team-record">${quarterStats.wins}-${quarterStats.losses} (${(quarterStats.winPct * 100).toFixed(1)}%)</div>
@@ -1103,10 +1106,7 @@
                                             const team = allData.standings.teams[abbrev];
                                             return team ? `
                                                 <div class="tier-team-chip">
-                                                    <img src="https://a.espncdn.com/combiner/i?img=/i/teamlogos/mlb/500/${getESPNAbbrev(abbrev)}.png&h=20&w=20"
-                                                         alt=""
-                                                         class="tier-team-logo"
-                                                         onerror="this.classList.add('hidden')">
+                                                    ${renderTeamLogo(abbrev, 20, 'tier-team-logo')}
                                                     ${team.name}
                                                 </div>
                                             ` : '';
@@ -1128,13 +1128,12 @@
             const players = allData.players.players;
 
             const picksHtml = players.map(player => {
-                const quarters = ['Q1', 'Q2', 'Q3', 'Q4'];
 
                 return `
                     <div class="manual-pick-card">
                         <h3>${player.name}</h3>
                         <div class="quarter-picks-container">
-                            ${quarters.map(quarter => {
+                            ${QUARTERS.map(quarter => {
                                 const quarterData = player.quarters[quarter];
                                 const manualPicks = quarterData?.manualPicks || [];
                                 const burnedTeams = player.burnedTeams || [];
@@ -1158,10 +1157,7 @@
 
                                                 return team ? `
                                                     <div class="pick-chip ${isBurned ? 'burned' : ''}">
-                                                        <img src="https://a.espncdn.com/combiner/i?img=/i/teamlogos/mlb/500/${getESPNAbbrev(teamAbbrev)}.png&h=20&w=20"
-                                                             alt=""
-                                                             class="pick-chip-logo"
-                                                             onerror="this.classList.add('hidden')">
+                                                        ${renderTeamLogo(teamAbbrev, 20, 'pick-chip-logo')}
                                                         ${team.name}
                                                     </div>
                                                 ` : '';
