@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2025-12-29T18:47:56.219Z",
+  "lastUpdated": "2025-12-29T18:51:32.863Z",
   "season": 2025,
   "teams": {
     "TOR": {
@@ -340,7 +340,44 @@
     "Q4": {}
   },
   "playerScores": {
-    "Q1": {},
+    "Q1": {
+      "player1": {
+        "name": "Chris",
+        "teams": [
+          "MIL",
+          "HOU",
+          "CLE",
+          "CHW"
+        ],
+        "combinedWinPct": 0,
+        "combinedRunsPerGame": 0,
+        "rank": 1
+      },
+      "player2": {
+        "name": "Alex",
+        "teams": [
+          "PHI",
+          "CHC",
+          "DET",
+          "PIT"
+        ],
+        "combinedWinPct": 0,
+        "combinedRunsPerGame": 0,
+        "rank": 2
+      },
+      "player3": {
+        "name": "Jordan",
+        "teams": [
+          "NYY",
+          "SDP",
+          "CIN",
+          "COL"
+        ],
+        "combinedWinPct": 0,
+        "combinedRunsPerGame": 0,
+        "rank": 3
+      }
+    },
     "Q2": {},
     "Q3": {},
     "Q4": {}

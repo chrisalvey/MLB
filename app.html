@@ -1,0 +1,614 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bush League — Dashboard</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Source+Sans+3:ital,wght@0,300;0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --navy: #0f1c2e;
+            --navy-light: #1a2d47;
+            --navy-lighter: #243a56;
+            --cream: #f5f1e8;
+            --cream-dark: #e8e2d5;
+            --gold: #d4a853;
+            --gold-light: #e8c47a;
+            --red: #c41e3a;
+            --green: #2d5a3d;
+            --white: #ffffff;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Source Sans 3', -apple-system, sans-serif;
+            background: var(--cream);
+            color: var(--navy);
+            line-height: 1.6;
+            font-size: 16px;
+        }
+
+        /* Navigation */
+        .nav {
+            background: var(--navy);
+            padding: 1rem 2rem;
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .nav-inner {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .nav-logo {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.8rem;
+            color: var(--cream);
+            text-decoration: none;
+        }
+
+        .nav-logo span {
+            color: var(--gold);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .nav-links a {
+            color: var(--cream);
+            text-decoration: none;
+            font-size: 0.9rem;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            opacity: 0.8;
+            transition: opacity 0.3s;
+        }
+
+        .nav-links a:hover {
+            opacity: 1;
+            color: var(--gold);
+        }
+
+        /* Container */
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        /* Header */
+        .header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .header h1 {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: clamp(2.5rem, 6vw, 4rem);
+            color: var(--navy);
+            margin-bottom: 0.5rem;
+        }
+
+        .header .subtitle {
+            color: var(--navy-lighter);
+            font-size: 1.1rem;
+        }
+
+        .last-updated {
+            color: var(--navy-lighter);
+            font-size: 0.9rem;
+            font-style: italic;
+            margin-top: 0.5rem;
+        }
+
+        /* Quarter Selector */
+        .quarter-selector {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 3rem;
+            flex-wrap: wrap;
+        }
+
+        .quarter-btn {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.2rem;
+            padding: 0.75rem 1.5rem;
+            background: var(--white);
+            color: var(--navy);
+            border: 2px solid var(--navy-lighter);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .quarter-btn:hover {
+            background: var(--cream-dark);
+        }
+
+        .quarter-btn.active {
+            background: var(--navy);
+            color: var(--gold);
+            border-color: var(--navy);
+        }
+
+        /* Leaderboard */
+        .leaderboard {
+            background: var(--white);
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: 0 4px 30px rgba(15, 28, 46, 0.08);
+            margin-bottom: 3rem;
+        }
+
+        .leaderboard h2 {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 2rem;
+            color: var(--navy);
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+
+        .leaderboard-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .leaderboard-table th {
+            background: var(--navy-lighter);
+            color: var(--cream);
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1rem;
+            letter-spacing: 0.05em;
+            padding: 1rem;
+            text-align: left;
+        }
+
+        .leaderboard-table td {
+            padding: 1rem;
+            border-bottom: 1px solid var(--cream-dark);
+        }
+
+        .leaderboard-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .leaderboard-table tr:hover {
+            background: var(--cream);
+        }
+
+        .rank {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.5rem;
+            color: var(--gold);
+            width: 60px;
+        }
+
+        .rank-1 { color: #FFD700; }
+        .rank-2 { color: #C0C0C0; }
+        .rank-3 { color: #CD7F32; }
+
+        .player-name {
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+
+        .win-pct {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.3rem;
+            color: var(--navy);
+        }
+
+        /* Player Rosters */
+        .rosters-section h2 {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 2rem;
+            color: var(--navy);
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+
+        .rosters-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+        }
+
+        .roster-card {
+            background: var(--white);
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 20px rgba(15, 28, 46, 0.06);
+            border-top: 4px solid var(--gold);
+        }
+
+        .roster-card h3 {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.5rem;
+            color: var(--navy);
+            margin-bottom: 1rem;
+        }
+
+        .roster-card .score {
+            font-size: 0.9rem;
+            color: var(--navy-lighter);
+            margin-bottom: 1rem;
+        }
+
+        .team-list {
+            list-style: none;
+        }
+
+        .team-item {
+            padding: 0.75rem;
+            background: var(--cream);
+            margin-bottom: 0.5rem;
+            border-radius: 6px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .team-name {
+            font-weight: 600;
+        }
+
+        .team-tier {
+            font-size: 0.75rem;
+            padding: 0.25rem 0.5rem;
+            border-radius: 12px;
+            font-weight: 600;
+        }
+
+        .tier-1 { background: #fef3cd; color: #856404; }
+        .tier-2 { background: #d4edda; color: #155724; }
+        .tier-3 { background: #cce5ff; color: #004085; }
+        .tier-4 { background: #f8d7da; color: #721c24; }
+
+        .team-record {
+            font-size: 0.9rem;
+            color: var(--navy-lighter);
+        }
+
+        .no-roster {
+            text-align: center;
+            color: var(--navy-lighter);
+            font-style: italic;
+            padding: 2rem;
+        }
+
+        /* Standings Table */
+        .standings-section h2 {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 2rem;
+            color: var(--navy);
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+
+        .standings-table {
+            width: 100%;
+            background: var(--white);
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(15, 28, 46, 0.06);
+        }
+
+        .standings-table th {
+            background: var(--navy);
+            color: var(--cream);
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 0.9rem;
+            letter-spacing: 0.05em;
+            padding: 1rem 0.75rem;
+            text-align: left;
+        }
+
+        .standings-table td {
+            padding: 0.75rem;
+            border-bottom: 1px solid var(--cream-dark);
+            font-size: 0.9rem;
+        }
+
+        .standings-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .standings-table tr:hover {
+            background: var(--cream);
+        }
+
+        /* Loading State */
+        .loading {
+            text-align: center;
+            padding: 4rem;
+            font-size: 1.2rem;
+            color: var(--navy-lighter);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+
+            .leaderboard-table th,
+            .leaderboard-table td {
+                padding: 0.75rem 0.5rem;
+                font-size: 0.9rem;
+            }
+
+            .standings-table {
+                font-size: 0.85rem;
+            }
+
+            .standings-table th,
+            .standings-table td {
+                padding: 0.5rem 0.25rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="nav">
+        <div class="nav-inner">
+            <a href="index.html" class="nav-logo">BUSH <span>LEAGUE</span></a>
+            <div class="nav-links">
+                <a href="app.html">Dashboard</a>
+                <a href="index.html#rules">Rules</a>
+                <a href="index.html#schedule">Schedule</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Container -->
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <h1>Bush League Dashboard</h1>
+            <p class="subtitle">2026 Season</p>
+            <p class="last-updated" id="lastUpdated">Loading...</p>
+        </div>
+
+        <!-- Quarter Selector -->
+        <div class="quarter-selector">
+            <button class="quarter-btn active" data-quarter="Q1">Quarter 1</button>
+            <button class="quarter-btn" data-quarter="Q2">Quarter 2</button>
+            <button class="quarter-btn" data-quarter="Q3">Quarter 3</button>
+            <button class="quarter-btn" data-quarter="Q4">Quarter 4</button>
+        </div>
+
+        <!-- Leaderboard -->
+        <div class="leaderboard">
+            <h2>Leaderboard</h2>
+            <div id="leaderboard-content" class="loading">Loading standings...</div>
+        </div>
+
+        <!-- Player Rosters -->
+        <div class="rosters-section">
+            <h2>Player Rosters</h2>
+            <div id="rosters-content" class="loading">Loading rosters...</div>
+        </div>
+
+        <!-- Team Standings -->
+        <div class="standings-section">
+            <h2>MLB Team Standings</h2>
+            <div id="standings-content" class="loading">Loading team data...</div>
+        </div>
+    </div>
+
+    <script>
+        // Global state
+        let currentQuarter = 'Q1';
+        let allData = {};
+
+        // Fetch all data files
+        async function loadData() {
+            try {
+                const [standings, players, quarters, tiers] = await Promise.all([
+                    fetch('data/standings.json').then(r => r.json()),
+                    fetch('data/players.json').then(r => r.json()),
+                    fetch('data/quarters.json').then(r => r.json()),
+                    fetch('data/tiers.json').then(r => r.json())
+                ]);
+
+                allData = { standings, players, quarters, tiers };
+
+                // Update last updated timestamp
+                const lastUpdated = new Date(standings.lastUpdated);
+                document.getElementById('lastUpdated').textContent =
+                    `Last updated: ${lastUpdated.toLocaleDateString()} ${lastUpdated.toLocaleTimeString()}`;
+
+                renderDashboard();
+            } catch (error) {
+                console.error('Error loading data:', error);
+                document.getElementById('leaderboard-content').innerHTML =
+                    '<p class="no-roster">Error loading data. Please try again later.</p>';
+            }
+        }
+
+        // Render the entire dashboard
+        function renderDashboard() {
+            renderLeaderboard();
+            renderRosters();
+            renderStandings();
+        }
+
+        // Render leaderboard
+        function renderLeaderboard() {
+            const playerScores = allData.standings.playerScores[currentQuarter];
+
+            if (!playerScores || Object.keys(playerScores).length === 0) {
+                document.getElementById('leaderboard-content').innerHTML =
+                    '<p class="no-roster">No scores yet for this quarter. Players need to make their selections!</p>';
+                return;
+            }
+
+            // Convert to array and sort
+            const sortedPlayers = Object.values(playerScores).sort((a, b) => {
+                if (b.combinedWinPct !== a.combinedWinPct) {
+                    return b.combinedWinPct - a.combinedWinPct;
+                }
+                return b.combinedRunsPerGame - a.combinedRunsPerGame;
+            });
+
+            const html = `
+                <table class="leaderboard-table">
+                    <thead>
+                        <tr>
+                            <th>Rank</th>
+                            <th>Player</th>
+                            <th>Win %</th>
+                            <th>Runs/Game</th>
+                            <th>Teams</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${sortedPlayers.map((player, index) => `
+                            <tr>
+                                <td class="rank rank-${index + 1}">#${index + 1}</td>
+                                <td class="player-name">${player.name}</td>
+                                <td class="win-pct">${(player.combinedWinPct * 100).toFixed(1)}%</td>
+                                <td>${player.combinedRunsPerGame.toFixed(2)}</td>
+                                <td>${player.teams.join(', ')}</td>
+                            </tr>
+                        `).join('')}
+                    </tbody>
+                </table>
+            `;
+
+            document.getElementById('leaderboard-content').innerHTML = html;
+        }
+
+        // Render player rosters
+        function renderRosters() {
+            const players = allData.players.players;
+            const quarterlyScores = allData.standings.playerScores[currentQuarter] || {};
+
+            const rostersHtml = players.map(player => {
+                const quarterRoster = player.quarters[currentQuarter];
+
+                if (!quarterRoster) {
+                    return `
+                        <div class="roster-card">
+                            <h3>${player.name}</h3>
+                            <p class="no-roster">No roster selected for this quarter yet</p>
+                        </div>
+                    `;
+                }
+
+                const score = quarterlyScores[player.id];
+                const teams = [
+                    { abbrev: quarterRoster.tier1, tier: 1 },
+                    { abbrev: quarterRoster.tier2, tier: 2 },
+                    { abbrev: quarterRoster.tier3, tier: 3 },
+                    { abbrev: quarterRoster.tier4, tier: 4 }
+                ];
+
+                return `
+                    <div class="roster-card">
+                        <h3>${player.name}</h3>
+                        ${score ? `
+                            <div class="score">
+                                Win%: <strong>${(score.combinedWinPct * 100).toFixed(1)}%</strong> |
+                                Runs/Game: <strong>${score.combinedRunsPerGame.toFixed(2)}</strong> |
+                                Rank: <strong>#${score.rank}</strong>
+                            </div>
+                        ` : ''}
+                        <ul class="team-list">
+                            ${teams.map(team => {
+                                const teamData = allData.standings.teams[team.abbrev];
+                                return teamData ? `
+                                    <li class="team-item">
+                                        <div>
+                                            <div class="team-name">${teamData.name}</div>
+                                            <div class="team-record">${teamData.wins}-${teamData.losses} (${(teamData.winPct * 100).toFixed(1)}%)</div>
+                                        </div>
+                                        <span class="team-tier tier-${team.tier}">T${team.tier}</span>
+                                    </li>
+                                ` : `
+                                    <li class="team-item">
+                                        <div class="team-name">${team.abbrev}</div>
+                                        <span class="team-tier tier-${team.tier}">T${team.tier}</span>
+                                    </li>
+                                `;
+                            }).join('')}
+                        </ul>
+                    </div>
+                `;
+            }).join('');
+
+            document.getElementById('rosters-content').innerHTML = `
+                <div class="rosters-grid">${rostersHtml}</div>
+            `;
+        }
+
+        // Render team standings
+        function renderStandings() {
+            const teams = allData.standings.teams;
+
+            // Convert to array and sort by win percentage
+            const sortedTeams = Object.values(teams).sort((a, b) => b.winPct - a.winPct);
+
+            const html = `
+                <table class="standings-table">
+                    <thead>
+                        <tr>
+                            <th>Team</th>
+                            <th>W</th>
+                            <th>L</th>
+                            <th>Win %</th>
+                            <th>Runs</th>
+                            <th>R/G</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${sortedTeams.map(team => `
+                            <tr>
+                                <td><strong>${team.name}</strong></td>
+                                <td>${team.wins}</td>
+                                <td>${team.losses}</td>
+                                <td>${(team.winPct * 100).toFixed(1)}%</td>
+                                <td>${team.runsScored}</td>
+                                <td>${team.runsPerGame.toFixed(2)}</td>
+                            </tr>
+                        `).join('')}
+                    </tbody>
+                </table>
+            `;
+
+            document.getElementById('standings-content').innerHTML = html;
+        }
+
+        // Quarter selector event handlers
+        document.querySelectorAll('.quarter-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.quarter-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                currentQuarter = btn.dataset.quarter;
+                renderDashboard();
+            });
+        });
+
+        // Load data on page load
+        loadData();
+    </script>
+</body>
+</html>

@@ -2,36 +2,54 @@
   "players": [
     {
       "id": "player1",
-      "name": "Player 1",
+      "name": "Chris",
       "quarters": {
-        "Q1": null,
+        "Q1": {
+          "tier1": "MIL",
+          "tier2": "HOU",
+          "tier3": "CLE",
+          "tier4": "CHW",
+          "manualPicks": ["MIL", "HOU"]
+        },
         "Q2": null,
         "Q3": null,
         "Q4": null
       },
-      "burnedTeams": []
+      "burnedTeams": ["MIL", "HOU"]
     },
     {
       "id": "player2",
-      "name": "Player 2",
+      "name": "Alex",
       "quarters": {
-        "Q1": null,
+        "Q1": {
+          "tier1": "PHI",
+          "tier2": "CHC",
+          "tier3": "DET",
+          "tier4": "PIT",
+          "manualPicks": ["PHI", "CHC"]
+        },
         "Q2": null,
         "Q3": null,
         "Q4": null
       },
-      "burnedTeams": []
+      "burnedTeams": ["PHI", "CHC"]
     },
     {
       "id": "player3",
-      "name": "Player 3",
+      "name": "Jordan",
       "quarters": {
-        "Q1": null,
+        "Q1": {
+          "tier1": "NYY",
+          "tier2": "SDP",
+          "tier3": "CIN",
+          "tier4": "COL",
+          "manualPicks": ["NYY", "SDP"]
+        },
         "Q2": null,
         "Q3": null,
         "Q4": null
       },
-      "burnedTeams": []
+      "burnedTeams": ["NYY", "SDP"]
     },
     {
       "id": "player4",
