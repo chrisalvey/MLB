@@ -5,6 +5,10 @@ const path = require('path');
 // MLB Stats API Base URL
 const MLB_API_BASE = 'https://statsapi.mlb.com/api/v1';
 
+// Configuration - Use 2025 for testing until 2026 season starts
+const SEASON_YEAR = 2025;
+const SEASON_START = '2025-03-20'; // 2025 season started March 20
+
 // Team abbreviation mapping (MLB API uses different IDs)
 const TEAM_ABBREV_MAP = {
   108: 'LAA', 109: 'ARI', 110: 'BAL', 111: 'BOS', 112: 'CHC',
@@ -31,7 +35,7 @@ async function writeJSON(filename, data) {
 // Fetch current standings from MLB API
 async function fetchStandings() {
   try {
-    const url = `${MLB_API_BASE}/standings?leagueId=103,104&season=2026`;
+    const url = `${MLB_API_BASE}/standings?leagueId=103,104&season=${SEASON_YEAR}`;
     console.log(`Fetching standings from: ${url}`);
 
     const response = await fetch(url);
@@ -263,8 +267,7 @@ async function sync() {
 
     // Fetch schedule for the current season to get runs data
     const today = new Date().toISOString().split('T')[0];
-    const seasonStart = '2026-03-25';
-    const scheduleData = await fetchSchedule(seasonStart, today);
+    const scheduleData = await fetchSchedule(SEASON_START, today);
 
     // Calculate runs from schedule
     const runsData = calculateRunsFromSchedule(scheduleData);
@@ -281,7 +284,7 @@ async function sync() {
     // Build final standings object
     const standings = {
       lastUpdated: new Date().toISOString(),
-      season: 2026,
+      season: SEASON_YEAR,
       teams,
       quarterlyStats,
       playerScores
