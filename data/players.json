@@ -11,11 +11,17 @@
           "tier4": "CHW",
           "manualPicks": ["MIL", "HOU"]
         },
-        "Q2": null,
+        "Q2": {
+          "tier1": "NYY",
+          "tier2": "DET",
+          "tier3": "ARI",
+          "tier4": "LAA",
+          "manualPicks": ["NYY", "DET"]
+        },
         "Q3": null,
         "Q4": null
       },
-      "burnedTeams": ["MIL", "HOU"]
+      "burnedTeams": ["MIL", "HOU", "NYY", "DET"]
     },
     {
       "id": "player2",
@@ -28,11 +34,17 @@
           "tier4": "PIT",
           "manualPicks": ["PHI", "CHC"]
         },
-        "Q2": null,
+        "Q2": {
+          "tier1": "LAD",
+          "tier2": "HOU",
+          "tier3": "KCR",
+          "tier4": "MIA",
+          "manualPicks": ["LAD", "HOU"]
+        },
         "Q3": null,
         "Q4": null
       },
-      "burnedTeams": ["PHI", "CHC"]
+      "burnedTeams": ["PHI", "CHC", "LAD", "HOU"]
     },
     {
       "id": "player3",
@@ -45,11 +57,17 @@
           "tier4": "COL",
           "manualPicks": ["NYY", "SDP"]
         },
-        "Q2": null,
+        "Q2": {
+          "tier1": "TOR",
+          "tier2": "BOS",
+          "tier3": "STL",
+          "tier4": "WSN",
+          "manualPicks": ["TOR", "BOS"]
+        },
         "Q3": null,
         "Q4": null
       },
-      "burnedTeams": ["NYY", "SDP"]
+      "burnedTeams": ["NYY", "SDP", "TOR", "BOS"]
     },
     {
       "id": "player4",
@@ -62,11 +80,17 @@
           "tier4": "MIA",
           "manualPicks": ["LAD", "BOS"]
         },
-        "Q2": null,
+        "Q2": {
+          "tier1": "PHI",
+          "tier2": "SDP",
+          "tier3": "MIN",
+          "tier4": "PIT",
+          "manualPicks": ["PHI", "SDP"]
+        },
         "Q3": null,
         "Q4": null
       },
-      "burnedTeams": ["LAD", "BOS"]
+      "burnedTeams": ["LAD", "BOS", "PHI", "SDP"]
     },
     {
       "id": "player5",
@@ -79,11 +103,17 @@
           "tier4": "OAK",
           "manualPicks": ["TOR", "NYM"]
         },
-        "Q2": null,
+        "Q2": {
+          "tier1": "MIL",
+          "tier2": "CHC",
+          "tier3": "TBR",
+          "tier4": "COL",
+          "manualPicks": ["MIL", "CHC"]
+        },
         "Q3": null,
         "Q4": null
       },
-      "burnedTeams": ["TOR", "NYM"]
+      "burnedTeams": ["TOR", "NYM", "MIL", "CHC"]
     },
     {
       "id": "player6",
@@ -96,11 +126,17 @@
           "tier4": "WSN",
           "manualPicks": ["LAD", "TEX"]
         },
-        "Q2": null,
+        "Q2": {
+          "tier1": "SEA",
+          "tier2": "NYM",
+          "tier3": "BAL",
+          "tier4": "CHW",
+          "manualPicks": ["SEA", "NYM"]
+        },
         "Q3": null,
         "Q4": null
       },
-      "burnedTeams": ["LAD", "TEX"]
+      "burnedTeams": ["LAD", "TEX", "SEA", "NYM"]
     }
   ]
 }

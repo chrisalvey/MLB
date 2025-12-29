@@ -155,23 +155,37 @@ function parseStandings(standingsData, runsData) {
 function calculateQuarterlyStats(teams, quarters, currentDate) {
   const quarterlyStats = { Q1: {}, Q2: {}, Q3: {}, Q4: {} };
 
-  // For now, we'll just copy current season stats
-  // In production, you'd fetch schedule data for each quarter date range
+  // For testing: simulate quarterly stats by dividing season stats
+  // Q1 = ~60 games (37% of season), Q2 = ~40 games (25%), Q3 = ~45 games (28%), Q4 = ~27 games (17%)
+  // In production, you'd fetch actual schedule data for each quarter date range
+
+  const quarterProportions = {
+    Q1: 0.37, // ~60 games
+    Q2: 0.25, // ~40 games
+    Q3: 0.28, // ~45 games
+    Q4: 0.17  // ~27 games
+  };
+
   Object.keys(quarters.quarters).forEach(quarter => {
     const quarterInfo = quarters.quarters[quarter];
-    const start = new Date(quarterInfo.startDate);
-    const end = new Date(quarterInfo.endDate);
-    const now = new Date(currentDate);
+    const status = quarterInfo.status;
 
-    // Only populate if quarter has started
-    if (now >= start) {
+    // Populate completed quarters and active quarter
+    if (status === 'completed' || status === 'active') {
+      const proportion = quarterProportions[quarter];
+
       Object.keys(teams).forEach(abbrev => {
+        const team = teams[abbrev];
+        const quarterGames = Math.round(team.gamesPlayed * proportion);
+        const quarterWins = Math.round(team.wins * proportion);
+        const quarterLosses = Math.round(team.losses * proportion);
+
         quarterlyStats[quarter][abbrev] = {
-          wins: teams[abbrev].wins,
-          losses: teams[abbrev].losses,
-          winPct: teams[abbrev].winPct,
-          runsScored: teams[abbrev].runsScored,
-          runsPerGame: teams[abbrev].runsPerGame
+          wins: quarterWins,
+          losses: quarterLosses,
+          winPct: quarterGames > 0 ? quarterWins / (quarterWins + quarterLosses) : team.winPct,
+          runsScored: Math.round(team.runsScored * proportion),
+          runsPerGame: team.runsPerGame
         };
       });
     }

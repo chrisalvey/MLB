@@ -389,10 +389,11 @@
 
         <!-- Quarter Selector -->
         <div class="quarter-selector">
-            <button class="quarter-btn active" data-quarter="Q1">Quarter 1</button>
+            <button class="quarter-btn" data-quarter="Q1">Quarter 1</button>
             <button class="quarter-btn" data-quarter="Q2">Quarter 2</button>
             <button class="quarter-btn" data-quarter="Q3">Quarter 3</button>
             <button class="quarter-btn" data-quarter="Q4">Quarter 4</button>
+            <button class="quarter-btn active" data-quarter="SEASON">Season Total</button>
         </div>
 
         <!-- Leaderboard -->
@@ -416,7 +417,7 @@
 
     <script>
         // Global state
-        let currentQuarter = 'Q1';
+        let currentQuarter = 'SEASON';
         let allData = {};
 
         // Fetch all data files
@@ -451,13 +452,63 @@
             renderStandings();
         }
 
+        // Calculate season totals
+        function calculateSeasonTotals() {
+            const seasonScores = {};
+            const quarters = ['Q1', 'Q2', 'Q3', 'Q4'];
+
+            allData.players.players.forEach(player => {
+                let totalWins = 0;
+                let totalLosses = 0;
+                let totalRuns = 0;
+                let totalGames = 0;
+                let allTeams = [];
+
+                quarters.forEach(quarter => {
+                    const quarterScore = allData.standings.playerScores[quarter]?.[player.id];
+                    if (quarterScore) {
+                        // Get quarterly team stats
+                        const quarterStats = allData.standings.quarterlyStats[quarter];
+                        quarterScore.teams.forEach(teamAbbrev => {
+                            const teamData = quarterStats?.[teamAbbrev];
+                            if (teamData) {
+                                totalWins += teamData.wins;
+                                totalLosses += teamData.losses;
+                                totalRuns += teamData.runsScored;
+                                totalGames += (teamData.wins + teamData.losses);
+                            }
+                        });
+                        allTeams = allTeams.concat(quarterScore.teams);
+                    }
+                });
+
+                if (totalGames > 0) {
+                    seasonScores[player.id] = {
+                        name: player.name,
+                        teams: allTeams,
+                        combinedWinPct: totalWins / (totalWins + totalLosses),
+                        combinedRunsPerGame: totalRuns / totalGames,
+                        rank: 0
+                    };
+                }
+            });
+
+            return seasonScores;
+        }
+
         // Render leaderboard
         function renderLeaderboard() {
-            const playerScores = allData.standings.playerScores[currentQuarter];
+            let playerScores;
+
+            if (currentQuarter === 'SEASON') {
+                playerScores = calculateSeasonTotals();
+            } else {
+                playerScores = allData.standings.playerScores[currentQuarter];
+            }
 
             if (!playerScores || Object.keys(playerScores).length === 0) {
                 document.getElementById('leaderboard-content').innerHTML =
-                    '<p class="no-roster">No scores yet for this quarter. Players need to make their selections!</p>';
+                    '<p class="no-roster">No scores yet for this period. Players need to make their selections!</p>';
                 return;
             }
 
@@ -500,59 +551,105 @@
         // Render player rosters
         function renderRosters() {
             const players = allData.players.players;
-            const quarterlyScores = allData.standings.playerScores[currentQuarter] || {};
 
             const rostersHtml = players.map(player => {
-                const quarterRoster = player.quarters[currentQuarter];
+                if (currentQuarter === 'SEASON') {
+                    // Show all teams from all quarters for season view
+                    const seasonScore = calculateSeasonTotals()[player.id];
+                    const allQuarters = ['Q1', 'Q2', 'Q3', 'Q4'];
+                    const allTeams = [];
 
-                if (!quarterRoster) {
+                    allQuarters.forEach(q => {
+                        const quarterRoster = player.quarters[q];
+                        if (quarterRoster) {
+                            allTeams.push({ quarter: q, teams: [
+                                { abbrev: quarterRoster.tier1, tier: 1 },
+                                { abbrev: quarterRoster.tier2, tier: 2 },
+                                { abbrev: quarterRoster.tier3, tier: 3 },
+                                { abbrev: quarterRoster.tier4, tier: 4 }
+                            ]});
+                        }
+                    });
+
                     return `
                         <div class="roster-card">
                             <h3>${player.name}</h3>
-                            <p class="no-roster">No roster selected for this quarter yet</p>
+                            ${seasonScore ? `
+                                <div class="score">
+                                    Season Win%: <strong>${(seasonScore.combinedWinPct * 100).toFixed(1)}%</strong> |
+                                    Runs/Game: <strong>${seasonScore.combinedRunsPerGame.toFixed(2)}</strong>
+                                </div>
+                            ` : ''}
+                            ${allTeams.map(quarterData => `
+                                <h4 style="margin-top: 1rem; font-size: 0.9rem; color: var(--gold);">${quarterData.quarter}</h4>
+                                <ul class="team-list">
+                                    ${quarterData.teams.map(team => {
+                                        const teamData = allData.standings.teams[team.abbrev];
+                                        const quarterStats = allData.standings.quarterlyStats[quarterData.quarter]?.[team.abbrev];
+                                        return teamData && quarterStats ? `
+                                            <li class="team-item">
+                                                <div>
+                                                    <div class="team-name">${teamData.name}</div>
+                                                    <div class="team-record">${quarterStats.wins}-${quarterStats.losses} (${(quarterStats.winPct * 100).toFixed(1)}%)</div>
+                                                </div>
+                                                <span class="team-tier tier-${team.tier}">T${team.tier}</span>
+                                            </li>
+                                        ` : '';
+                                    }).join('')}
+                                </ul>
+                            `).join('')}
+                        </div>
+                    `;
+                } else {
+                    // Show single quarter view
+                    const quarterRoster = player.quarters[currentQuarter];
+                    const quarterlyScores = allData.standings.playerScores[currentQuarter] || {};
+
+                    if (!quarterRoster) {
+                        return `
+                            <div class="roster-card">
+                                <h3>${player.name}</h3>
+                                <p class="no-roster">No roster selected for this quarter yet</p>
+                            </div>
+                        `;
+                    }
+
+                    const score = quarterlyScores[player.id];
+                    const teams = [
+                        { abbrev: quarterRoster.tier1, tier: 1 },
+                        { abbrev: quarterRoster.tier2, tier: 2 },
+                        { abbrev: quarterRoster.tier3, tier: 3 },
+                        { abbrev: quarterRoster.tier4, tier: 4 }
+                    ];
+
+                    return `
+                        <div class="roster-card">
+                            <h3>${player.name}</h3>
+                            ${score ? `
+                                <div class="score">
+                                    Win%: <strong>${(score.combinedWinPct * 100).toFixed(1)}%</strong> |
+                                    Runs/Game: <strong>${score.combinedRunsPerGame.toFixed(2)}</strong> |
+                                    Rank: <strong>#${score.rank}</strong>
+                                </div>
+                            ` : ''}
+                            <ul class="team-list">
+                                ${teams.map(team => {
+                                    const teamData = allData.standings.teams[team.abbrev];
+                                    const quarterStats = allData.standings.quarterlyStats[currentQuarter]?.[team.abbrev];
+                                    return teamData && quarterStats ? `
+                                        <li class="team-item">
+                                            <div>
+                                                <div class="team-name">${teamData.name}</div>
+                                                <div class="team-record">${quarterStats.wins}-${quarterStats.losses} (${(quarterStats.winPct * 100).toFixed(1)}%)</div>
+                                            </div>
+                                            <span class="team-tier tier-${team.tier}">T${team.tier}</span>
+                                        </li>
+                                    ` : '';
+                                }).join('')}
+                            </ul>
                         </div>
                     `;
                 }
-
-                const score = quarterlyScores[player.id];
-                const teams = [
-                    { abbrev: quarterRoster.tier1, tier: 1 },
-                    { abbrev: quarterRoster.tier2, tier: 2 },
-                    { abbrev: quarterRoster.tier3, tier: 3 },
-                    { abbrev: quarterRoster.tier4, tier: 4 }
-                ];
-
-                return `
-                    <div class="roster-card">
-                        <h3>${player.name}</h3>
-                        ${score ? `
-                            <div class="score">
-                                Win%: <strong>${(score.combinedWinPct * 100).toFixed(1)}%</strong> |
-                                Runs/Game: <strong>${score.combinedRunsPerGame.toFixed(2)}</strong> |
-                                Rank: <strong>#${score.rank}</strong>
-                            </div>
-                        ` : ''}
-                        <ul class="team-list">
-                            ${teams.map(team => {
-                                const teamData = allData.standings.teams[team.abbrev];
-                                return teamData ? `
-                                    <li class="team-item">
-                                        <div>
-                                            <div class="team-name">${teamData.name}</div>
-                                            <div class="team-record">${teamData.wins}-${teamData.losses} (${(teamData.winPct * 100).toFixed(1)}%)</div>
-                                        </div>
-                                        <span class="team-tier tier-${team.tier}">T${team.tier}</span>
-                                    </li>
-                                ` : `
-                                    <li class="team-item">
-                                        <div class="team-name">${team.abbrev}</div>
-                                        <span class="team-tier tier-${team.tier}">T${team.tier}</span>
-                                    </li>
-                                `;
-                            }).join('')}
-                        </ul>
-                    </div>
-                `;
             }).join('');
 
             document.getElementById('rosters-content').innerHTML = `
