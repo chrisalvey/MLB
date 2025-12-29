@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2025-12-29T18:51:32.863Z",
+  "lastUpdated": "2025-12-29T18:54:47.379Z",
   "season": 2025,
   "teams": {
     "TOR": {
@@ -354,7 +354,7 @@
         "rank": 1
       },
       "player2": {
-        "name": "Alex",
+        "name": "Jesse",
         "teams": [
           "PHI",
           "CHC",
@@ -366,7 +366,7 @@
         "rank": 2
       },
       "player3": {
-        "name": "Jordan",
+        "name": "Joe",
         "teams": [
           "NYY",
           "SDP",
@@ -376,6 +376,42 @@
         "combinedWinPct": 0,
         "combinedRunsPerGame": 0,
         "rank": 3
+      },
+      "player4": {
+        "name": "Lindsey",
+        "teams": [
+          "LAD",
+          "BOS",
+          "SEA",
+          "MIA"
+        ],
+        "combinedWinPct": 0,
+        "combinedRunsPerGame": 0,
+        "rank": 4
+      },
+      "player5": {
+        "name": "Randy",
+        "teams": [
+          "TOR",
+          "NYM",
+          "KCR",
+          "OAK"
+        ],
+        "combinedWinPct": 0,
+        "combinedRunsPerGame": 0,
+        "rank": 5
+      },
+      "player6": {
+        "name": "Ryan",
+        "teams": [
+          "LAD",
+          "TEX",
+          "SFG",
+          "WSN"
+        ],
+        "combinedWinPct": 0,
+        "combinedRunsPerGame": 0,
+        "rank": 6
       }
     },
     "Q2": {},

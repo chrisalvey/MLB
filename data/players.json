@@ -19,7 +19,7 @@
     },
     {
       "id": "player2",
-      "name": "Alex",
+      "name": "Jesse",
       "quarters": {
         "Q1": {
           "tier1": "PHI",
@@ -36,7 +36,7 @@
     },
     {
       "id": "player3",
-      "name": "Jordan",
+      "name": "Joe",
       "quarters": {
         "Q1": {
           "tier1": "NYY",
@@ -53,36 +53,54 @@
     },
     {
       "id": "player4",
-      "name": "Player 4",
+      "name": "Lindsey",
       "quarters": {
-        "Q1": null,
+        "Q1": {
+          "tier1": "LAD",
+          "tier2": "BOS",
+          "tier3": "SEA",
+          "tier4": "MIA",
+          "manualPicks": ["LAD", "BOS"]
+        },
         "Q2": null,
         "Q3": null,
         "Q4": null
       },
-      "burnedTeams": []
+      "burnedTeams": ["LAD", "BOS"]
     },
     {
       "id": "player5",
-      "name": "Player 5",
+      "name": "Randy",
       "quarters": {
-        "Q1": null,
+        "Q1": {
+          "tier1": "TOR",
+          "tier2": "NYM",
+          "tier3": "KCR",
+          "tier4": "OAK",
+          "manualPicks": ["TOR", "NYM"]
+        },
         "Q2": null,
         "Q3": null,
         "Q4": null
       },
-      "burnedTeams": []
+      "burnedTeams": ["TOR", "NYM"]
     },
     {
       "id": "player6",
-      "name": "Player 6",
+      "name": "Ryan",
       "quarters": {
-        "Q1": null,
+        "Q1": {
+          "tier1": "LAD",
+          "tier2": "TEX",
+          "tier3": "SFG",
+          "tier4": "WSN",
+          "manualPicks": ["LAD", "TEX"]
+        },
         "Q2": null,
         "Q3": null,
         "Q4": null
       },
-      "burnedTeams": []
+      "burnedTeams": ["LAD", "TEX"]
     }
   ]
 }
