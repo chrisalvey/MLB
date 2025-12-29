@@ -1,0 +1,30 @@
+{
+  "season": 2026,
+  "currentQuarter": "Q1",
+  "tiers": {
+    "Q1": {
+      "tier1": ["LAD", "NYY", "PHI", "ATL", "SEA", "TOR"],
+      "tier2": ["NYM", "BOS", "MIL", "SDP", "CHC", "DET", "HOU", "TEX"],
+      "tier3": ["CLE", "BAL", "CIN", "SFG", "ARI", "TBR", "MIN", "STL"],
+      "tier4": ["OAK", "MIA", "LAA", "PIT", "WSN", "CHW", "COL", "KCR"]
+    },
+    "Q2": {
+      "tier1": [],
+      "tier2": [],
+      "tier3": [],
+      "tier4": []
+    },
+    "Q3": {
+      "tier1": [],
+      "tier2": [],
+      "tier3": [],
+      "tier4": []
+    },
+    "Q4": {
+      "tier1": [],
+      "tier2": [],
+      "tier3": [],
+      "tier4": []
+    }
+  }
+}

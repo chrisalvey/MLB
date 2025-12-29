@@ -1,0 +1,29 @@
+{
+  "season": 2026,
+  "quarters": {
+    "Q1": {
+      "startDate": "2026-03-25",
+      "endDate": "2026-05-31",
+      "selectionDeadline": "2026-03-23",
+      "status": "upcoming"
+    },
+    "Q2": {
+      "startDate": "2026-06-01",
+      "endDate": "2026-07-13",
+      "selectionDeadline": "2026-05-30",
+      "status": "upcoming"
+    },
+    "Q3": {
+      "startDate": "2026-07-14",
+      "endDate": "2026-08-31",
+      "selectionDeadline": "2026-07-12",
+      "status": "upcoming"
+    },
+    "Q4": {
+      "startDate": "2026-09-01",
+      "endDate": "2026-09-27",
+      "selectionDeadline": "2026-08-30",
+      "status": "upcoming"
+    }
+  }
+}

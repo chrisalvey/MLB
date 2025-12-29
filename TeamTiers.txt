@@ -1,0 +1,66 @@
+To accommodate a team from each of the four tiers, your roster size will shift from five to four teams. This creates a highly balanced "ladder" strategy where your success depends on finding a "basement diamond" (Tier 4) just as much as picking the right powerhouse (Tier 1).
+Updated Tl;Dr.
+This is a Ladder-Strategy league for 6 players. Every quarter, you manage a 4-team roster consisting of exactly one team from each performance tier (Elite, Strong, Average, and Basement). You "burn" your top choices as you go, forcing you to time your powerhouse picks perfectly while hunting for value in the lower tiers to win the season.
+Official League Rules (The "Ladder Burn" Format)
+1. Structure & Scoring
+Participants: Exactly 6 players.
+Scoring: Combined winning percentage of your 4 assigned MLB teams per quarter.
+Season Winner: Highest cumulative win percentage across all four quarters.
+Tie-Breaker: Cumulative average Runs Scored per game across all rostered teams.
+2. Roster Composition (4 Teams Total)
+Each player manages exactly one team from each tier:
+1 Team from Tier 1 (Elite)
+1 Team from Tier 2 (Strong)
+1 Team from Tier 3 (Average)
+1 Team from Tier 4 (Basement)
+3. Selection & Randomization
+Manual Choice (Tier 1 & Tier 2): You choose one team from each of these top tiers.
+The Burn Rule: You cannot manually choose the same team twice in a season (regardless of what tier they are in when you pick them).
+Duplicates: Multiple players can choose the same T1 or T2 team.
+Random Assignment (Tier 3 & Tier 4): The app/commissioner randomly assigns you one team from Tier 3 and one from Tier 4.
+The Refresh Rule: If you were randomly assigned a team in Q1, you can still manually choose them in a later quarter.
+Personal Unique: You will never be randomly assigned a team you already chose manually for that same quarter.
+2026 Season Tier Examples
+Based on early 2026 projections and World Series odds, here is how the tiers might look for your first quarter: 
+Tier 	Description	2026 Team Examples
+Tier 1	The Elites	Dodgers, Yankees, Phillies, Braves, Mariners, Blue Jays
+Tier 2	The Contenders	Mets, Red Sox, Brewers, Padres, Cubs, Tigers, Astros, Rangers
+Tier 3	The Middle	Guardians, Orioles, Reds, Giants, Diamondbacks, Rays, Twins, Cardinals
+Tier 4	The Basement	Athletics, Marlins, Angels, Pirates, Nationals, White Sox, Rockies, Royals
+Why this is fun: By Quarter 4, you will have "burned" 4 Elite teams and 4 Strong teams. If you used the Dodgers and Yankees early, you might be stuck choosing the Mariners or a surging Tier 2 team for your final T1 slot, making the late-season tiers highly impactful.
+
+Tl;Dr.
+This is a Ladder-Strategy league for 6 players with a $120 total prize pool ($20 buy-in). Each quarter, you manage a 4-team roster (one from each performance tier). You must strategically "burn" your manual picks, as once you select a team, you cannot pick them again. The goal is to maximize win percentages to claim quarterly cash and the overall season title.
+Official League Rules (The "Ladder Burn" Format v5)
+1. Entry & Financials
+Buy-in: Each of the 6 players contributes $20 (Total: $120) [1.1].
+Quarterly Payouts: The player with the highest win percentage for each quarter receives $20 ($80 total across 4 quarters).
+Overall Winner: The player with the highest cumulative season win percentage receives the remaining $40 [1.1].
+2. Structure & Scoring
+Season Duration: The 2026 MLB season begins March 25, 2026, and ends September 27, 2026.
+Scoring: Combined winning percentage of your 4 assigned MLB teams per quarter.
+Tie-Breaker: Cumulative average Runs Scored per game across all rostered teams for the period in question. 
+3. Roster Composition (4 Teams Total)
+Players manage exactly one team from each tier every quarter:
+1 Team from Tier 1 (Elite)
+1 Team from Tier 2 (Strong)
+1 Team from Tier 3 (Average)
+1 Team from Tier 4 (Basement)
+4. Selection & Randomization
+Manual Choice (Tier 1 & Tier 2): You choose one team from each of these top tiers.
+The Burn Rule: Once you manually select a team, you cannot manually select them again for the rest of the season, regardless of any tier changes later on.
+Overlaps: Multiple players may choose the same team for their manual slots.
+Random Assignment (Tier 3 & Tier 4): The app/commissioner randomly assigns one team from Tier 3 and one from Tier 4.
+The Refresh Rule: Teams that were randomly assigned to you in previous quarters remain eligible for your future manual selections.
+Personal Unique: You will never be randomly assigned a team that you have already picked manually for that same quarter.
+2026 Schedule & Key Dates
+Opening Night: Wednesday, March 25, 2026 (Yankees at Giants).
+Traditional Opening Day: Thursday, March 26, 2026 (14-game slate).
+All-Star Break: The 96th All-Star Game is July 14, 2026 in Philadelphia.
+Regular Season Ends: Sunday, September 27, 2026. 
+Example Tiers for 2026 (Quarter 1)
+Tier	Status	2026 Team Examples
+Tier 1	Elite	Dodgers, Yankees, Phillies, Braves, Mariners, Blue Jays
+Tier 2	Contenders	Mets, Red Sox, Brewers, Padres, Cubs, Tigers, Astros, Rangers
+Tier 3	Average	Guardians, Orioles, Reds, Giants, Diamondbacks, Rays, Twins, Cardinals
+Tier 4	Basement	Athletics, Marlins, Angels, Pirates, Nationals, White Sox, Rockies, Royals

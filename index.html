@@ -1,0 +1,886 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bush League — The Long Game, Simplified</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Source+Sans+3:ital,wght@0,300;0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --navy: #0f1c2e;
+            --navy-light: #1a2d47;
+            --navy-lighter: #243a56;
+            --cream: #f5f1e8;
+            --cream-dark: #e8e2d5;
+            --gold: #d4a853;
+            --gold-light: #e8c47a;
+            --red: #c41e3a;
+            --green: #2d5a3d;
+            --white: #ffffff;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Source Sans 3', -apple-system, sans-serif;
+            background: var(--cream);
+            color: var(--navy);
+            line-height: 1.6;
+            font-size: 18px;
+        }
+
+        /* Hero Section */
+        .hero {
+            background: var(--navy);
+            background-image: 
+                radial-gradient(ellipse at 20% 80%, rgba(212, 168, 83, 0.15) 0%, transparent 50%),
+                radial-gradient(ellipse at 80% 20%, rgba(196, 30, 58, 0.1) 0%, transparent 50%),
+                linear-gradient(180deg, var(--navy) 0%, var(--navy-light) 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 2rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M30 5 L35 25 L55 30 L35 35 L30 55 L25 35 L5 30 L25 25 Z' fill='none' stroke='rgba(212,168,83,0.05)' stroke-width='1'/%3E%3C/svg%3E");
+            opacity: 0.5;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+            max-width: 900px;
+        }
+
+        .logo {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: clamp(4rem, 15vw, 10rem);
+            color: var(--cream);
+            letter-spacing: 0.05em;
+            line-height: 0.9;
+            text-shadow: 4px 4px 0 var(--gold);
+            animation: fadeInUp 1s ease-out;
+        }
+
+        .logo span {
+            color: var(--gold);
+            text-shadow: 4px 4px 0 var(--red);
+        }
+
+        .tagline {
+            font-size: clamp(1.1rem, 3vw, 1.5rem);
+            color: var(--cream);
+            opacity: 0.9;
+            margin-top: 1rem;
+            font-weight: 300;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            animation: fadeInUp 1s ease-out 0.2s both;
+        }
+
+        .hero-cta {
+            margin-top: 3rem;
+            animation: fadeInUp 1s ease-out 0.4s both;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 1rem 2.5rem;
+            background: var(--gold);
+            color: var(--navy);
+            text-decoration: none;
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.3rem;
+            letter-spacing: 0.1em;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 20px rgba(212, 168, 83, 0.3);
+        }
+
+        .btn:hover {
+            background: var(--gold-light);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 30px rgba(212, 168, 83, 0.4);
+        }
+
+        .scroll-hint {
+            position: absolute;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%);
+            color: var(--cream);
+            opacity: 0.5;
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateX(-50%) translateY(0); }
+            50% { transform: translateX(-50%) translateY(10px); }
+        }
+
+        /* Navigation */
+        .nav {
+            position: sticky;
+            top: 0;
+            background: var(--navy);
+            padding: 1rem 2rem;
+            z-index: 100;
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .nav-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .nav-logo {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.8rem;
+            color: var(--cream);
+            text-decoration: none;
+        }
+
+        .nav-logo span {
+            color: var(--gold);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .nav-links a {
+            color: var(--cream);
+            text-decoration: none;
+            font-size: 0.9rem;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            opacity: 0.8;
+            transition: opacity 0.3s;
+        }
+
+        .nav-links a:hover {
+            opacity: 1;
+            color: var(--gold);
+        }
+
+        /* Main Content */
+        .content {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 4rem 2rem;
+        }
+
+        section {
+            margin-bottom: 5rem;
+        }
+
+        h2 {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: clamp(2.5rem, 6vw, 3.5rem);
+            color: var(--navy);
+            margin-bottom: 1.5rem;
+            letter-spacing: 0.02em;
+            position: relative;
+            display: inline-block;
+        }
+
+        h2::after {
+            content: '';
+            position: absolute;
+            bottom: -0.25rem;
+            left: 0;
+            width: 60px;
+            height: 4px;
+            background: var(--gold);
+        }
+
+        h3 {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.6rem;
+            color: var(--navy-light);
+            margin: 2rem 0 1rem;
+            letter-spacing: 0.02em;
+        }
+
+        p {
+            margin-bottom: 1.25rem;
+            color: var(--navy);
+        }
+
+        strong {
+            color: var(--navy);
+            font-weight: 600;
+        }
+
+        /* Pitch Section */
+        .pitch-card {
+            background: var(--white);
+            border-radius: 12px;
+            padding: 2.5rem;
+            box-shadow: 0 4px 30px rgba(15, 28, 46, 0.08);
+            border-left: 5px solid var(--gold);
+        }
+
+        .pitch-card p {
+            font-size: 1.15rem;
+            line-height: 1.8;
+        }
+
+        .pitch-card p:last-child {
+            margin-bottom: 0;
+        }
+
+        /* Prize Cards */
+        .prize-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .prize-card {
+            background: var(--white);
+            border-radius: 12px;
+            padding: 2rem;
+            text-align: center;
+            box-shadow: 0 4px 20px rgba(15, 28, 46, 0.06);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .prize-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 30px rgba(15, 28, 46, 0.1);
+        }
+
+        .prize-amount {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 3rem;
+            color: var(--gold);
+        }
+
+        .prize-label {
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--navy-lighter);
+            margin-top: 0.5rem;
+        }
+
+        /* Tier Table */
+        .tier-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 2rem 0;
+            background: var(--white);
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(15, 28, 46, 0.06);
+        }
+
+        .tier-table th {
+            background: var(--navy);
+            color: var(--cream);
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.1rem;
+            letter-spacing: 0.05em;
+            padding: 1rem;
+            text-align: left;
+        }
+
+        .tier-table td {
+            padding: 1rem;
+            border-bottom: 1px solid var(--cream-dark);
+        }
+
+        .tier-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .tier-table tr:hover td {
+            background: var(--cream);
+        }
+
+        .tier-badge {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .tier-1 { background: #fef3cd; color: #856404; }
+        .tier-2 { background: #d4edda; color: #155724; }
+        .tier-3 { background: #cce5ff; color: #004085; }
+        .tier-4 { background: #f8d7da; color: #721c24; }
+
+        /* Rules List */
+        .rules-list {
+            list-style: none;
+            margin: 1.5rem 0;
+        }
+
+        .rules-list li {
+            padding: 1rem 1rem 1rem 3rem;
+            background: var(--white);
+            margin-bottom: 0.75rem;
+            border-radius: 8px;
+            position: relative;
+            box-shadow: 0 2px 10px rgba(15, 28, 46, 0.04);
+        }
+
+        .rules-list li::before {
+            content: '';
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 8px;
+            height: 8px;
+            background: var(--gold);
+            border-radius: 50%;
+        }
+
+        /* Numbered List */
+        .numbered-list {
+            list-style: none;
+            counter-reset: steps;
+            margin: 1.5rem 0;
+        }
+
+        .numbered-list li {
+            padding: 1.25rem 1.25rem 1.25rem 4rem;
+            background: var(--white);
+            margin-bottom: 1rem;
+            border-radius: 8px;
+            position: relative;
+            box-shadow: 0 2px 10px rgba(15, 28, 46, 0.04);
+            counter-increment: steps;
+        }
+
+        .numbered-list li::before {
+            content: counter(steps);
+            position: absolute;
+            left: 1rem;
+            top: 1rem;
+            width: 2rem;
+            height: 2rem;
+            background: var(--navy);
+            color: var(--gold);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.1rem;
+        }
+
+        /* Schedule Table */
+        .schedule-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 2rem 0;
+            background: var(--white);
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(15, 28, 46, 0.06);
+        }
+
+        .schedule-table th {
+            background: var(--navy);
+            color: var(--cream);
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1rem;
+            letter-spacing: 0.05em;
+            padding: 1rem;
+            text-align: center;
+        }
+
+        .schedule-table td {
+            padding: 1rem;
+            border-bottom: 1px solid var(--cream-dark);
+            text-align: center;
+        }
+
+        .schedule-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .schedule-table tr:hover td {
+            background: var(--cream);
+        }
+
+        .quarter-badge {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.3rem;
+            color: var(--navy);
+        }
+
+        /* Strategy Cards */
+        .strategy-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .strategy-card {
+            background: var(--white);
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: 0 4px 20px rgba(15, 28, 46, 0.06);
+            border-top: 4px solid var(--gold);
+        }
+
+        .strategy-card h4 {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.4rem;
+            color: var(--navy);
+            margin-bottom: 0.75rem;
+        }
+
+        .strategy-card p {
+            font-size: 0.95rem;
+            margin-bottom: 0;
+            color: var(--navy-lighter);
+        }
+
+        /* Quick Reference */
+        .quick-ref {
+            background: var(--navy);
+            border-radius: 12px;
+            padding: 2.5rem;
+            margin-top: 2rem;
+        }
+
+        .quick-ref h3 {
+            color: var(--cream);
+            margin-top: 0;
+        }
+
+        .quick-ref-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+
+        .quick-ref-item {
+            text-align: center;
+        }
+
+        .quick-ref-value {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 2.5rem;
+            color: var(--gold);
+        }
+
+        .quick-ref-label {
+            color: var(--cream);
+            opacity: 0.8;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+
+        /* Note Box */
+        .note {
+            background: var(--cream-dark);
+            border-radius: 8px;
+            padding: 1rem 1.5rem;
+            margin: 1.5rem 0;
+            font-size: 0.95rem;
+            color: var(--navy-lighter);
+            font-style: italic;
+        }
+
+        /* Footer */
+        .footer {
+            background: var(--navy);
+            color: var(--cream);
+            text-align: center;
+            padding: 3rem 2rem;
+        }
+
+        .footer-cta {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 2rem;
+            color: var(--gold);
+            margin-bottom: 1rem;
+        }
+
+        .footer p {
+            color: var(--cream);
+            opacity: 0.7;
+            font-size: 0.9rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .nav-inner {
+                justify-content: center;
+                text-align: center;
+            }
+
+            .nav-links {
+                justify-content: center;
+            }
+
+            .tier-table, .schedule-table {
+                font-size: 0.9rem;
+            }
+
+            .tier-table th, .tier-table td,
+            .schedule-table th, .schedule-table td {
+                padding: 0.75rem 0.5rem;
+            }
+
+            .pitch-card {
+                padding: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Hero Section -->
+    <header class="hero">
+        <div class="hero-content">
+            <h1 class="logo">BUSH <span>LEAGUE</span></h1>
+            <p class="tagline">The Long Game, Simplified</p>
+            <div class="hero-cta">
+                <a href="#rules" class="btn">Read the Rules</a>
+            </div>
+        </div>
+        <div class="scroll-hint">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M12 5v14M5 12l7 7 7-7"/>
+            </svg>
+        </div>
+    </header>
+
+    <!-- Navigation -->
+    <nav class="nav">
+        <div class="nav-inner">
+            <a href="#" class="nav-logo">BUSH <span>LEAGUE</span></a>
+            <div class="nav-links">
+                <a href="#pitch">The Pitch</a>
+                <a href="#prizes">Prizes</a>
+                <a href="#rules">Rules</a>
+                <a href="#schedule">Schedule</a>
+                <a href="#strategy">Strategy</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="content">
+        <!-- The Pitch -->
+        <section id="pitch">
+            <h2>The Pitch</h2>
+            <div class="pitch-card">
+                <p>Fantasy baseball is exhausting. Managing lineups for 162 games burns people out by June. <strong>Bush League</strong> is different: you make just <strong>8 strategic decisions</strong> across the entire season, but each one matters.</p>
+                <p>Pick your powerhouse teams wisely, hunt for value in the basement tiers, and watch the drama unfold as everyone's options narrow toward the finish.</p>
+                <p>Think of it as a season-long poker game where you're betting on MLB teams instead of cards — and once you play a team, it's <strong>burned forever</strong>.</p>
+            </div>
+        </section>
+
+        <!-- How It Works -->
+        <section id="how">
+            <h2>How It Works</h2>
+            <p>Each quarter, you build a 4-team roster with exactly one team from each performance tier. You <strong>manually select</strong> your Tier 1 (Elite) and Tier 2 (Contender) teams, while Tier 3 (Average) and Tier 4 (Basement) teams are <strong>randomly assigned</strong>. Your score is the combined winning percentage of your four teams.</p>
+            <p>The twist? Once you manually pick a team, you can never pick them again. By Q4, your elite options are depleted, and suddenly that Tier 4 random assignment could make or break your season.</p>
+        </section>
+
+        <!-- Prizes -->
+        <section id="prizes">
+            <h2>Entry & Prizes</h2>
+            <div class="prize-grid">
+                <div class="prize-card">
+                    <div class="prize-amount">$20</div>
+                    <div class="prize-label">Buy-in</div>
+                </div>
+                <div class="prize-card">
+                    <div class="prize-amount">$120</div>
+                    <div class="prize-label">Prize Pool</div>
+                </div>
+                <div class="prize-card">
+                    <div class="prize-amount">$20</div>
+                    <div class="prize-label">Per Quarter</div>
+                </div>
+                <div class="prize-card">
+                    <div class="prize-amount">$40</div>
+                    <div class="prize-label">Season Champ</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Roster Composition -->
+        <section id="rules">
+            <h2>Roster Composition</h2>
+            <p>Every quarter, your roster includes exactly one team from each tier:</p>
+            
+            <table class="tier-table">
+                <thead>
+                    <tr>
+                        <th>Tier</th>
+                        <th>Status</th>
+                        <th>2026 Examples</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><span class="tier-badge tier-1">Tier 1</span></td>
+                        <td>Elite</td>
+                        <td>Dodgers, Yankees, Phillies, Braves, Mariners, Blue Jays</td>
+                    </tr>
+                    <tr>
+                        <td><span class="tier-badge tier-2">Tier 2</span></td>
+                        <td>Contenders</td>
+                        <td>Mets, Red Sox, Brewers, Padres, Cubs, Tigers, Astros, Rangers</td>
+                    </tr>
+                    <tr>
+                        <td><span class="tier-badge tier-3">Tier 3</span></td>
+                        <td>Average</td>
+                        <td>Guardians, Orioles, Reds, Giants, Diamondbacks, Rays, Twins, Cardinals</td>
+                    </tr>
+                    <tr>
+                        <td><span class="tier-badge tier-4">Tier 4</span></td>
+                        <td>Basement</td>
+                        <td>Athletics, Marlins, Angels, Pirates, Nationals, White Sox, Rockies, Royals</td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <div class="note">
+                <strong>Note:</strong> Tiers are re-evaluated and published at the start of each quarter based on current standings and projections.
+            </div>
+        </section>
+
+        <!-- Selection Rules -->
+        <section id="selection">
+            <h2>Selection Rules</h2>
+            
+            <h3>Manual Selection (Tier 1 & Tier 2)</h3>
+            <ul class="rules-list">
+                <li>You choose one team from Tier 1 and one team from Tier 2 each quarter</li>
+                <li><strong>The Burn Rule:</strong> Once you manually select a team, you cannot manually select them again for the rest of the season, regardless of tier changes</li>
+                <li>Multiple players may select the same team — there are no exclusive picks</li>
+            </ul>
+
+            <h3>Random Assignment (Tier 3 & Tier 4)</h3>
+            <p>The application randomly assigns you one team from Tier 3 and one from Tier 4. Here's how the random pool works:</p>
+            <ol class="numbered-list">
+                <li><strong>Same-Quarter Protection:</strong> You cannot be randomly assigned a team you manually selected that same quarter (no duplicate teams on one roster)</li>
+                <li><strong>Fresh Slate Each Quarter:</strong> You CAN be randomly assigned a team you had in a previous quarter (whether from manual selection or prior random assignment)</li>
+                <li><strong>No Exclusivity:</strong> Multiple players may be randomly assigned the same team in the same quarter</li>
+            </ol>
+            
+            <div class="note">
+                <strong>Why this design?</strong> Keeping the random pools open prevents them from shrinking to unworkable sizes by Q4. The strategic lever is your manual burn — if you want to guarantee you never have a team again, spend a manual pick on them.
+            </div>
+        </section>
+
+        <!-- Order of Operations -->
+        <section id="operations">
+            <h2>Order of Operations</h2>
+            <p>Each quarter follows this sequence:</p>
+            <ol class="numbered-list">
+                <li><strong>Tiers Published:</strong> Commissioner re-evaluates and publishes the updated tier list based on current standings</li>
+                <li><strong>Manual Selections (48-Hour Window):</strong> Players submit their Tier 1 and Tier 2 picks (blind/simultaneous — you cannot see others' picks)</li>
+                <li><strong>Random Assignment:</strong> Application randomly assigns Tier 3 and Tier 4 teams to each player</li>
+                <li><strong>Rosters Revealed:</strong> All rosters are published and the quarter begins</li>
+                <li><strong>Scoring:</strong> Win percentages accumulate throughout the quarter</li>
+            </ol>
+        </section>
+
+        <!-- Scoring -->
+        <section id="scoring">
+            <h2>Scoring</h2>
+            <ul class="rules-list">
+                <li><strong>Quarterly Score:</strong> Combined winning percentage of your 4 rostered teams during that quarter</li>
+                <li><strong>Season Score:</strong> Cumulative winning percentage across all four quarters</li>
+                <li><strong>Tie-Breaker:</strong> Average runs scored per game across all rostered teams for the period in question</li>
+            </ul>
+        </section>
+
+        <!-- Schedule -->
+        <section id="schedule">
+            <h2>2026 Season Schedule</h2>
+            
+            <h3>Key Dates</h3>
+            <table class="schedule-table">
+                <thead>
+                    <tr>
+                        <th>Milestone</th>
+                        <th>Date</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Opening Night (Yankees @ Giants)</td>
+                        <td>Wednesday, March 25, 2026</td>
+                    </tr>
+                    <tr>
+                        <td>Traditional Opening Day</td>
+                        <td>Thursday, March 26, 2026</td>
+                    </tr>
+                    <tr>
+                        <td>All-Star Game (Philadelphia)</td>
+                        <td>Tuesday, July 14, 2026</td>
+                    </tr>
+                    <tr>
+                        <td>Regular Season Ends</td>
+                        <td>Sunday, September 27, 2026</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>Quarter Boundaries</h3>
+            <table class="schedule-table">
+                <thead>
+                    <tr>
+                        <th>Quarter</th>
+                        <th>Date Range</th>
+                        <th>~Games</th>
+                        <th>Deadline</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><span class="quarter-badge">Q1</span></td>
+                        <td>March 25 – May 31</td>
+                        <td>~60</td>
+                        <td>March 23</td>
+                    </tr>
+                    <tr>
+                        <td><span class="quarter-badge">Q2</span></td>
+                        <td>June 1 – July 13</td>
+                        <td>~40</td>
+                        <td>May 30</td>
+                    </tr>
+                    <tr>
+                        <td><span class="quarter-badge">Q3</span></td>
+                        <td>July 14 – August 31</td>
+                        <td>~45</td>
+                        <td>July 12</td>
+                    </tr>
+                    <tr>
+                        <td><span class="quarter-badge">Q4</span></td>
+                        <td>September 1 – 27</td>
+                        <td>~27</td>
+                        <td>August 30</td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <div class="note">
+                <strong>Note:</strong> Q4 has fewer games, which creates higher variance — your random assignments matter even more in the stretch run.
+            </div>
+        </section>
+
+        <!-- Strategy -->
+        <section id="strategy">
+            <h2>Strategic Considerations</h2>
+            <div class="strategy-grid">
+                <div class="strategy-card">
+                    <h4>The Burn Dilemma</h4>
+                    <p>Do you use the Dodgers in Q1 when they're likely dominant, or save them for Q4 when your options are thin? Front-loading powerhouses gives you early wins but leaves you vulnerable late.</p>
+                </div>
+                <div class="strategy-card">
+                    <h4>Tier Volatility</h4>
+                    <p>Teams shift tiers quarterly. A hot start from a Tier 3 team could push them to Tier 2 by Q2 — if you didn't burn them already, you can grab them as a "value" pick.</p>
+                </div>
+                <div class="strategy-card">
+                    <h4>The Random Factor</h4>
+                    <p>You can't control Tier 3 and 4 assignments, but they become increasingly important as elite options dwindle. Embrace the chaos.</p>
+                </div>
+                <div class="strategy-card">
+                    <h4>Q4 Crunch</h4>
+                    <p>By the final quarter, you've burned 3 elite teams and 3 contenders. With fewer games, every win matters more. This is where seasons are won and lost.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Quick Reference -->
+        <section id="reference">
+            <h2>Quick Reference</h2>
+            <div class="quick-ref">
+                <h3>At a Glance</h3>
+                <div class="quick-ref-grid">
+                    <div class="quick-ref-item">
+                        <div class="quick-ref-value">6</div>
+                        <div class="quick-ref-label">Players</div>
+                    </div>
+                    <div class="quick-ref-item">
+                        <div class="quick-ref-value">$20</div>
+                        <div class="quick-ref-label">Buy-in</div>
+                    </div>
+                    <div class="quick-ref-item">
+                        <div class="quick-ref-value">4</div>
+                        <div class="quick-ref-label">Teams per Roster</div>
+                    </div>
+                    <div class="quick-ref-item">
+                        <div class="quick-ref-value">2</div>
+                        <div class="quick-ref-label">Manual Picks/Qtr</div>
+                    </div>
+                    <div class="quick-ref-item">
+                        <div class="quick-ref-value">2</div>
+                        <div class="quick-ref-label">Random Picks/Qtr</div>
+                    </div>
+                    <div class="quick-ref-item">
+                        <div class="quick-ref-value">48h</div>
+                        <div class="quick-ref-label">Selection Window</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-cta">Ready to play? Let's go bush league.</div>
+        <p>Bush League — 2026 Season</p>
+    </footer>
+</body>
+</html>

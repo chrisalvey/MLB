@@ -1,0 +1,20 @@
+{
+  "name": "bush-league",
+  "version": "1.0.0",
+  "description": "MLB Fantasy Game - The Long Game, Simplified",
+  "main": "scripts/sync-mlb.js",
+  "scripts": {
+    "sync": "node scripts/sync-mlb.js",
+    "test": "node scripts/sync-mlb.js"
+  },
+  "keywords": [
+    "mlb",
+    "fantasy",
+    "baseball"
+  ],
+  "author": "Chris",
+  "license": "MIT",
+  "dependencies": {
+    "node-fetch": "^2.7.0"
+  }
+}
