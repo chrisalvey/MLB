@@ -366,6 +366,120 @@
             background: var(--cream);
         }
 
+        /* Tiers Section */
+        .tiers-section {
+            margin-top: 3rem;
+        }
+
+        .tiers-section h2 {
+            font-family: 'Playball', cursive;
+            font-size: 2rem;
+            color: var(--navy);
+            margin-bottom: 0.5rem;
+            text-align: center;
+        }
+
+        .tiers-updated {
+            text-align: center;
+            color: var(--navy-lighter);
+            font-size: 0.9rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .tiers-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+        }
+
+        .tier-card {
+            background: var(--white);
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 20px rgba(15, 28, 46, 0.06);
+        }
+
+        .tier-card h3 {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.3rem;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .tier-card.tier-1 h3 {
+            color: #856404;
+        }
+
+        .tier-card.tier-2 h3 {
+            color: #155724;
+        }
+
+        .tier-card.tier-3 h3 {
+            color: #004085;
+        }
+
+        .tier-card.tier-4 h3 {
+            color: #721c24;
+        }
+
+        .tier-badge {
+            font-size: 0.75rem;
+            padding: 0.25rem 0.5rem;
+            border-radius: 12px;
+            font-weight: 600;
+        }
+
+        .tier-badge.tier-1 {
+            background: #fef3cd;
+            color: #856404;
+        }
+
+        .tier-badge.tier-2 {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .tier-badge.tier-3 {
+            background: #cce5ff;
+            color: #004085;
+        }
+
+        .tier-badge.tier-4 {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        .tier-teams {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .tier-team-chip {
+            background: var(--cream);
+            padding: 0.5rem 0.75rem;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--navy);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .tier-team-logo {
+            width: 20px;
+            height: 20px;
+            object-fit: contain;
+        }
+
+        .tier-team-logo.hidden {
+            display: none;
+        }
+
         /* Loading State */
         .loading {
             text-align: center;
@@ -460,6 +574,13 @@
             <h2>MLB Team Standings</h2>
             <div id="standings-content" class="loading">Loading team data...</div>
         </div>
+
+        <!-- Team Tiers -->
+        <div class="tiers-section">
+            <h2>Team Tiers</h2>
+            <p class="tiers-updated" id="tiersUpdated">Loading...</p>
+            <div id="tiers-content" class="loading">Loading tier data...</div>
+        </div>
     </div>
 
     <script>
@@ -531,6 +652,11 @@
                 document.getElementById('lastUpdated').textContent =
                     `Last updated: ${lastUpdated.toLocaleDateString()} ${lastUpdated.toLocaleTimeString()}`;
 
+                // Update tiers updated timestamp
+                const tiersUpdated = new Date(tiers.lastUpdated);
+                document.getElementById('tiersUpdated').textContent =
+                    `Last updated: ${tiersUpdated.toLocaleDateString()} ${tiersUpdated.toLocaleTimeString()}`;
+
                 // Update quarter statuses
                 updateQuarterStatuses();
 
@@ -547,6 +673,7 @@
             renderLeaderboard();
             renderRosters();
             renderStandings();
+            renderTiers();
         }
 
         // Calculate season totals
@@ -801,6 +928,61 @@
             `;
 
             document.getElementById('standings-content').innerHTML = html;
+        }
+
+        // Render team tiers
+        function renderTiers() {
+            const currentTiers = allData.tiers.tiers[currentQuarter === 'SEASON' ? allData.tiers.currentQuarter : currentQuarter];
+
+            if (!currentTiers) {
+                document.getElementById('tiers-content').innerHTML =
+                    '<p class="no-roster">Tiers not yet set for this quarter.</p>';
+                return;
+            }
+
+            const tierNames = {
+                tier1: 'Tier 1',
+                tier2: 'Tier 2',
+                tier3: 'Tier 3',
+                tier4: 'Tier 4'
+            };
+
+            const html = `
+                <div class="tiers-grid">
+                    ${['tier1', 'tier2', 'tier3', 'tier4'].map((tierKey, index) => {
+                        const tierNumber = index + 1;
+                        const teams = currentTiers[tierKey] || [];
+
+                        return `
+                            <div class="tier-card tier-${tierNumber}">
+                                <h3>
+                                    ${tierNames[tierKey]}
+                                    <span class="tier-badge tier-${tierNumber}">T${tierNumber}</span>
+                                </h3>
+                                <div class="tier-teams">
+                                    ${teams.length > 0
+                                        ? teams.map(abbrev => {
+                                            const team = allData.standings.teams[abbrev];
+                                            return team ? `
+                                                <div class="tier-team-chip">
+                                                    <img src="https://a.espncdn.com/combiner/i?img=/i/teamlogos/mlb/500/${abbrev}.png&h=20&w=20"
+                                                         alt=""
+                                                         class="tier-team-logo"
+                                                         onerror="this.classList.add('hidden')">
+                                                    ${team.name}
+                                                </div>
+                                            ` : '';
+                                        }).join('')
+                                        : '<p style="color: var(--navy-lighter); font-style: italic;">No teams assigned yet</p>'
+                                    }
+                                </div>
+                            </div>
+                        `;
+                    }).join('')}
+                </div>
+            `;
+
+            document.getElementById('tiers-content').innerHTML = html;
         }
 
         // Quarter selector event handlers
