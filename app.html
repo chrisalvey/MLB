@@ -126,8 +126,9 @@
         }
 
         .quarter-btn {
-            font-family: 'Bebas Neue', sans-serif;
-            font-size: 1.2rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
             padding: 0.75rem 1.5rem;
             background: var(--white);
             color: var(--navy);
@@ -145,6 +146,24 @@
             background: var(--navy);
             color: var(--gold);
             border-color: var(--navy);
+        }
+
+        .btn-label {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.2rem;
+        }
+
+        .btn-status {
+            font-family: 'Source Sans 3', sans-serif;
+            font-size: 0.75rem;
+            margin-top: 0.25rem;
+            opacity: 0.7;
+            font-weight: 400;
+        }
+
+        .quarter-btn.active .btn-status {
+            opacity: 1;
+            font-weight: 600;
         }
 
         /* Leaderboard */
@@ -389,11 +408,26 @@
 
         <!-- Quarter Selector -->
         <div class="quarter-selector">
-            <button class="quarter-btn" data-quarter="Q1">Quarter 1</button>
-            <button class="quarter-btn" data-quarter="Q2">Quarter 2</button>
-            <button class="quarter-btn" data-quarter="Q3">Quarter 3</button>
-            <button class="quarter-btn" data-quarter="Q4">Quarter 4</button>
-            <button class="quarter-btn active" data-quarter="SEASON">Season Total</button>
+            <button class="quarter-btn" data-quarter="Q1">
+                <div class="btn-label">Quarter 1</div>
+                <div class="btn-status" id="q1-status"></div>
+            </button>
+            <button class="quarter-btn" data-quarter="Q2">
+                <div class="btn-label">Quarter 2</div>
+                <div class="btn-status" id="q2-status"></div>
+            </button>
+            <button class="quarter-btn" data-quarter="Q3">
+                <div class="btn-label">Quarter 3</div>
+                <div class="btn-status" id="q3-status"></div>
+            </button>
+            <button class="quarter-btn" data-quarter="Q4">
+                <div class="btn-label">Quarter 4</div>
+                <div class="btn-status" id="q4-status"></div>
+            </button>
+            <button class="quarter-btn active" data-quarter="SEASON">
+                <div class="btn-label">Season Total</div>
+                <div class="btn-status" id="season-status"></div>
+            </button>
         </div>
 
         <!-- Leaderboard -->
@@ -420,6 +454,53 @@
         let currentQuarter = 'SEASON';
         let allData = {};
 
+        // Calculate percentage complete for a date range
+        function calculatePercentComplete(startDate, endDate) {
+            const start = new Date(startDate);
+            const end = new Date(endDate);
+            const now = new Date();
+
+            if (now < start) return 0;
+            if (now > end) return 100;
+
+            const totalDays = (end - start) / (1000 * 60 * 60 * 24);
+            const elapsedDays = (now - start) / (1000 * 60 * 60 * 24);
+
+            return Math.round((elapsedDays / totalDays) * 100);
+        }
+
+        // Format date for display
+        function formatStartDate(dateString) {
+            const date = new Date(dateString);
+            return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+        }
+
+        // Update quarter button statuses
+        function updateQuarterStatuses() {
+            const quarters = allData.quarters.quarters;
+
+            // Update Q1-Q4
+            ['Q1', 'Q2', 'Q3', 'Q4'].forEach(q => {
+                const quarter = quarters[q];
+                const statusEl = document.getElementById(`${q.toLowerCase()}-status`);
+
+                if (quarter.status === 'completed') {
+                    statusEl.textContent = 'Completed';
+                } else if (quarter.status === 'active') {
+                    const pct = calculatePercentComplete(quarter.startDate, quarter.endDate);
+                    statusEl.textContent = `${pct}% complete`;
+                } else if (quarter.status === 'upcoming') {
+                    statusEl.textContent = `Starts ${formatStartDate(quarter.startDate)}`;
+                }
+            });
+
+            // Update Season Total
+            const seasonStart = quarters.Q1.startDate;
+            const seasonEnd = quarters.Q4.endDate;
+            const seasonPct = calculatePercentComplete(seasonStart, seasonEnd);
+            document.getElementById('season-status').textContent = `${seasonPct}% complete`;
+        }
+
         // Fetch all data files
         async function loadData() {
             try {
@@ -436,6 +517,9 @@
                 const lastUpdated = new Date(standings.lastUpdated);
                 document.getElementById('lastUpdated').textContent =
                     `Last updated: ${lastUpdated.toLocaleDateString()} ${lastUpdated.toLocaleTimeString()}`;
+
+                // Update quarter statuses
+                updateQuarterStatuses();
 
                 renderDashboard();
             } catch (error) {
