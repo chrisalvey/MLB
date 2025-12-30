@@ -8,6 +8,9 @@ on:
   # Allow manual trigger from GitHub Actions UI
   workflow_dispatch:
 
+permissions:
+  contents: write  # Required to push commits back to the repository
+
 jobs:
   sync:
     runs-on: ubuntu-latest
