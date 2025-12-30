@@ -361,40 +361,6 @@
             margin-bottom: 1rem;
         }
 
-        .quarter-section {
-            margin-top: 1rem;
-        }
-
-        .quarter-header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            cursor: pointer;
-            padding: 0.5rem 0;
-            user-select: none;
-        }
-
-        .quarter-header h4 {
-            font-size: 0.9rem;
-            color: var(--gold);
-            margin: 0;
-        }
-
-        .quarter-toggle {
-            font-size: 0.8rem;
-            color: var(--navy-lighter);
-        }
-
-        .quarter-teams {
-            max-height: 500px;
-            overflow: hidden;
-            transition: max-height 0.3s ease;
-        }
-
-        .quarter-teams.collapsed {
-            max-height: 0;
-        }
-
         .team-list {
             list-style: none;
         }
@@ -448,6 +414,100 @@
             color: var(--navy-lighter);
             font-style: italic;
             padding: 2rem;
+        }
+
+        /* Season view - two list structure */
+        .season-quarter-section {
+            margin-top: 1.5rem;
+        }
+
+        .season-quarter-section h4 {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.1rem;
+            color: var(--gold);
+            margin-bottom: 0.75rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--cream);
+        }
+
+        .season-teams-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(60px, 1fr));
+            gap: 0.75rem;
+            padding: 0.5rem 0;
+        }
+
+        .season-team-logo-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.25rem;
+            position: relative;
+        }
+
+        .season-team-logo-wrapper {
+            width: 48px;
+            height: 48px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--cream);
+            border-radius: 8px;
+            padding: 0.25rem;
+            transition: all 0.2s;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .season-team-logo-wrapper:hover {
+            background: #e8dcc4;
+            transform: scale(1.1);
+        }
+
+        .season-team-logo-wrapper img {
+            width: 40px;
+            height: 40px;
+            object-fit: contain;
+        }
+
+        .season-team-tier-badge {
+            font-size: 0.65rem;
+            padding: 0.15rem 0.35rem;
+            border-radius: 8px;
+            font-weight: 600;
+            font-family: 'Source Sans 3', sans-serif;
+        }
+
+        /* Tooltip for team name on hover */
+        .season-team-tooltip {
+            visibility: hidden;
+            position: absolute;
+            bottom: 110%;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--navy);
+            color: var(--cream);
+            padding: 0.4rem 0.6rem;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            white-space: nowrap;
+            z-index: 100;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .season-team-tooltip::after {
+            content: "";
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            margin-left: -4px;
+            border-width: 4px;
+            border-style: solid;
+            border-color: var(--navy) transparent transparent transparent;
+        }
+
+        .season-team-logo-wrapper:hover .season-team-tooltip {
+            visibility: visible;
         }
 
         /* Standings Table */
@@ -709,141 +769,6 @@
             height: 16px;
             object-fit: contain;
         }
-
-        /* Manual Picks Section */
-        .manual-picks-section {
-            margin-top: 3rem;
-        }
-
-        .manual-picks-section h2 {
-            font-family: 'Playball', cursive;
-            font-size: 2rem;
-            color: var(--navy);
-            margin-bottom: 0.5rem;
-            text-align: center;
-        }
-
-        .manual-picks-subtitle {
-            text-align: center;
-            color: var(--navy-lighter);
-            font-size: 0.9rem;
-            margin-bottom: 1.5rem;
-        }
-
-        .manual-picks-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-            gap: 1.5rem;
-            margin-bottom: 3rem;
-        }
-
-        .manual-pick-card {
-            background: var(--white);
-            border-radius: 12px;
-            padding: 1.5rem;
-            box-shadow: 0 4px 20px rgba(15, 28, 46, 0.06);
-            border-top: 4px solid var(--gold);
-        }
-
-        .manual-pick-card h3 {
-            font-family: 'Bebas Neue', sans-serif;
-            font-size: 1.5rem;
-            color: var(--navy);
-            margin-bottom: 1.5rem;
-            text-align: center;
-        }
-
-        .quarter-picks-container {
-            display: flex;
-            flex-direction: column;
-            gap: 1rem;
-        }
-
-        .quarter-picks-row {
-            background: var(--cream);
-            padding: 0.75rem;
-            border-radius: 8px;
-            position: relative;
-        }
-
-        .quarter-picks-row.active {
-            background: #fff8e1;
-            border: 2px solid var(--gold);
-        }
-
-        .quarter-picks-header {
-            font-family: 'Bebas Neue', sans-serif;
-            font-size: 1rem;
-            color: var(--gold);
-            margin-bottom: 0.5rem;
-            letter-spacing: 0.05em;
-        }
-
-        .quarter-picks-header.active::after {
-            content: "ACTIVE";
-            margin-left: 0.5rem;
-            font-size: 0.7rem;
-            background: var(--gold);
-            color: var(--navy);
-            padding: 0.2rem 0.4rem;
-            border-radius: 4px;
-            font-weight: 700;
-        }
-
-        .picks-chips-container {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.5rem;
-        }
-
-        .pick-chip {
-            background: var(--white);
-            padding: 0.5rem 0.75rem;
-            border-radius: 6px;
-            font-size: 0.85rem;
-            font-weight: 600;
-            color: var(--navy);
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            border: 2px solid transparent;
-            transition: all 0.2s;
-        }
-
-        .pick-chip.burned {
-            opacity: 0.6;
-            border-color: var(--red);
-            background: #ffe8ec;
-            position: relative;
-        }
-
-        .pick-chip.burned::after {
-            content: "BURNED";
-            font-size: 0.65rem;
-            color: var(--red);
-            font-weight: 700;
-            margin-left: 0.25rem;
-            padding: 0.1rem 0.3rem;
-            background: var(--white);
-            border-radius: 3px;
-        }
-
-        .pick-chip-logo {
-            width: 20px;
-            height: 20px;
-            object-fit: contain;
-        }
-
-        .pick-chip-logo.hidden {
-            display: none;
-        }
-
-        .no-picks-yet {
-            color: var(--navy-lighter);
-            font-style: italic;
-            font-size: 0.85rem;
-        }
-
         /* Loading State */
         .loading {
             text-align: center;
@@ -1066,58 +991,20 @@
                 grid-template-columns: 1fr;
             }
 
-            /* Manual Picks Section */
-            .manual-picks-section {
-                margin-top: 2rem;
+            /* Season View Mobile */
+            .season-teams-grid {
+                grid-template-columns: repeat(auto-fill, minmax(50px, 1fr));
+                gap: 0.5rem;
             }
 
-            .manual-picks-section h2 {
-                font-size: 1.5rem;
+            .season-team-logo-wrapper {
+                width: 40px;
+                height: 40px;
             }
 
-            .manual-picks-subtitle {
-                font-size: 0.8rem;
-            }
-
-            .manual-picks-grid {
-                grid-template-columns: 1fr;
-                gap: 1rem;
-                margin-bottom: 2rem;
-            }
-
-            .manual-pick-card {
-                padding: 1rem;
-            }
-
-            .manual-pick-card h3 {
-                font-size: 1.3rem;
-                margin-bottom: 1rem;
-            }
-
-            .quarter-picks-row {
-                padding: 0.5rem;
-            }
-
-            .quarter-picks-header {
-                font-size: 0.9rem;
-            }
-
-            .pick-chip {
-                padding: 0.4rem 0.6rem;
-                font-size: 0.8rem;
-            }
-
-            .pick-chip.burned::after {
-                font-size: 0.6rem;
-            }
-
-            .pick-chip-logo {
-                width: 18px;
-                height: 18px;
-            }
-
-            .no-picks-yet {
-                font-size: 0.8rem;
+            .season-team-logo-wrapper img {
+                width: 32px;
+                height: 32px;
             }
 
             /* Loading State */
@@ -1264,14 +1151,6 @@
             <p class="burned-teams-subtitle">Teams already used and no longer selectable</p>
             <div id="burned-teams-content" class="loading">Loading burned teams...</div>
         </div>
-
-        <!-- Manual Picks by Player -->
-        <div class="manual-picks-section">
-            <h2>Manual Picks by Player</h2>
-            <p class="manual-picks-subtitle">Teams selected manually each quarter (2 per quarter)</p>
-            <div id="manual-picks-content" class="loading">Loading manual picks...</div>
-        </div>
-
         <!-- Team Standings -->
         <div class="standings-section">
             <h2>MLB Team Standings</h2>
@@ -1428,7 +1307,6 @@
             renderStandings();
             renderTiers();
             renderBurnedTeams();
-            renderManualPicks();
         }
 
         // Calculate season totals
@@ -1544,18 +1422,39 @@
                 if (currentQuarter === 'SEASON') {
                     // Show all teams from all quarters for season view
                     const seasonScore = calculateSeasonTotals()[player.id];
-                    const allTeams = [];
                     const currentQ = allData.quarters.currentQuarter;
+
+                    // Separate teams into current quarter and past quarters
+                    const currentQuarterTeams = [];
+                    const pastQuartersTeams = [];
 
                     QUARTERS.forEach(q => {
                         const quarterRoster = player.quarters[q];
+                        const quarterInfo = allData.quarters.quarters[q];
+
                         if (quarterRoster) {
-                            allTeams.push({ quarter: q, teams: [
+                            const teams = [
                                 { abbrev: quarterRoster.tier1, tier: 1 },
                                 { abbrev: quarterRoster.tier2, tier: 2 },
                                 { abbrev: quarterRoster.tier3, tier: 3 },
                                 { abbrev: quarterRoster.tier4, tier: 4 }
-                            ]});
+                            ];
+
+                            if (q === currentQ) {
+                                // Current quarter teams
+                                teams.forEach(team => {
+                                    if (team.abbrev) {
+                                        currentQuarterTeams.push({ ...team, quarter: q });
+                                    }
+                                });
+                            } else if (quarterInfo.status === 'completed') {
+                                // Past completed quarter teams
+                                teams.forEach(team => {
+                                    if (team.abbrev) {
+                                        pastQuartersTeams.push({ ...team, quarter: q });
+                                    }
+                                });
+                            }
                         }
                     });
 
@@ -1568,35 +1467,64 @@
                                     Runs/Game: <strong>${seasonScore.combinedRunsPerGame.toFixed(2)}</strong>
                                 </div>
                             ` : ''}
-                            ${allTeams.map(quarterData => {
-                                const isCurrentQuarter = quarterData.quarter === currentQ;
-                                return `
-                                <div class="quarter-section">
-                                    <div class="quarter-header" onclick="toggleQuarter(event, '${player.id}-${quarterData.quarter}')">
-                                        <h4>${quarterData.quarter}</h4>
-                                        <span class="quarter-toggle" id="${player.id}-${quarterData.quarter}-toggle">${isCurrentQuarter ? '▼' : '▶'}</span>
-                                    </div>
-                                    <ul class="team-list quarter-teams ${isCurrentQuarter ? '' : 'collapsed'}" id="${player.id}-${quarterData.quarter}-teams">
-                                        ${quarterData.teams.map(team => {
+
+                            ${currentQuarterTeams.length > 0 ? `
+                                <div class="season-quarter-section">
+                                    <h4>Current Quarter (${currentQ})</h4>
+                                    <div class="season-teams-grid">
+                                        ${currentQuarterTeams.map(team => {
                                             const teamData = allData.standings.teams[team.abbrev];
-                                            const quarterStats = allData.standings.quarterlyStats[quarterData.quarter]?.[team.abbrev];
-                                            return teamData && quarterStats ? `
-                                                <li class="team-item">
-                                                    <div>
-                                                        <div class="team-name">
-                                                            ${renderTeamLogo(team.abbrev)}
-                                                            ${teamData.name}
-                                                        </div>
-                                                        <div class="team-record">${quarterStats.wins}-${quarterStats.losses} (${(quarterStats.winPct * 100).toFixed(1)}%)</div>
+                                            const quarterStats = allData.standings.quarterlyStats[team.quarter]?.[team.abbrev];
+
+                                            if (!teamData || !quarterStats) return '';
+
+                                            return `
+                                                <div class="season-team-logo-item">
+                                                    <div class="season-team-logo-wrapper">
+                                                        <img src="https://a.espncdn.com/combiner/i?img=/i/teamlogos/mlb/500/${getESPNAbbrev(team.abbrev)}.png&h=40&w=40"
+                                                             alt="${teamData.name}"
+                                                             onerror="this.style.display='none';">
+                                                        <span class="season-team-tooltip">
+                                                            ${teamData.name}<br>
+                                                            ${quarterStats.wins}-${quarterStats.losses} (${(quarterStats.winPct * 100).toFixed(1)}%)
+                                                        </span>
                                                     </div>
-                                                    <span class="team-tier tier-${team.tier}">T${team.tier}</span>
-                                                </li>
-                                            ` : '';
+                                                    <span class="season-team-tier-badge tier-${team.tier}">T${team.tier}</span>
+                                                </div>
+                                            `;
                                         }).join('')}
-                                    </ul>
+                                    </div>
                                 </div>
-                            `;
-                            }).join('')}
+                            ` : ''}
+
+                            ${pastQuartersTeams.length > 0 ? `
+                                <div class="season-quarter-section">
+                                    <h4>Past Quarters</h4>
+                                    <div class="season-teams-grid">
+                                        ${pastQuartersTeams.map(team => {
+                                            const teamData = allData.standings.teams[team.abbrev];
+                                            const quarterStats = allData.standings.quarterlyStats[team.quarter]?.[team.abbrev];
+
+                                            if (!teamData || !quarterStats) return '';
+
+                                            return `
+                                                <div class="season-team-logo-item">
+                                                    <div class="season-team-logo-wrapper">
+                                                        <img src="https://a.espncdn.com/combiner/i?img=/i/teamlogos/mlb/500/${getESPNAbbrev(team.abbrev)}.png&h=40&w=40"
+                                                             alt="${teamData.name}"
+                                                             onerror="this.style.display='none';">
+                                                        <span class="season-team-tooltip">
+                                                            ${teamData.name} (${team.quarter})<br>
+                                                            ${quarterStats.wins}-${quarterStats.losses} (${(quarterStats.winPct * 100).toFixed(1)}%)
+                                                        </span>
+                                                    </div>
+                                                    <span class="season-team-tier-badge tier-${team.tier}">T${team.tier}</span>
+                                                </div>
+                                            `;
+                                        }).join('')}
+                                    </div>
+                                </div>
+                            ` : ''}
                         </div>
                     `;
                 } else {
@@ -1756,71 +1684,6 @@
 
             document.getElementById('tiers-content').innerHTML = html;
         }
-
-        // Render manual picks by player
-        function renderManualPicks() {
-            const players = allData.players.players;
-
-            const picksHtml = players.map(player => {
-
-                return `
-                    <div class="manual-pick-card">
-                        <h3>${player.name}</h3>
-                        <div class="quarter-picks-container">
-                            ${QUARTERS.map(quarter => {
-                                const quarterData = player.quarters[quarter];
-                                const manualPicks = quarterData?.manualPicks || [];
-                                const burnedTeams = player.burnedTeams || [];
-
-                                if (manualPicks.length === 0) {
-                                    const quarterInfo = allData.quarters.quarters[quarter];
-                                    const selectionDeadline = new Date(quarterInfo.selectionDeadline);
-                                    const deadlineFormatted = selectionDeadline.toLocaleDateString('en-US', {
-                                        month: 'short',
-                                        day: 'numeric'
-                                    });
-
-                                    return `
-                                        <div class="quarter-picks-row ${quarter === allData.quarters.currentQuarter ? 'active' : ''}">
-                                            <div class="quarter-picks-header ${quarter === allData.quarters.currentQuarter ? 'active' : ''}">${quarter}</div>
-                                            <div class="no-picks-yet">
-                                                ${quarterInfo.status === 'upcoming'
-                                                    ? `Selections open before ${deadlineFormatted}`
-                                                    : 'No picks selected yet'}
-                                            </div>
-                                        </div>
-                                    `;
-                                }
-
-                                return `
-                                    <div class="quarter-picks-row ${quarter === allData.quarters.currentQuarter ? 'active' : ''}">
-                                        <div class="quarter-picks-header ${quarter === allData.quarters.currentQuarter ? 'active' : ''}">${quarter}</div>
-                                        <div class="picks-chips-container">
-                                            ${manualPicks.map(teamAbbrev => {
-                                                const team = allData.standings.teams[teamAbbrev];
-                                                const isBurned = burnedTeams.includes(teamAbbrev);
-
-                                                return team ? `
-                                                    <div class="pick-chip ${isBurned ? 'burned' : ''}">
-                                                        ${renderTeamLogo(teamAbbrev, 20, 'pick-chip-logo')}
-                                                        ${team.name}
-                                                    </div>
-                                                ` : '';
-                                            }).join('')}
-                                        </div>
-                                    </div>
-                                `;
-                            }).join('')}
-                        </div>
-                    </div>
-                `;
-            }).join('');
-
-            document.getElementById('manual-picks-content').innerHTML = `
-                <div class="manual-picks-grid">${picksHtml}</div>
-            `;
-        }
-
         // Render burned teams summary
         function renderBurnedTeams() {
             const players = allData.players.players;
@@ -1853,21 +1716,6 @@
                 <div class="burned-teams-grid">${burnedHtml}</div>
             `;
         }
-
-        // Toggle quarter visibility in player rosters
-        function toggleQuarter(event, quarterId) {
-            const teamsEl = document.getElementById(`${quarterId}-teams`);
-            const toggleEl = document.getElementById(`${quarterId}-toggle`);
-
-            if (teamsEl.classList.contains('collapsed')) {
-                teamsEl.classList.remove('collapsed');
-                toggleEl.textContent = '▼';
-            } else {
-                teamsEl.classList.add('collapsed');
-                toggleEl.textContent = '▶';
-            }
-        }
-
         // Quarter selector event handlers
         document.querySelectorAll('.quarter-btn').forEach(btn => {
             btn.addEventListener('click', () => {
