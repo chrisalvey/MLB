@@ -219,6 +219,39 @@
             letter-spacing: 0.05em;
         }
 
+        .leaderboard-quarter-selector {
+            display: flex;
+            justify-content: center;
+            gap: 0.5rem;
+            margin: 1.5rem 0;
+            flex-wrap: wrap;
+        }
+
+        .leaderboard-quarter-btn {
+            background: var(--cream);
+            border: 2px solid var(--navy-lighter);
+            color: var(--navy);
+            padding: 0.4rem 1rem;
+            border-radius: 20px;
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 0.9rem;
+            letter-spacing: 0.05em;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .leaderboard-quarter-btn:hover {
+            background: var(--navy-lighter);
+            color: var(--cream);
+        }
+
+        .leaderboard-quarter-btn.active {
+            background: var(--gold);
+            border-color: var(--gold);
+            color: var(--navy);
+            font-weight: 600;
+        }
+
         .info-tooltip {
             position: relative;
             display: inline-block;
@@ -322,6 +355,19 @@
             font-family: 'Bebas Neue', sans-serif;
             font-size: 1.3rem;
             color: var(--navy);
+        }
+
+        .teams-logos {
+            display: flex;
+            gap: 0.5rem;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .teams-logos .team-logo {
+            width: 32px;
+            height: 32px;
+            object-fit: contain;
         }
 
         /* Player Rosters */
@@ -1071,7 +1117,7 @@
     <!-- Navigation -->
     <nav class="nav">
         <div class="nav-inner">
-            <a href="index.html" class="nav-logo">BUSH <span>LEAGUE</span></a>
+            <a href="index.html" class="nav-logo">Bush <span>League</span></a>
             <div class="nav-links">
                 <a href="app.html">Dashboard</a>
                 <a href="index.html#rules">Rules</a>
@@ -1128,6 +1174,13 @@
                     <span class="tooltip-text">Your score is the combined win percentage of your 4 teams (one from each tier). Tiebreaker is runs per game.</span>
                 </span>
             </h2>
+            <div class="leaderboard-quarter-selector">
+                <button class="leaderboard-quarter-btn" data-quarter="Q1">Q1</button>
+                <button class="leaderboard-quarter-btn" data-quarter="Q2">Q2</button>
+                <button class="leaderboard-quarter-btn" data-quarter="Q3">Q3</button>
+                <button class="leaderboard-quarter-btn" data-quarter="Q4">Q4</button>
+                <button class="leaderboard-quarter-btn" data-quarter="SEASON">Season</button>
+            </div>
             <p class="leaderboard-subtitle" id="leaderboardSubtitle"></p>
             <div id="leaderboard-content" class="loading">Loading standings...</div>
         </div>
@@ -1163,6 +1216,7 @@
     <script>
         // Global state
         let currentQuarter = 'SEASON';
+        let leaderboardQuarter = null; // Will be set to current quarter on load
         let allData = {};
 
         // Constants
@@ -1286,6 +1340,15 @@
                 document.getElementById('standingsUpdated').textContent =
                     `Last updated: ${lastUpdated.toLocaleDateString()} ${lastUpdated.toLocaleTimeString()}`;
 
+                // Set leaderboard quarter to current quarter and update button state
+                leaderboardQuarter = quarters.currentQuarter;
+                document.querySelectorAll('.leaderboard-quarter-btn').forEach(btn => {
+                    btn.classList.remove('active');
+                    if (btn.dataset.quarter === leaderboardQuarter) {
+                        btn.classList.add('active');
+                    }
+                });
+
                 // Update quarter statuses
                 updateQuarterStatuses();
 
@@ -1354,12 +1417,14 @@
 
         // Render leaderboard
         function renderLeaderboard() {
+            // Use leaderboardQuarter for the leaderboard view
+            const quarterToShow = leaderboardQuarter || currentQuarter;
             let playerScores;
 
-            if (currentQuarter === 'SEASON') {
+            if (quarterToShow === 'SEASON') {
                 playerScores = calculateSeasonTotals();
             } else {
-                playerScores = allData.standings.playerScores[currentQuarter];
+                playerScores = allData.standings.playerScores[quarterToShow];
             }
 
             if (!playerScores || Object.keys(playerScores).length === 0) {
@@ -1368,7 +1433,7 @@
                 return;
             }
 
-            // Update subtitle based on current quarter
+            // Update subtitle based on quarter being shown
             const quarterNames = {
                 'Q1': 'Quarter 1',
                 'Q2': 'Quarter 2',
@@ -1376,7 +1441,7 @@
                 'Q4': 'Quarter 4',
                 'SEASON': 'Season Total'
             };
-            document.getElementById('leaderboardSubtitle').textContent = quarterNames[currentQuarter] || '';
+            document.getElementById('leaderboardSubtitle').textContent = quarterNames[quarterToShow] || '';
 
             // Convert to array and sort
             const sortedPlayers = Object.values(playerScores).sort((a, b) => {
@@ -1404,7 +1469,7 @@
                                 <td class="player-name">${player.name}</td>
                                 <td class="win-pct">${(player.combinedWinPct * 100).toFixed(1)}%</td>
                                 <td>${player.combinedRunsPerGame.toFixed(2)}</td>
-                                <td>${player.teams.join(', ')}</td>
+                                <td class="teams-logos">${player.teams.map(abbrev => renderTeamLogo(abbrev, 32, 'team-logo')).join(' ')}</td>
                             </tr>
                         `).join('')}
                     </tbody>
@@ -1723,6 +1788,16 @@
                 btn.classList.add('active');
                 currentQuarter = btn.dataset.quarter;
                 renderDashboard();
+            });
+        });
+
+        // Leaderboard quarter selector event handlers
+        document.querySelectorAll('.leaderboard-quarter-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.leaderboard-quarter-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                leaderboardQuarter = btn.dataset.quarter;
+                renderLeaderboard();
             });
         });
 
