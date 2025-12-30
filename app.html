@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bush League — Dashboard</title>
+    <title>Bush league — dashboard</title>
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='48' fill='%23ffffff' stroke='%23dc143c' stroke-width='2'/><path d='M 30,25 Q 50,15 70,25' stroke='%23dc143c' stroke-width='2' fill='none'/><path d='M 30,40 Q 50,30 70,40' stroke='%23dc143c' stroke-width='2' fill='none'/><path d='M 30,55 Q 50,45 70,55' stroke='%23dc143c' stroke-width='2' fill='none'/><path d='M 30,70 Q 50,60 70,70' stroke='%23dc143c' stroke-width='2' fill='none'/></svg>" type="image/svg+xml">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -361,6 +361,40 @@
             margin-bottom: 1rem;
         }
 
+        .quarter-section {
+            margin-top: 1rem;
+        }
+
+        .quarter-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            cursor: pointer;
+            padding: 0.5rem 0;
+            user-select: none;
+        }
+
+        .quarter-header h4 {
+            font-size: 0.9rem;
+            color: var(--gold);
+            margin: 0;
+        }
+
+        .quarter-toggle {
+            font-size: 0.8rem;
+            color: var(--navy-lighter);
+        }
+
+        .quarter-teams {
+            max-height: 500px;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+        }
+
+        .quarter-teams.collapsed {
+            max-height: 0;
+        }
+
         .team-list {
             list-style: none;
         }
@@ -417,6 +451,10 @@
         }
 
         /* Standings Table */
+        .standings-section {
+            margin-top: 3rem;
+        }
+
         .standings-section h2 {
             font-family: 'Playball', cursive;
             font-size: 2rem;
@@ -438,6 +476,7 @@
             border-radius: 12px;
             overflow: hidden;
             box-shadow: 0 4px 20px rgba(15, 28, 46, 0.06);
+            margin-bottom: 1rem;
         }
 
         .standings-table th {
@@ -464,6 +503,33 @@
             background: var(--cream);
         }
 
+        .standings-table tbody tr.hidden-team {
+            display: none;
+        }
+
+        .show-all-btn {
+            display: block;
+            margin: 0 auto 3rem;
+            padding: 0.75rem 2rem;
+            background: var(--navy);
+            color: var(--cream);
+            border: none;
+            border-radius: 8px;
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1rem;
+            letter-spacing: 0.05em;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .show-all-btn:hover {
+            background: var(--navy-light);
+        }
+
+        .show-all-btn.hidden {
+            display: none;
+        }
+
         /* Tiers Section */
         .tiers-section {
             margin-top: 3rem;
@@ -481,32 +547,7 @@
             text-align: center;
             color: var(--navy-lighter);
             font-size: 0.9rem;
-            margin-bottom: 0.5rem;
-        }
-
-        .tiers-controls {
-            text-align: center;
-            margin-bottom: 1rem;
-        }
-
-        .filter-toggle {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            cursor: pointer;
-            font-size: 0.95rem;
-            font-weight: 600;
-            color: var(--navy);
-        }
-
-        .filter-toggle input[type="checkbox"] {
-            width: 18px;
-            height: 18px;
-            cursor: pointer;
-        }
-
-        .tier-team-chip.used {
-            display: none;
+            margin-bottom: 1.5rem;
         }
 
         .tiers-grid {
@@ -1210,23 +1251,10 @@
             <div id="rosters-content" class="loading">Loading rosters...</div>
         </div>
 
-        <!-- Team Standings -->
-        <div class="standings-section">
-            <h2>MLB Team Standings</h2>
-            <p class="standings-updated" id="standingsUpdated">Loading...</p>
-            <div id="standings-content" class="loading">Loading team data...</div>
-        </div>
-
         <!-- Team Tiers -->
         <div class="tiers-section">
             <h2>Team Tiers</h2>
             <p class="tiers-updated" id="tiersUpdated">Loading...</p>
-            <div class="tiers-controls">
-                <label class="filter-toggle">
-                    <input type="checkbox" id="hideUsedTeams">
-                    <span>Show only available teams</span>
-                </label>
-            </div>
             <div id="tiers-content" class="loading">Loading tier data...</div>
         </div>
 
@@ -1242,6 +1270,14 @@
             <h2>Manual Picks by Player</h2>
             <p class="manual-picks-subtitle">Teams selected manually each quarter (2 per quarter)</p>
             <div id="manual-picks-content" class="loading">Loading manual picks...</div>
+        </div>
+
+        <!-- Team Standings -->
+        <div class="standings-section">
+            <h2>MLB Team Standings</h2>
+            <p class="standings-updated" id="standingsUpdated">Loading...</p>
+            <div id="standings-content" class="loading">Loading team data...</div>
+            <button id="show-all-standings" class="show-all-btn hidden">Show All Teams</button>
         </div>
     </div>
 
@@ -1509,6 +1545,7 @@
                     // Show all teams from all quarters for season view
                     const seasonScore = calculateSeasonTotals()[player.id];
                     const allTeams = [];
+                    const currentQ = allData.quarters.currentQuarter;
 
                     QUARTERS.forEach(q => {
                         const quarterRoster = player.quarters[q];
@@ -1531,27 +1568,35 @@
                                     Runs/Game: <strong>${seasonScore.combinedRunsPerGame.toFixed(2)}</strong>
                                 </div>
                             ` : ''}
-                            ${allTeams.map(quarterData => `
-                                <h4 style="margin-top: 1rem; font-size: 0.9rem; color: var(--gold);">${quarterData.quarter}</h4>
-                                <ul class="team-list">
-                                    ${quarterData.teams.map(team => {
-                                        const teamData = allData.standings.teams[team.abbrev];
-                                        const quarterStats = allData.standings.quarterlyStats[quarterData.quarter]?.[team.abbrev];
-                                        return teamData && quarterStats ? `
-                                            <li class="team-item">
-                                                <div>
-                                                    <div class="team-name">
-                                                        ${renderTeamLogo(team.abbrev)}
-                                                        ${teamData.name}
+                            ${allTeams.map(quarterData => {
+                                const isCurrentQuarter = quarterData.quarter === currentQ;
+                                return `
+                                <div class="quarter-section">
+                                    <div class="quarter-header" onclick="toggleQuarter(event, '${player.id}-${quarterData.quarter}')">
+                                        <h4>${quarterData.quarter}</h4>
+                                        <span class="quarter-toggle" id="${player.id}-${quarterData.quarter}-toggle">${isCurrentQuarter ? '▼' : '▶'}</span>
+                                    </div>
+                                    <ul class="team-list quarter-teams ${isCurrentQuarter ? '' : 'collapsed'}" id="${player.id}-${quarterData.quarter}-teams">
+                                        ${quarterData.teams.map(team => {
+                                            const teamData = allData.standings.teams[team.abbrev];
+                                            const quarterStats = allData.standings.quarterlyStats[quarterData.quarter]?.[team.abbrev];
+                                            return teamData && quarterStats ? `
+                                                <li class="team-item">
+                                                    <div>
+                                                        <div class="team-name">
+                                                            ${renderTeamLogo(team.abbrev)}
+                                                            ${teamData.name}
+                                                        </div>
+                                                        <div class="team-record">${quarterStats.wins}-${quarterStats.losses} (${(quarterStats.winPct * 100).toFixed(1)}%)</div>
                                                     </div>
-                                                    <div class="team-record">${quarterStats.wins}-${quarterStats.losses} (${(quarterStats.winPct * 100).toFixed(1)}%)</div>
-                                                </div>
-                                                <span class="team-tier tier-${team.tier}">T${team.tier}</span>
-                                            </li>
-                                        ` : '';
-                                    }).join('')}
-                                </ul>
-                            `).join('')}
+                                                    <span class="team-tier tier-${team.tier}">T${team.tier}</span>
+                                                </li>
+                                            ` : '';
+                                        }).join('')}
+                                    </ul>
+                                </div>
+                            `;
+                            }).join('')}
                         </div>
                     `;
                 } else {
@@ -1634,8 +1679,8 @@
                         </tr>
                     </thead>
                     <tbody>
-                        ${sortedTeams.map(team => `
-                            <tr>
+                        ${sortedTeams.map((team, index) => `
+                            <tr class="${index >= 5 ? 'hidden-team' : ''}">
                                 <td><strong>${team.name}</strong></td>
                                 <td>${team.wins}</td>
                                 <td>${team.losses}</td>
@@ -1649,6 +1694,15 @@
             `;
 
             document.getElementById('standings-content').innerHTML = html;
+
+            // Show the button if there are more than 5 teams
+            const showAllBtn = document.getElementById('show-all-standings');
+            if (sortedTeams.length > 5) {
+                showAllBtn.classList.remove('hidden');
+                showAllBtn.textContent = 'Show All Teams';
+            } else {
+                showAllBtn.classList.add('hidden');
+            }
         }
 
         // Render team tiers
@@ -1659,15 +1713,6 @@
                 document.getElementById('tiers-content').innerHTML =
                     '<p class="no-roster">Tiers not yet set for this quarter.</p>';
                 return;
-            }
-
-            // Get all burned teams from all players
-            const hideUsedTeams = document.getElementById('hideUsedTeams')?.checked || false;
-            const allBurnedTeams = new Set();
-            if (hideUsedTeams) {
-                allData.players.players.forEach(player => {
-                    (player.burnedTeams || []).forEach(team => allBurnedTeams.add(team));
-                });
             }
 
             const tierNames = {
@@ -1693,9 +1738,8 @@
                                     ${teams.length > 0
                                         ? teams.map(abbrev => {
                                             const team = allData.standings.teams[abbrev];
-                                            const isUsed = allBurnedTeams.has(abbrev);
                                             return team ? `
-                                                <div class="tier-team-chip ${isUsed ? 'used' : ''}">
+                                                <div class="tier-team-chip">
                                                     ${renderTeamLogo(abbrev, 20, 'tier-team-logo')}
                                                     ${team.name}
                                                 </div>
@@ -1810,6 +1854,20 @@
             `;
         }
 
+        // Toggle quarter visibility in player rosters
+        function toggleQuarter(event, quarterId) {
+            const teamsEl = document.getElementById(`${quarterId}-teams`);
+            const toggleEl = document.getElementById(`${quarterId}-toggle`);
+
+            if (teamsEl.classList.contains('collapsed')) {
+                teamsEl.classList.remove('collapsed');
+                toggleEl.textContent = '▼';
+            } else {
+                teamsEl.classList.add('collapsed');
+                toggleEl.textContent = '▶';
+            }
+        }
+
         // Quarter selector event handlers
         document.querySelectorAll('.quarter-btn').forEach(btn => {
             btn.addEventListener('click', () => {
@@ -1820,9 +1878,20 @@
             });
         });
 
-        // Filter toggle event handler
-        document.getElementById('hideUsedTeams')?.addEventListener('change', () => {
-            renderTiers();
+        // Show all standings button handler
+        document.getElementById('show-all-standings')?.addEventListener('click', function() {
+            const hiddenTeams = document.querySelectorAll('.standings-table tbody tr.hidden-team');
+            const allShown = hiddenTeams.length === 0 || hiddenTeams[0].style.display === 'table-row';
+
+            hiddenTeams.forEach(row => {
+                if (allShown) {
+                    row.style.display = 'none';
+                } else {
+                    row.style.display = 'table-row';
+                }
+            });
+
+            this.textContent = allShown ? 'Show All Teams' : 'Show Top 5 Teams';
         });
 
         // Load data on page load
