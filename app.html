@@ -1787,6 +1787,16 @@
                 document.querySelectorAll('.quarter-btn').forEach(b => b.classList.remove('active'));
                 btn.classList.add('active');
                 currentQuarter = btn.dataset.quarter;
+
+                // Also update leaderboard quarter and sync the pill buttons
+                leaderboardQuarter = currentQuarter;
+                document.querySelectorAll('.leaderboard-quarter-btn').forEach(b => {
+                    b.classList.remove('active');
+                    if (b.dataset.quarter === leaderboardQuarter) {
+                        b.classList.add('active');
+                    }
+                });
+
                 renderDashboard();
             });
         });
@@ -1797,6 +1807,15 @@
                 document.querySelectorAll('.leaderboard-quarter-btn').forEach(b => b.classList.remove('active'));
                 btn.classList.add('active');
                 leaderboardQuarter = btn.dataset.quarter;
+
+                // Also sync the main quarter buttons
+                document.querySelectorAll('.quarter-btn').forEach(b => {
+                    b.classList.remove('active');
+                    if (b.dataset.quarter === leaderboardQuarter) {
+                        b.classList.add('active');
+                    }
+                });
+
                 renderLeaderboard();
             });
         });
