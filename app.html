@@ -138,6 +138,24 @@
             display: none;
         }
 
+        .deadline-alert.urgent {
+            background: linear-gradient(135deg, #ffebee 0%, #ffcdd2 100%);
+            border-color: var(--red);
+            box-shadow: 0 4px 15px rgba(196, 30, 58, 0.3);
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        .deadline-alert.warning {
+            background: linear-gradient(135deg, #fff3e0 0%, #ffe0b2 100%);
+            border-color: #ff9800;
+            box-shadow: 0 4px 15px rgba(255, 152, 0, 0.2);
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.02); }
+        }
+
         .deadline-icon {
             font-size: 1.5rem;
         }
@@ -320,6 +338,33 @@
             letter-spacing: 0.05em;
             padding: 1rem;
             text-align: left;
+            cursor: pointer;
+            user-select: none;
+            position: relative;
+            transition: background 0.2s;
+        }
+
+        .leaderboard-table th:hover {
+            background: var(--navy);
+        }
+
+        .leaderboard-table th.sortable::after {
+            content: '⇅';
+            margin-left: 0.5rem;
+            opacity: 0.3;
+            font-size: 0.9rem;
+        }
+
+        .leaderboard-table th.sortable.sort-asc::after {
+            content: '↑';
+            opacity: 1;
+            color: var(--gold);
+        }
+
+        .leaderboard-table th.sortable.sort-desc::after {
+            content: '↓';
+            opacity: 1;
+            color: var(--gold);
         }
 
         .leaderboard-table td {
@@ -357,6 +402,59 @@
             color: var(--navy);
         }
 
+        /* Win percentage progress bar */
+        .win-pct-cell {
+            padding: 0.5rem 1rem !important;
+        }
+
+        .win-pct-container {
+            position: relative;
+            width: 100%;
+            height: 32px;
+            display: flex;
+            align-items: center;
+        }
+
+        .win-pct-bar {
+            position: absolute;
+            left: 0;
+            top: 0;
+            height: 100%;
+            background: linear-gradient(90deg, var(--gold) 0%, var(--gold-light) 100%);
+            border-radius: 4px;
+            transition: width 0.3s ease;
+            opacity: 0.3;
+        }
+
+        .win-pct-text {
+            position: relative;
+            z-index: 1;
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.3rem;
+            color: var(--navy);
+            font-weight: 700;
+        }
+
+        /* Medal and rank styles */
+        .medal {
+            font-size: 1.5rem;
+            line-height: 1;
+        }
+
+        .rank-up {
+            color: var(--green);
+            font-size: 0.8rem;
+            font-weight: 700;
+            margin-left: 0.25rem;
+        }
+
+        .rank-down {
+            color: var(--red);
+            font-size: 0.8rem;
+            font-weight: 700;
+            margin-left: 0.25rem;
+        }
+
         .teams-logos {
             display: flex;
             gap: 0.5rem;
@@ -368,6 +466,65 @@
             width: 32px;
             height: 32px;
             object-fit: contain;
+            cursor: pointer;
+            position: relative;
+            transition: transform 0.2s;
+        }
+
+        .teams-logos .team-logo:hover {
+            transform: scale(1.15);
+        }
+
+        /* Enhanced team tooltips */
+        .team-tooltip-wrapper {
+            position: relative;
+            display: inline-block;
+        }
+
+        .team-tooltip {
+            visibility: hidden;
+            position: absolute;
+            z-index: 1000;
+            bottom: 125%;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--navy);
+            color: var(--cream);
+            padding: 0.75rem;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            white-space: nowrap;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+            opacity: 0;
+            transition: opacity 0.2s, visibility 0.2s;
+        }
+
+        .team-tooltip::after {
+            content: "";
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            margin-left: -5px;
+            border-width: 5px;
+            border-style: solid;
+            border-color: var(--navy) transparent transparent transparent;
+        }
+
+        .team-tooltip-wrapper:hover .team-tooltip {
+            visibility: visible;
+            opacity: 1;
+        }
+
+        .team-tooltip-name {
+            font-weight: 700;
+            margin-bottom: 0.25rem;
+            color: var(--gold);
+        }
+
+        .team-tooltip-stat {
+            font-size: 0.8rem;
+            color: var(--cream);
+            margin: 0.1rem 0;
         }
 
         /* Player Rosters */
@@ -750,6 +907,89 @@
             display: none;
         }
 
+        /* Available Teams Section */
+        .available-teams-section {
+            margin-top: 3rem;
+        }
+
+        .available-teams-section h2 {
+            font-family: 'Playball', cursive;
+            font-size: 2rem;
+            color: var(--navy);
+            margin-bottom: 0.5rem;
+            text-align: center;
+        }
+
+        .available-teams-subtitle {
+            text-align: center;
+            color: var(--navy-lighter);
+            font-size: 0.9rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .available-teams-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+        }
+
+        .available-tier-card {
+            background: var(--white);
+            border-radius: 8px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 15px rgba(15, 28, 46, 0.06);
+        }
+
+        .available-tier-card h3 {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.4rem;
+            color: var(--navy);
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .tier-count {
+            font-size: 0.9rem;
+            color: var(--navy-lighter);
+            font-weight: 400;
+        }
+
+        .available-teams-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+
+        .available-team-badge {
+            background: #e8f5e9;
+            border: 1px solid var(--green);
+            padding: 0.4rem 0.7rem;
+            border-radius: 4px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--green);
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+            transition: all 0.2s;
+        }
+
+        .available-team-badge:hover {
+            background: var(--green);
+            color: var(--white);
+            transform: translateY(-1px);
+            box-shadow: 0 2px 8px rgba(45, 90, 61, 0.2);
+        }
+
+        .available-team-logo {
+            width: 18px;
+            height: 18px;
+        }
+
         /* Burned Teams Section */
         .burned-teams-section {
             margin-top: 3rem;
@@ -808,6 +1048,87 @@
             display: flex;
             align-items: center;
             gap: 0.3rem;
+        }
+
+        .burned-summary-stats {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .burned-stat-box {
+            background: var(--white);
+            border-radius: 8px;
+            padding: 1.25rem 2rem;
+            box-shadow: 0 4px 15px rgba(15, 28, 46, 0.06);
+            text-align: center;
+            min-width: 180px;
+        }
+
+        .burned-stat-value {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 2.5rem;
+            color: var(--red);
+            line-height: 1;
+            margin-bottom: 0.25rem;
+        }
+
+        .burned-stat-label {
+            font-size: 0.85rem;
+            color: var(--navy-lighter);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .popular-burns {
+            background: var(--white);
+            border-radius: 8px;
+            padding: 1rem 1.5rem;
+            box-shadow: 0 4px 15px rgba(15, 28, 46, 0.06);
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .popular-burns-title {
+            font-size: 0.85rem;
+            color: var(--navy-lighter);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 0.25rem;
+        }
+
+        .popular-burns-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.4rem;
+        }
+
+        .popular-burn-badge {
+            background: #ffcdd2;
+            border: 1px solid var(--red);
+            padding: 0.3rem 0.6rem;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--red);
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+        }
+
+        .burn-count {
+            background: var(--red);
+            color: var(--white);
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.7rem;
         }
 
         .burned-team-logo {
@@ -1198,6 +1519,13 @@
             <div id="tiers-content" class="loading">Loading tier data...</div>
         </div>
 
+        <!-- Available Teams for Next Quarter -->
+        <div class="available-teams-section">
+            <h2>Available Teams</h2>
+            <p class="available-teams-subtitle" id="availableTeamsSubtitle">Teams available for selection</p>
+            <div id="available-teams-content" class="loading">Loading available teams...</div>
+        </div>
+
         <!-- Burned Teams Summary -->
         <div class="burned-teams-section">
             <h2>Burned Teams</h2>
@@ -1218,6 +1546,8 @@
         let currentQuarter = 'SEASON';
         let leaderboardQuarter = null; // Will be set to current quarter on load
         let allData = {};
+        let sortColumn = null; // Current sort column
+        let sortDirection = 'desc'; // 'asc' or 'desc'
 
         // Constants
         const QUARTERS = ['Q1', 'Q2', 'Q3', 'Q4'];
@@ -1235,12 +1565,30 @@
         }
 
         // Render team logo HTML
-        function renderTeamLogo(abbrev, size = 24, cssClass = 'team-logo') {
-            return `<img src="https://a.espncdn.com/combiner/i?img=/i/teamlogos/mlb/500/${getESPNAbbrev(abbrev)}.png&h=${size}&w=${size}"
+        function renderTeamLogo(abbrev, size = 24, cssClass = 'team-logo', tooltipData = null) {
+            const logoHtml = `<img src="https://a.espncdn.com/combiner/i?img=/i/teamlogos/mlb/500/${getESPNAbbrev(abbrev)}.png&h=${size}&w=${size}"
                          alt="${abbrev}"
                          class="${cssClass}"
                          onerror="this.style.display='none'; this.nextElementSibling.style.display='inline-block';">
                     <span class="logo-fallback" style="display:none; background: var(--cream); padding: 0.2rem 0.4rem; border-radius: 3px; font-size: 0.7rem; font-weight: 700; color: var(--navy);">${abbrev}</span>`;
+
+            // If tooltip data provided, wrap in tooltip
+            if (tooltipData) {
+                const team = allData.standings.teams[abbrev];
+                return `
+                    <div class="team-tooltip-wrapper">
+                        ${logoHtml}
+                        <div class="team-tooltip">
+                            <div class="team-tooltip-name">${team?.name || abbrev}</div>
+                            <div class="team-tooltip-stat">Record: ${tooltipData.wins}-${tooltipData.losses}</div>
+                            <div class="team-tooltip-stat">Win%: ${(tooltipData.winPct * 100).toFixed(1)}%</div>
+                            <div class="team-tooltip-stat">Runs/Game: ${tooltipData.runsPerGame.toFixed(2)}</div>
+                        </div>
+                    </div>
+                `;
+            }
+
+            return logoHtml;
         }
 
         // Calculate percentage complete for a date range
@@ -1296,21 +1644,47 @@
             const currentQuarter = allData.quarters.currentQuarter;
             const nextQuarter = { Q1: 'Q2', Q2: 'Q3', Q3: 'Q4', Q4: null }[currentQuarter];
 
+            const alertEl = document.getElementById('deadline-alert');
+            const messageEl = document.getElementById('deadline-message');
+
             if (nextQuarter) {
                 const deadline = new Date(quarters[nextQuarter].selectionDeadline);
                 const now = new Date();
                 const daysUntil = Math.ceil((deadline - now) / (1000 * 60 * 60 * 24));
+                const deadlineFormatted = deadline.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
 
-                const alertEl = document.getElementById('deadline-alert');
-                const messageEl = document.getElementById('deadline-message');
+                // Remove all urgency classes first
+                alertEl.classList.remove('urgent', 'warning');
 
-                if (daysUntil <= 7 && daysUntil > 0) {
-                    const deadlineFormatted = deadline.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+                if (daysUntil < 0) {
+                    // Deadline has passed
+                    messageEl.textContent = `${nextQuarter} selection deadline has passed (was ${deadlineFormatted})`;
+                    alertEl.classList.add('urgent');
+                    alertEl.classList.remove('hidden');
+                } else if (daysUntil === 0) {
+                    // Deadline is today
+                    messageEl.textContent = `${nextQuarter} picks due TODAY! (${deadlineFormatted})`;
+                    alertEl.classList.add('urgent');
+                    alertEl.classList.remove('hidden');
+                } else if (daysUntil <= 7) {
+                    // Urgent: 1-7 days
                     messageEl.textContent = `${nextQuarter} picks due in ${daysUntil} day${daysUntil !== 1 ? 's' : ''} (${deadlineFormatted})`;
+                    alertEl.classList.add('urgent');
+                    alertEl.classList.remove('hidden');
+                } else if (daysUntil <= 14) {
+                    // Warning: 8-14 days
+                    messageEl.textContent = `${nextQuarter} picks due in ${daysUntil} days (${deadlineFormatted})`;
+                    alertEl.classList.add('warning');
                     alertEl.classList.remove('hidden');
                 } else {
-                    alertEl.classList.add('hidden');
+                    // Normal: 15+ days - always show countdown
+                    messageEl.textContent = `Next deadline: ${nextQuarter} picks due in ${daysUntil} days (${deadlineFormatted})`;
+                    alertEl.classList.remove('hidden');
                 }
+            } else {
+                // No next quarter (end of season)
+                messageEl.textContent = 'Season complete - no upcoming deadlines';
+                alertEl.classList.remove('urgent', 'warning', 'hidden');
             }
         }
 
@@ -1369,6 +1743,7 @@
             renderRosters();
             renderStandings();
             renderTiers();
+            renderAvailableTeams();
             renderBurnedTeams();
         }
 
@@ -1444,39 +1819,143 @@
             document.getElementById('leaderboardSubtitle').textContent = quarterNames[quarterToShow] || '';
 
             // Convert to array and sort
-            const sortedPlayers = Object.values(playerScores).sort((a, b) => {
-                if (b.combinedWinPct !== a.combinedWinPct) {
-                    return b.combinedWinPct - a.combinedWinPct;
+            let sortedPlayers = Object.values(playerScores);
+
+            // Apply sorting based on current sort column
+            if (sortColumn) {
+                sortedPlayers.sort((a, b) => {
+                    let compareA, compareB;
+
+                    switch (sortColumn) {
+                        case 'player':
+                            compareA = a.name;
+                            compareB = b.name;
+                            break;
+                        case 'winpct':
+                            compareA = a.combinedWinPct;
+                            compareB = b.combinedWinPct;
+                            break;
+                        case 'runs':
+                            compareA = a.combinedRunsPerGame;
+                            compareB = b.combinedRunsPerGame;
+                            break;
+                        default:
+                            return 0;
+                    }
+
+                    // Handle string comparison
+                    if (typeof compareA === 'string') {
+                        return sortDirection === 'asc'
+                            ? compareA.localeCompare(compareB)
+                            : compareB.localeCompare(compareA);
+                    }
+
+                    // Handle number comparison
+                    return sortDirection === 'asc'
+                        ? compareA - compareB
+                        : compareB - compareA;
+                });
+            } else {
+                // Default sort: by win% descending, then runs/game descending
+                sortedPlayers.sort((a, b) => {
+                    if (b.combinedWinPct !== a.combinedWinPct) {
+                        return b.combinedWinPct - a.combinedWinPct;
+                    }
+                    return b.combinedRunsPerGame - a.combinedRunsPerGame;
+                });
+            }
+
+            // Calculate rank changes (compare with previous rank if available)
+            const previousRanks = {};
+            sortedPlayers.forEach(player => {
+                if (player.rank) {
+                    previousRanks[player.name] = player.rank;
                 }
-                return b.combinedRunsPerGame - a.combinedRunsPerGame;
             });
+
+            // Medal icons for top 3
+            const medals = {
+                1: '🥇',
+                2: '🥈',
+                3: '🥉'
+            };
 
             const html = `
                 <table class="leaderboard-table">
                     <thead>
                         <tr>
                             <th>Rank</th>
-                            <th>Player</th>
-                            <th>Win %</th>
-                            <th>Runs/Game</th>
+                            <th class="sortable ${sortColumn === 'player' ? `sort-${sortDirection}` : ''}" data-column="player">Player</th>
+                            <th class="sortable ${sortColumn === 'winpct' ? `sort-${sortDirection}` : ''}" data-column="winpct">Win %</th>
+                            <th class="sortable ${sortColumn === 'runs' ? `sort-${sortDirection}` : ''}" data-column="runs">Runs/Game</th>
                             <th>Teams</th>
                         </tr>
                     </thead>
                     <tbody>
-                        ${sortedPlayers.map((player, index) => `
+                        ${sortedPlayers.map((player, index) => {
+                            const currentRank = index + 1;
+                            const medal = medals[currentRank] || '';
+                            const winPct = (player.combinedWinPct * 100).toFixed(1);
+                            const previousRank = previousRanks[player.name];
+
+                            // Calculate rank change
+                            let rankChange = '';
+                            if (previousRank && previousRank !== currentRank) {
+                                if (previousRank > currentRank) {
+                                    rankChange = `<span class="rank-up">↑${previousRank - currentRank}</span>`;
+                                } else {
+                                    rankChange = `<span class="rank-down">↓${currentRank - previousRank}</span>`;
+                                }
+                            }
+
+                            return `
                             <tr>
-                                <td class="rank rank-${index + 1}">#${index + 1}</td>
+                                <td class="rank rank-${currentRank}">
+                                    ${medal ? `<span class="medal">${medal}</span>` : `#${currentRank}`}
+                                    ${rankChange}
+                                </td>
                                 <td class="player-name">${player.name}</td>
-                                <td class="win-pct">${(player.combinedWinPct * 100).toFixed(1)}%</td>
+                                <td class="win-pct-cell">
+                                    <div class="win-pct-container">
+                                        <div class="win-pct-bar" style="width: ${winPct}%"></div>
+                                        <span class="win-pct-text">${winPct}%</span>
+                                    </div>
+                                </td>
                                 <td>${player.combinedRunsPerGame.toFixed(2)}</td>
-                                <td class="teams-logos">${player.teams.map(abbrev => renderTeamLogo(abbrev, 32, 'team-logo')).join(' ')}</td>
+                                <td class="teams-logos">${player.teams.map(abbrev => {
+                                    // Get team stats for tooltip
+                                    let stats = null;
+                                    if (quarterToShow === 'SEASON') {
+                                        stats = allData.standings.teams[abbrev];
+                                    } else {
+                                        stats = allData.standings.quarterlyStats[quarterToShow]?.[abbrev];
+                                    }
+                                    return renderTeamLogo(abbrev, 32, 'team-logo', stats);
+                                }).join(' ')}</td>
                             </tr>
-                        `).join('')}
+                        `}).join('')}
                     </tbody>
                 </table>
             `;
 
             document.getElementById('leaderboard-content').innerHTML = html;
+
+            // Add sort event listeners
+            document.querySelectorAll('.leaderboard-table th.sortable').forEach(th => {
+                th.addEventListener('click', () => {
+                    const column = th.dataset.column;
+
+                    // Toggle direction if clicking same column, otherwise default to desc
+                    if (sortColumn === column) {
+                        sortDirection = sortDirection === 'desc' ? 'asc' : 'desc';
+                    } else {
+                        sortColumn = column;
+                        sortDirection = 'desc';
+                    }
+
+                    renderLeaderboard();
+                });
+            });
         }
 
         // Render player rosters
@@ -1750,8 +2229,129 @@
             document.getElementById('tiers-content').innerHTML = html;
         }
         // Render burned teams summary
+        function renderAvailableTeams() {
+            const quarters = allData.quarters.quarters;
+            const currentQuarter = allData.quarters.currentQuarter;
+            const nextQuarter = { Q1: 'Q2', Q2: 'Q3', Q3: 'Q4', Q4: null }[currentQuarter];
+
+            if (!nextQuarter) {
+                document.getElementById('available-teams-content').innerHTML = `
+                    <p style="text-align: center; color: var(--navy-lighter); font-style: italic;">Season complete - no upcoming quarters</p>
+                `;
+                return;
+            }
+
+            // Get tier assignments for next quarter
+            const tierAssignments = allData.tiers.tiers[nextQuarter];
+
+            // Check if tiers are defined for next quarter
+            if (!tierAssignments ||
+                (!tierAssignments.tier1?.length && !tierAssignments.tier2?.length &&
+                 !tierAssignments.tier3?.length && !tierAssignments.tier4?.length)) {
+                const deadline = new Date(quarters[nextQuarter].selectionDeadline);
+                const deadlineFormatted = deadline.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+                document.getElementById('availableTeamsSubtitle').textContent = `${nextQuarter} tiers not yet announced (deadline: ${deadlineFormatted})`;
+                document.getElementById('available-teams-content').innerHTML = `
+                    <p style="text-align: center; color: var(--navy-lighter); font-style: italic;">Tier assignments for ${nextQuarter} will be announced soon</p>
+                `;
+                return;
+            }
+
+            // Collect all burned teams from all players
+            const allBurnedTeams = new Set();
+            allData.players.players.forEach(player => {
+                (player.burnedTeams || []).forEach(team => allBurnedTeams.add(team));
+            });
+
+            // Update subtitle with deadline
+            const deadline = new Date(quarters[nextQuarter].selectionDeadline);
+            const deadlineFormatted = deadline.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+            document.getElementById('availableTeamsSubtitle').textContent = `Teams available for ${nextQuarter} selection (deadline: ${deadlineFormatted})`;
+
+            // Generate HTML for each tier
+            const tierNames = { tier1: 'Tier 1', tier2: 'Tier 2', tier3: 'Tier 3', tier4: 'Tier 4' };
+            const tiersHtml = ['tier1', 'tier2', 'tier3', 'tier4'].map(tierKey => {
+                const teams = tierAssignments[tierKey] || [];
+                const availableTeams = teams.filter(abbrev => !allBurnedTeams.has(abbrev));
+
+                return `
+                    <div class="available-tier-card">
+                        <h3>
+                            ${tierNames[tierKey]}
+                            <span class="tier-count">(${availableTeams.length} of ${teams.length} available)</span>
+                        </h3>
+                        <div class="available-teams-list">
+                            ${availableTeams.length > 0
+                                ? availableTeams.map(abbrev => {
+                                    const team = allData.standings.teams[abbrev];
+                                    return team ? `
+                                        <div class="available-team-badge">
+                                            ${renderTeamLogo(abbrev, 18, 'available-team-logo')}
+                                            ${abbrev}
+                                        </div>
+                                    ` : '';
+                                }).join('')
+                                : '<span style="color: var(--navy-lighter); font-style: italic;">All teams in this tier have been burned</span>'
+                            }
+                        </div>
+                    </div>
+                `;
+            }).join('');
+
+            document.getElementById('available-teams-content').innerHTML = `
+                <div class="available-teams-grid">${tiersHtml}</div>
+            `;
+        }
+
         function renderBurnedTeams() {
             const players = allData.players.players;
+
+            // Calculate aggregate stats
+            const burnCountMap = {}; // Track how many times each team has been burned
+            let totalBurns = 0;
+
+            players.forEach(player => {
+                (player.burnedTeams || []).forEach(abbrev => {
+                    burnCountMap[abbrev] = (burnCountMap[abbrev] || 0) + 1;
+                    totalBurns++;
+                });
+            });
+
+            const uniqueTeamsBurned = Object.keys(burnCountMap).length;
+
+            // Find teams burned by multiple players (2+)
+            const popularBurns = Object.entries(burnCountMap)
+                .filter(([team, count]) => count >= 2)
+                .sort((a, b) => b[1] - a[1]) // Sort by count descending
+                .slice(0, 10); // Top 10
+
+            // Generate summary stats HTML
+            const summaryHtml = `
+                <div class="burned-summary-stats">
+                    <div class="burned-stat-box">
+                        <div class="burned-stat-value">${uniqueTeamsBurned}</div>
+                        <div class="burned-stat-label">Unique Teams Burned</div>
+                    </div>
+                    <div class="burned-stat-box">
+                        <div class="burned-stat-value">${totalBurns}</div>
+                        <div class="burned-stat-label">Total Burns</div>
+                    </div>
+                    ${popularBurns.length > 0 ? `
+                        <div class="popular-burns">
+                            <div class="popular-burns-title">Most Popular Burns</div>
+                            <div class="popular-burns-list">
+                                ${popularBurns.map(([abbrev, count]) => `
+                                    <div class="popular-burn-badge">
+                                        ${renderTeamLogo(abbrev, 16, 'burned-team-logo')}
+                                        ${abbrev}
+                                        <span class="burn-count">${count}</span>
+                                    </div>
+                                `).join('')}
+                            </div>
+                        </div>
+                    ` : ''}
+                </div>
+            `;
 
             const burnedHtml = players.map(player => {
                 const burnedTeams = player.burnedTeams || [];
@@ -1778,6 +2378,7 @@
             }).join('');
 
             document.getElementById('burned-teams-content').innerHTML = `
+                ${summaryHtml}
                 <div class="burned-teams-grid">${burnedHtml}</div>
             `;
         }
