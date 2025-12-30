@@ -180,8 +180,18 @@
             font-family: 'Playball', cursive;
             font-size: 2rem;
             color: var(--navy);
-            margin-bottom: 1.5rem;
+            margin-bottom: 0.5rem;
             text-align: center;
+        }
+
+        .leaderboard-subtitle {
+            text-align: center;
+            color: var(--gold);
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            font-family: 'Bebas Neue', sans-serif;
+            letter-spacing: 0.05em;
         }
 
         .leaderboard-table {
@@ -606,25 +616,309 @@
             color: var(--navy-lighter);
         }
 
-        /* Responsive */
+        /* Responsive - Mobile Optimizations */
         @media (max-width: 768px) {
             .container {
                 padding: 1rem;
             }
 
-            .leaderboard-table th,
-            .leaderboard-table td {
-                padding: 0.75rem 0.5rem;
+            /* Header */
+            .header h1 {
+                font-size: 2.5rem;
+            }
+
+            .header .subtitle {
+                font-size: 1rem;
+            }
+
+            .header .last-updated {
+                font-size: 0.8rem;
+            }
+
+            /* Navigation */
+            .nav {
+                padding: 0.75rem 1rem;
+            }
+
+            .nav-logo {
+                font-size: 1.5rem;
+            }
+
+            /* Quarter Selector */
+            .quarter-selector {
+                gap: 0.5rem;
+                margin-bottom: 2rem;
+            }
+
+            .quarter-btn {
+                padding: 0.5rem 0.75rem;
                 font-size: 0.9rem;
             }
 
+            .btn-label {
+                font-size: 1rem;
+            }
+
+            .btn-status {
+                font-size: 0.65rem;
+            }
+
+            /* Leaderboard */
+            .leaderboard {
+                padding: 1.5rem 0.75rem;
+                margin-bottom: 2rem;
+            }
+
+            .leaderboard h2 {
+                font-size: 1.5rem;
+            }
+
+            .leaderboard-subtitle {
+                font-size: 0.9rem;
+            }
+
+            .leaderboard-table {
+                display: block;
+                overflow-x: auto;
+                -webkit-overflow-scrolling: touch;
+            }
+
+            .leaderboard-table th,
+            .leaderboard-table td {
+                padding: 0.75rem 0.5rem;
+                font-size: 0.85rem;
+            }
+
+            .leaderboard-table th:last-child,
+            .leaderboard-table td:last-child {
+                min-width: 120px;
+            }
+
+            .rank {
+                font-size: 1.2rem;
+            }
+
+            .win-pct {
+                font-size: 1.1rem;
+            }
+
+            /* Rosters Section */
+            .rosters-section h2 {
+                font-size: 1.5rem;
+                margin-bottom: 1rem;
+            }
+
+            .rosters-grid {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+
+            .roster-card {
+                padding: 1rem;
+            }
+
+            .roster-card h3 {
+                font-size: 1.3rem;
+            }
+
+            .score {
+                font-size: 0.85rem;
+            }
+
+            .team-item {
+                padding: 0.5rem;
+            }
+
+            .team-name {
+                font-size: 0.9rem;
+            }
+
+            .team-record {
+                font-size: 0.75rem;
+            }
+
+            .team-tier {
+                font-size: 0.7rem;
+                padding: 0.2rem 0.4rem;
+            }
+
+            /* Standings Section */
+            .standings-section h2 {
+                font-size: 1.5rem;
+            }
+
             .standings-table {
+                display: block;
+                overflow-x: auto;
+                -webkit-overflow-scrolling: touch;
                 font-size: 0.85rem;
             }
 
             .standings-table th,
             .standings-table td {
                 padding: 0.5rem 0.25rem;
+                font-size: 0.8rem;
+            }
+
+            .standings-table th:first-child,
+            .standings-table td:first-child {
+                position: sticky;
+                left: 0;
+                background: var(--white);
+                z-index: 1;
+            }
+
+            .standings-table th:first-child {
+                background: var(--navy-lighter);
+            }
+
+            /* Tiers Section */
+            .tiers-section {
+                margin-top: 2rem;
+            }
+
+            .tiers-section h2 {
+                font-size: 1.5rem;
+            }
+
+            .tiers-updated {
+                font-size: 0.8rem;
+            }
+
+            .tiers-grid {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+                margin-bottom: 2rem;
+            }
+
+            .tier-card {
+                padding: 1rem;
+            }
+
+            .tier-card h3 {
+                font-size: 1.1rem;
+            }
+
+            .tier-team-chip {
+                padding: 0.4rem 0.6rem;
+                font-size: 0.8rem;
+            }
+
+            .tier-team-logo {
+                width: 18px;
+                height: 18px;
+            }
+
+            /* Manual Picks Section */
+            .manual-picks-section {
+                margin-top: 2rem;
+            }
+
+            .manual-picks-section h2 {
+                font-size: 1.5rem;
+            }
+
+            .manual-picks-subtitle {
+                font-size: 0.8rem;
+            }
+
+            .manual-picks-grid {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+                margin-bottom: 2rem;
+            }
+
+            .manual-pick-card {
+                padding: 1rem;
+            }
+
+            .manual-pick-card h3 {
+                font-size: 1.3rem;
+                margin-bottom: 1rem;
+            }
+
+            .quarter-picks-row {
+                padding: 0.5rem;
+            }
+
+            .quarter-picks-header {
+                font-size: 0.9rem;
+            }
+
+            .pick-chip {
+                padding: 0.4rem 0.6rem;
+                font-size: 0.8rem;
+            }
+
+            .pick-chip.burned::after {
+                font-size: 0.6rem;
+            }
+
+            .pick-chip-logo {
+                width: 18px;
+                height: 18px;
+            }
+
+            .no-picks-yet {
+                font-size: 0.8rem;
+            }
+
+            /* Loading State */
+            .loading {
+                padding: 2rem 1rem;
+                font-size: 1rem;
+            }
+        }
+
+        /* Extra small screens (phones in portrait) */
+        @media (max-width: 480px) {
+            .header h1 {
+                font-size: 2rem;
+            }
+
+            .quarter-selector {
+                flex-direction: column;
+                width: 100%;
+            }
+
+            .quarter-btn {
+                width: 100%;
+                flex-direction: row;
+                justify-content: space-between;
+            }
+
+            .leaderboard-table th,
+            .leaderboard-table td {
+                padding: 0.5rem 0.25rem;
+                font-size: 0.75rem;
+            }
+
+            .rank {
+                font-size: 1rem;
+            }
+
+            .win-pct {
+                font-size: 1rem;
+            }
+
+            .roster-card h3,
+            .manual-pick-card h3 {
+                font-size: 1.2rem;
+            }
+
+            .score {
+                font-size: 0.75rem;
+            }
+
+            .team-logo {
+                width: 20px;
+                height: 20px;
+            }
+
+            .tier-team-logo,
+            .pick-chip-logo {
+                width: 16px;
+                height: 16px;
             }
         }
     </style>
@@ -678,6 +972,7 @@
         <!-- Leaderboard -->
         <div class="leaderboard">
             <h2>Leaderboard</h2>
+            <p class="leaderboard-subtitle" id="leaderboardSubtitle"></p>
             <div id="leaderboard-content" class="loading">Loading standings...</div>
         </div>
 
@@ -883,6 +1178,16 @@
                     '<p class="no-roster">No scores yet for this period. Players need to make their selections!</p>';
                 return;
             }
+
+            // Update subtitle based on current quarter
+            const quarterNames = {
+                'Q1': 'Quarter 1',
+                'Q2': 'Quarter 2',
+                'Q3': 'Quarter 3',
+                'Q4': 'Quarter 4',
+                'SEASON': 'Season Total'
+            };
+            document.getElementById('leaderboardSubtitle').textContent = quarterNames[currentQuarter] || '';
 
             // Convert to array and sort
             const sortedPlayers = Object.values(playerScores).sort((a, b) => {
