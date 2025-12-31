@@ -1,0 +1,672 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Update Tiers - Bush League Admin</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playball&family=Bebas+Neue&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --navy: #0f1c2e;
+            --navy-light: #1a2942;
+            --navy-lighter: #8a94a6;
+            --gold: #d4a853;
+            --gold-light: #e6c070;
+            --cream: #f5f1e8;
+            --white: #ffffff;
+            --red: #c8102e;
+            --green: #00843d;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, var(--navy) 0%, var(--navy-light) 100%);
+            color: var(--cream);
+            min-height: 100vh;
+            padding: 2rem;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .header h1 {
+            font-family: 'Playball', cursive;
+            font-size: 3rem;
+            color: var(--gold);
+            margin-bottom: 0.5rem;
+        }
+
+        .header .subtitle {
+            color: var(--navy-lighter);
+            font-size: 1.1rem;
+            margin-bottom: 1rem;
+        }
+
+        .quarter-info {
+            background: rgba(212, 168, 83, 0.1);
+            border: 2px solid var(--gold);
+            border-radius: 8px;
+            padding: 1rem;
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        .quarter-info h2 {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.5rem;
+            color: var(--gold);
+            margin-bottom: 0.5rem;
+        }
+
+        .alert {
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1.5rem;
+            display: none;
+        }
+
+        .alert.success {
+            background: rgba(0, 132, 61, 0.2);
+            border: 1px solid var(--green);
+            color: var(--green);
+        }
+
+        .alert.error {
+            background: rgba(200, 16, 46, 0.2);
+            border: 1px solid var(--red);
+            color: var(--red);
+        }
+
+        .alert.visible {
+            display: block;
+        }
+
+        .tiers-container {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .tier-zone {
+            background: var(--white);
+            border-radius: 12px;
+            padding: 1.5rem;
+            min-height: 400px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .tier-zone.drag-over {
+            background: rgba(212, 168, 83, 0.1);
+            border: 3px dashed var(--gold);
+        }
+
+        .tier-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 2px solid var(--navy);
+        }
+
+        .tier-header h3 {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.5rem;
+            color: var(--navy);
+        }
+
+        .tier-counter {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.2rem;
+            color: var(--navy-lighter);
+            padding: 0.25rem 0.75rem;
+            background: var(--cream);
+            border-radius: 6px;
+        }
+
+        .tier-counter.valid {
+            background: rgba(0, 132, 61, 0.2);
+            color: var(--green);
+        }
+
+        .tier-counter.invalid {
+            background: rgba(200, 16, 46, 0.2);
+            color: var(--red);
+        }
+
+        .team-item {
+            background: var(--navy);
+            color: var(--white);
+            padding: 0.75rem 1rem;
+            margin-bottom: 0.5rem;
+            border-radius: 8px;
+            cursor: move;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            transition: all 0.2s;
+            user-select: none;
+        }
+
+        .team-item:hover {
+            background: var(--navy-light);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .team-item.dragging {
+            opacity: 0.5;
+            cursor: grabbing;
+        }
+
+        .team-logo {
+            width: 30px;
+            height: 30px;
+            object-fit: contain;
+        }
+
+        .team-name {
+            flex: 1;
+            font-weight: 500;
+        }
+
+        .team-abbrev {
+            font-family: 'Bebas Neue', sans-serif;
+            color: var(--gold);
+            font-size: 1.1rem;
+        }
+
+        .actions {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin-bottom: 2rem;
+        }
+
+        .btn {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.2rem;
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+            letter-spacing: 0.05em;
+        }
+
+        .btn-primary {
+            background: var(--gold);
+            color: var(--navy);
+        }
+
+        .btn-primary:hover:not(:disabled) {
+            background: var(--gold-light);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(212, 168, 83, 0.4);
+        }
+
+        .btn-primary:disabled {
+            background: var(--navy-lighter);
+            cursor: not-allowed;
+            opacity: 0.5;
+        }
+
+        .btn-secondary {
+            background: var(--navy);
+            color: var(--gold);
+            border: 2px solid var(--gold);
+        }
+
+        .btn-secondary:hover {
+            background: var(--navy-light);
+            transform: translateY(-2px);
+        }
+
+        .json-output {
+            background: var(--white);
+            border-radius: 12px;
+            padding: 2rem;
+            display: none;
+        }
+
+        .json-output.visible {
+            display: block;
+        }
+
+        .json-output h3 {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.5rem;
+            color: var(--navy);
+            margin-bottom: 1rem;
+        }
+
+        .json-code {
+            background: var(--navy);
+            color: var(--cream);
+            padding: 1.5rem;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+            overflow-x: auto;
+            max-height: 500px;
+            overflow-y: auto;
+            white-space: pre;
+        }
+
+        .copy-btn {
+            margin-top: 1rem;
+        }
+
+        @media (max-width: 1200px) {
+            .tiers-container {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .tiers-container {
+                grid-template-columns: 1fr;
+            }
+
+            .header h1 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Bush League</h1>
+            <p class="subtitle">Update Tier Assignments - Admin Tool</p>
+        </div>
+
+        <div class="quarter-info">
+            <h2 id="quarter-title">Loading...</h2>
+            <p id="quarter-subtitle">Drag and drop teams to assign tiers</p>
+        </div>
+
+        <div id="alert" class="alert"></div>
+
+        <div class="tiers-container" id="tiers-container">
+            <!-- Tier zones will be generated here -->
+        </div>
+
+        <div class="actions">
+            <button id="reset-btn" class="btn btn-secondary">Reset to Current</button>
+            <button id="generate-btn" class="btn btn-primary" disabled>Generate Tiers JSON</button>
+        </div>
+
+        <div id="json-output" class="json-output">
+            <h3>Updated tiers.json</h3>
+            <p style="color: var(--navy-lighter); margin-bottom: 1rem;">
+                Copy the JSON below and replace the entire contents of data/tiers.json
+            </p>
+            <pre id="json-code" class="json-code"></pre>
+            <button id="copy-btn" class="btn btn-primary copy-btn">Copy to Clipboard</button>
+        </div>
+    </div>
+
+    <script>
+        let allData = {
+            standings: null,
+            tiers: null
+        };
+        let currentQuarter = null;
+        let draggedElement = null;
+        const expectedCounts = {
+            tier1: 6,
+            tier2: 8,
+            tier3: 8,
+            tier4: 8
+        };
+
+        // Load data
+        async function loadData() {
+            try {
+                const [standingsRes, tiersRes] = await Promise.all([
+                    fetch('data/standings.json'),
+                    fetch('data/tiers.json')
+                ]);
+
+                allData.standings = await standingsRes.json();
+                allData.tiers = await tiersRes.json();
+
+                initializePage();
+            } catch (error) {
+                console.error('Error loading data:', error);
+                showAlert('Error loading data. Please refresh the page.', 'error');
+            }
+        }
+
+        // Initialize page
+        function initializePage() {
+            currentQuarter = getNextQuarter();
+
+            if (!currentQuarter) {
+                showAlert('No upcoming quarters to configure.', 'error');
+                return;
+            }
+
+            document.getElementById('quarter-title').textContent = `Configuring ${currentQuarter} Tiers`;
+
+            // Create tier zones
+            createTierZones();
+
+            // Populate with current/default teams
+            populateTiers();
+
+            // Update counters
+            updateAllCounters();
+        }
+
+        // Get next quarter needing tier assignments
+        function getNextQuarter() {
+            const quarters = ['Q1', 'Q2', 'Q3', 'Q4'];
+            const current = allData.tiers.currentQuarter;
+            const currentIndex = quarters.indexOf(current);
+
+            // Return the next quarter after current
+            if (currentIndex >= 0 && currentIndex < 3) {
+                return quarters[currentIndex + 1];
+            }
+
+            return null;
+        }
+
+        // Create tier drop zones
+        function createTierZones() {
+            const container = document.getElementById('tiers-container');
+            const tiers = [
+                { key: 'tier1', name: 'Tier 1', expected: 6 },
+                { key: 'tier2', name: 'Tier 2', expected: 8 },
+                { key: 'tier3', name: 'Tier 3', expected: 8 },
+                { key: 'tier4', name: 'Tier 4', expected: 8 }
+            ];
+
+            container.innerHTML = tiers.map(tier => `
+                <div class="tier-zone" id="${tier.key}" data-tier="${tier.key}">
+                    <div class="tier-header">
+                        <h3>${tier.name}</h3>
+                        <span class="tier-counter" id="${tier.key}-counter">0/${tier.expected}</span>
+                    </div>
+                    <div class="tier-teams" id="${tier.key}-teams"></div>
+                </div>
+            `).join('');
+
+            // Add drag and drop event listeners to zones
+            document.querySelectorAll('.tier-zone').forEach(zone => {
+                zone.addEventListener('dragover', handleDragOver);
+                zone.addEventListener('drop', handleDrop);
+                zone.addEventListener('dragleave', handleDragLeave);
+            });
+        }
+
+        // Populate tiers with teams
+        function populateTiers() {
+            // Get teams for current quarter or use most recent non-empty quarter
+            let tierAssignments = allData.tiers.tiers[currentQuarter];
+
+            // If current quarter is empty, use previous quarter as default
+            if (!tierAssignments || tierAssignments.tier1.length === 0) {
+                const quarters = ['Q1', 'Q2', 'Q3', 'Q4'];
+                const currentIndex = quarters.indexOf(currentQuarter);
+
+                for (let i = currentIndex - 1; i >= 0; i--) {
+                    const prevQuarter = quarters[i];
+                    const prevTiers = allData.tiers.tiers[prevQuarter];
+                    if (prevTiers && prevTiers.tier1.length > 0) {
+                        tierAssignments = JSON.parse(JSON.stringify(prevTiers));
+                        break;
+                    }
+                }
+            }
+
+            // Populate each tier
+            ['tier1', 'tier2', 'tier3', 'tier4'].forEach(tierKey => {
+                const teams = tierAssignments[tierKey] || [];
+                const container = document.getElementById(`${tierKey}-teams`);
+
+                teams.forEach(abbrev => {
+                    container.appendChild(createTeamElement(abbrev));
+                });
+            });
+        }
+
+        // Create team element
+        function createTeamElement(abbrev) {
+            const team = allData.standings.teams[abbrev];
+            const teamName = team ? team.name : abbrev;
+            const logoUrl = `https://a.espncdn.com/combiner/i?img=/i/teamlogos/mlb/500/${abbrev}.png&h=100&w=100`;
+
+            const div = document.createElement('div');
+            div.className = 'team-item';
+            div.draggable = true;
+            div.dataset.abbrev = abbrev;
+            div.innerHTML = `
+                <img src="${logoUrl}" alt="${abbrev}" class="team-logo" onerror="this.style.display='none'">
+                <span class="team-name">${teamName}</span>
+                <span class="team-abbrev">${abbrev}</span>
+            `;
+
+            // Add drag event listeners
+            div.addEventListener('dragstart', handleDragStart);
+            div.addEventListener('dragend', handleDragEnd);
+
+            return div;
+        }
+
+        // Drag handlers
+        function handleDragStart(e) {
+            draggedElement = e.target;
+            e.target.classList.add('dragging');
+            e.dataTransfer.effectAllowed = 'move';
+            e.dataTransfer.setData('text/html', e.target.innerHTML);
+        }
+
+        function handleDragEnd(e) {
+            e.target.classList.remove('dragging');
+
+            // Remove drag-over class from all zones
+            document.querySelectorAll('.tier-zone').forEach(zone => {
+                zone.classList.remove('drag-over');
+            });
+        }
+
+        function handleDragOver(e) {
+            if (e.preventDefault) {
+                e.preventDefault();
+            }
+
+            e.dataTransfer.dropEffect = 'move';
+
+            // Add visual feedback
+            const zone = e.currentTarget;
+            zone.classList.add('drag-over');
+
+            return false;
+        }
+
+        function handleDragLeave(e) {
+            e.currentTarget.classList.remove('drag-over');
+        }
+
+        function handleDrop(e) {
+            if (e.stopPropagation) {
+                e.stopPropagation();
+            }
+
+            e.preventDefault();
+
+            const zone = e.currentTarget;
+            zone.classList.remove('drag-over');
+
+            if (draggedElement) {
+                // Find the teams container within this zone
+                const teamsContainer = zone.querySelector('.tier-teams');
+                teamsContainer.appendChild(draggedElement);
+
+                // Update counters and validation
+                updateAllCounters();
+                validateTiers();
+            }
+
+            return false;
+        }
+
+        // Update all tier counters
+        function updateAllCounters() {
+            ['tier1', 'tier2', 'tier3', 'tier4'].forEach(tierKey => {
+                const container = document.getElementById(`${tierKey}-teams`);
+                const count = container.querySelectorAll('.team-item').length;
+                const expected = expectedCounts[tierKey];
+                const counter = document.getElementById(`${tierKey}-counter`);
+
+                counter.textContent = `${count}/${expected}`;
+
+                // Update counter styling
+                counter.classList.remove('valid', 'invalid');
+                if (count === expected) {
+                    counter.classList.add('valid');
+                } else {
+                    counter.classList.add('invalid');
+                }
+            });
+        }
+
+        // Validate tiers
+        function validateTiers() {
+            let isValid = true;
+            const teams = new Set();
+
+            // Check each tier has correct count and no duplicates
+            ['tier1', 'tier2', 'tier3', 'tier4'].forEach(tierKey => {
+                const container = document.getElementById(`${tierKey}-teams`);
+                const teamItems = container.querySelectorAll('.team-item');
+                const count = teamItems.length;
+                const expected = expectedCounts[tierKey];
+
+                if (count !== expected) {
+                    isValid = false;
+                }
+
+                // Check for duplicates
+                teamItems.forEach(item => {
+                    const abbrev = item.dataset.abbrev;
+                    if (teams.has(abbrev)) {
+                        isValid = false;
+                    }
+                    teams.add(abbrev);
+                });
+            });
+
+            // Check total is 30 teams
+            if (teams.size !== 30) {
+                isValid = false;
+            }
+
+            // Enable/disable generate button
+            document.getElementById('generate-btn').disabled = !isValid;
+
+            return isValid;
+        }
+
+        // Reset to current tiers
+        document.getElementById('reset-btn').addEventListener('click', function() {
+            // Clear all tier zones
+            ['tier1', 'tier2', 'tier3', 'tier4'].forEach(tierKey => {
+                const container = document.getElementById(`${tierKey}-teams`);
+                container.innerHTML = '';
+            });
+
+            // Repopulate
+            populateTiers();
+            updateAllCounters();
+            validateTiers();
+
+            showAlert('Reset to current tier assignments', 'success');
+
+            // Hide JSON output
+            document.getElementById('json-output').classList.remove('visible');
+        });
+
+        // Generate JSON
+        document.getElementById('generate-btn').addEventListener('click', function() {
+            if (!validateTiers()) {
+                showAlert('Please ensure all tiers have the correct number of teams', 'error');
+                return;
+            }
+
+            // Collect teams from each tier
+            const newTiers = {
+                tier1: [],
+                tier2: [],
+                tier3: [],
+                tier4: []
+            };
+
+            ['tier1', 'tier2', 'tier3', 'tier4'].forEach(tierKey => {
+                const container = document.getElementById(`${tierKey}-teams`);
+                const teamItems = container.querySelectorAll('.team-item');
+                teamItems.forEach(item => {
+                    newTiers[tierKey].push(item.dataset.abbrev);
+                });
+            });
+
+            // Create updated tiers.json
+            const updatedTiersData = JSON.parse(JSON.stringify(allData.tiers));
+            updatedTiersData.tiers[currentQuarter] = newTiers;
+            updatedTiersData.lastUpdated = new Date().toISOString();
+
+            // Display JSON
+            const jsonCode = document.getElementById('json-code');
+            jsonCode.textContent = JSON.stringify(updatedTiersData, null, 2);
+            document.getElementById('json-output').classList.add('visible');
+
+            // Scroll to output
+            document.getElementById('json-output').scrollIntoView({ behavior: 'smooth' });
+
+            showAlert(`✅ ${currentQuarter} tiers generated! Copy the JSON below and replace the entire tiers.json file.`, 'success');
+        });
+
+        // Copy to clipboard
+        document.getElementById('copy-btn').addEventListener('click', function() {
+            const jsonCode = document.getElementById('json-code').textContent;
+            navigator.clipboard.writeText(jsonCode).then(() => {
+                this.textContent = '✓ Copied!';
+                setTimeout(() => {
+                    this.textContent = 'Copy to Clipboard';
+                }, 2000);
+            });
+        });
+
+        // Show alert
+        function showAlert(message, type) {
+            const alert = document.getElementById('alert');
+            alert.textContent = message;
+            alert.className = `alert ${type} visible`;
+
+            setTimeout(() => {
+                alert.classList.remove('visible');
+            }, 5000);
+        }
+
+        // Load data on page load
+        loadData();
+    </script>
+</body>
+</html>
