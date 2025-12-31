@@ -769,29 +769,33 @@
                 manualPicks: [tier1Pick, tier2Pick]  // Only T1 and T2
             };
 
-            // Generate JSON output
-            const jsonOutput = {
-                playerId: selectedPlayer.id,
-                playerName: selectedPlayer.name,
-                quarter: nextQuarter,
-                picks: picks,
-                burnedTeamsUpdate: [...new Set([
-                    ...(selectedPlayer.burnedTeams || []),
+            // Deep clone the entire players data
+            const updatedPlayersData = JSON.parse(JSON.stringify(allData.players));
+
+            // Find and update the selected player
+            const playerToUpdate = updatedPlayersData.players.find(p => p.id === selectedPlayer.id);
+            if (playerToUpdate) {
+                // Update the quarter picks
+                playerToUpdate.quarters[nextQuarter] = picks;
+
+                // Update burned teams (add only T1 and T2)
+                playerToUpdate.burnedTeams = [...new Set([
+                    ...(playerToUpdate.burnedTeams || []),
                     picks.tier1,
                     picks.tier2
                     // NOTE: tier3 and tier4 NOT added - they can be reused
-                ])]
-            };
+                ])];
+            }
 
-            // Display JSON
+            // Display the complete updated players.json file
             const jsonCode = document.getElementById('json-code');
-            jsonCode.textContent = JSON.stringify(jsonOutput, null, 2);
+            jsonCode.textContent = JSON.stringify(updatedPlayersData, null, 2);
             document.getElementById('json-output').classList.remove('hidden');
 
             // Scroll to JSON output
             document.getElementById('json-output').scrollIntoView({ behavior: 'smooth' });
 
-            showAlert(`✅ Picks generated! Random assignments: Tier 3 = ${tier3Pick}, Tier 4 = ${tier4Pick}. Copy the JSON below.`, 'success');
+            showAlert(`✅ Picks generated! Random assignments: Tier 3 = ${tier3Pick}, Tier 4 = ${tier4Pick}. Copy the complete JSON below and replace the entire players.json file.`, 'success');
         });
 
         // Copy to clipboard
