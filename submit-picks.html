@@ -1,0 +1,739 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Submit Picks - Bush League</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='48' fill='%23ffffff' stroke='%23dc143c' stroke-width='2'/><path d='M 30,25 Q 50,15 70,25' stroke='%23dc143c' stroke-width='2' fill='none'/><path d='M 30,40 Q 50,30 70,40' stroke='%23dc143c' stroke-width='2' fill='none'/><path d='M 30,55 Q 50,45 70,55' stroke='%23dc143c' stroke-width='2' fill='none'/><path d='M 30,70 Q 50,60 70,70' stroke='%23dc143c' stroke-width='2' fill='none'/></svg>" type="image/svg+xml">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Playball&family=Source+Sans+3:ital,wght@0,300;0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --navy: #0f1c2e;
+            --navy-light: #1a2d47;
+            --navy-lighter: #243a56;
+            --cream: #f5f1e8;
+            --cream-dark: #e8e2d5;
+            --gold: #d4a853;
+            --gold-light: #e8c47a;
+            --red: #c41e3a;
+            --green: #2d5a3d;
+            --white: #ffffff;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Source Sans 3', -apple-system, sans-serif;
+            background: var(--cream);
+            color: var(--navy);
+            line-height: 1.6;
+            font-size: 16px;
+        }
+
+        /* Navigation */
+        .nav {
+            background: var(--navy);
+            padding: 1rem 2rem;
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .nav-inner {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .nav-logo {
+            font-family: 'Playball', cursive;
+            font-size: 1.8rem;
+            color: var(--cream);
+            text-decoration: none;
+        }
+
+        .nav-logo span {
+            color: var(--gold);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .nav-links a {
+            color: var(--cream);
+            text-decoration: none;
+            font-size: 0.9rem;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            opacity: 0.8;
+            transition: opacity 0.3s;
+        }
+
+        .nav-links a:hover {
+            opacity: 1;
+            color: var(--gold);
+        }
+
+        /* Container */
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        /* Header */
+        .header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .header h1 {
+            font-family: 'Playball', cursive;
+            font-size: clamp(2rem, 5vw, 3rem);
+            color: var(--navy);
+            margin-bottom: 0.5rem;
+        }
+
+        .header .subtitle {
+            color: var(--navy-lighter);
+            font-size: 1rem;
+        }
+
+        /* Alert Box */
+        .alert {
+            background: linear-gradient(135deg, #fff3e0 0%, #ffe0b2 100%);
+            border: 2px solid #ff9800;
+            border-radius: 8px;
+            padding: 1rem 1.5rem;
+            margin-bottom: 2rem;
+            text-align: center;
+            font-weight: 600;
+            color: var(--navy);
+        }
+
+        .alert.error {
+            background: linear-gradient(135deg, #ffebee 0%, #ffcdd2 100%);
+            border-color: var(--red);
+        }
+
+        .alert.success {
+            background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%);
+            border-color: var(--green);
+        }
+
+        .alert.hidden {
+            display: none;
+        }
+
+        /* Form Container */
+        .form-container {
+            background: var(--white);
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: 0 4px 30px rgba(15, 28, 46, 0.08);
+            margin-bottom: 2rem;
+        }
+
+        .form-section {
+            margin-bottom: 2rem;
+        }
+
+        .form-section h2 {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.5rem;
+            color: var(--navy);
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--cream);
+        }
+
+        /* Form Controls */
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--navy);
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.1rem;
+            letter-spacing: 0.05em;
+        }
+
+        select, input[type="text"] {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 2px solid var(--navy-lighter);
+            border-radius: 8px;
+            font-family: 'Source Sans 3', sans-serif;
+            font-size: 1rem;
+            background: var(--white);
+            color: var(--navy);
+            transition: border-color 0.3s;
+        }
+
+        select:focus, input[type="text"]:focus {
+            outline: none;
+            border-color: var(--gold);
+        }
+
+        select:disabled, input[type="text"]:disabled {
+            background: var(--cream);
+            cursor: not-allowed;
+            opacity: 0.6;
+        }
+
+        /* Burned Teams Display */
+        .burned-teams-display {
+            background: #ffe8ec;
+            border: 2px solid var(--red);
+            border-radius: 8px;
+            padding: 1rem;
+            margin-top: 1rem;
+        }
+
+        .burned-teams-display.hidden {
+            display: none;
+        }
+
+        .burned-teams-display h3 {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.1rem;
+            color: var(--red);
+            margin-bottom: 0.75rem;
+        }
+
+        .burned-teams-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .burned-team-badge {
+            background: var(--white);
+            border: 1px solid var(--red);
+            padding: 0.4rem 0.8rem;
+            border-radius: 4px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--red);
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+
+        .team-logo {
+            width: 20px;
+            height: 20px;
+            object-fit: contain;
+        }
+
+        /* Tier Selection Grid */
+        .tier-selections {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+
+        .tier-select-group {
+            background: var(--cream);
+            padding: 1rem;
+            border-radius: 8px;
+        }
+
+        .tier-label {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.2rem;
+            color: var(--navy);
+            margin-bottom: 0.5rem;
+            display: block;
+        }
+
+        /* Submit Button */
+        .submit-btn {
+            width: 100%;
+            padding: 1rem 2rem;
+            background: var(--navy);
+            color: var(--cream);
+            border: none;
+            border-radius: 8px;
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.3rem;
+            letter-spacing: 0.05em;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 2rem;
+        }
+
+        .submit-btn:hover:not(:disabled) {
+            background: var(--gold);
+            color: var(--navy);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 20px rgba(212, 168, 83, 0.3);
+        }
+
+        .submit-btn:disabled {
+            background: var(--navy-lighter);
+            cursor: not-allowed;
+            opacity: 0.5;
+        }
+
+        /* JSON Output */
+        .json-output {
+            background: var(--white);
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: 0 4px 30px rgba(15, 28, 46, 0.08);
+            margin-top: 2rem;
+        }
+
+        .json-output.hidden {
+            display: none;
+        }
+
+        .json-output h2 {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.5rem;
+            color: var(--navy);
+            margin-bottom: 1rem;
+        }
+
+        .json-code {
+            background: var(--navy);
+            color: var(--cream);
+            padding: 1.5rem;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+            overflow-x: auto;
+            white-space: pre;
+            line-height: 1.5;
+        }
+
+        .copy-btn {
+            margin-top: 1rem;
+            padding: 0.75rem 1.5rem;
+            background: var(--gold);
+            color: var(--navy);
+            border: none;
+            border-radius: 8px;
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1rem;
+            letter-spacing: 0.05em;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .copy-btn:hover {
+            background: var(--gold-light);
+            transform: translateY(-2px);
+        }
+
+        /* Loading State */
+        .loading {
+            text-align: center;
+            padding: 2rem;
+            color: var(--navy-lighter);
+            font-style: italic;
+        }
+
+        /* Help Text */
+        .help-text {
+            font-size: 0.85rem;
+            color: var(--navy-lighter);
+            margin-top: 0.5rem;
+            font-style: italic;
+        }
+
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+
+            .form-container {
+                padding: 1.5rem;
+            }
+
+            .tier-selections {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="nav">
+        <div class="nav-inner">
+            <a href="index.html" class="nav-logo">Bush <span>League</span></a>
+            <div class="nav-links">
+                <a href="app.html">Dashboard</a>
+                <a href="submit-picks.html">Submit Picks</a>
+                <a href="index.html#rules">Rules</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <h1>Submit Your Picks</h1>
+            <p class="subtitle">Select your teams for the upcoming quarter</p>
+        </div>
+
+        <!-- Alert for deadline/status -->
+        <div id="alert" class="alert hidden"></div>
+
+        <!-- Form Container -->
+        <div class="form-container">
+            <!-- Player Selection -->
+            <div class="form-section">
+                <h2>Step 1: Who Are You?</h2>
+                <div class="form-group">
+                    <label for="player-select">Select Your Name</label>
+                    <select id="player-select">
+                        <option value="">-- Choose your name --</option>
+                    </select>
+                </div>
+
+                <!-- Burned Teams Display -->
+                <div id="burned-teams-display" class="burned-teams-display hidden">
+                    <h3>⚠️ Your Burned Teams (Cannot Select Again)</h3>
+                    <div id="burned-teams-list" class="burned-teams-list"></div>
+                </div>
+            </div>
+
+            <!-- Team Selection -->
+            <div class="form-section">
+                <h2>Step 2: Select Your Teams</h2>
+                <p class="help-text">Choose one team from each tier. Only teams you haven't burned are shown.</p>
+
+                <div id="tier-selections" class="tier-selections">
+                    <!-- Tier dropdowns will be populated here -->
+                </div>
+            </div>
+
+            <!-- Submit Button -->
+            <button id="submit-btn" class="submit-btn" disabled>Submit Picks</button>
+        </div>
+
+        <!-- JSON Output for Manual Update -->
+        <div id="json-output" class="json-output hidden">
+            <h2>Your Picks (JSON)</h2>
+            <p class="help-text">Copy this and update your players.json file:</p>
+            <pre id="json-code" class="json-code"></pre>
+            <button id="copy-btn" class="copy-btn">Copy to Clipboard</button>
+        </div>
+    </div>
+
+    <script>
+        // Global data
+        let allData = {};
+        let selectedPlayer = null;
+
+        // ESPN logo mapping
+        function getESPNAbbrev(abbrev) {
+            const espnMap = {
+                'KCR': 'KC',
+                'SDP': 'SD',
+                'SFG': 'SF',
+                'TBR': 'TB'
+            };
+            return espnMap[abbrev] || abbrev;
+        }
+
+        // Render team logo
+        function renderTeamLogo(abbrev) {
+            return `<img src="https://a.espncdn.com/combiner/i?img=/i/teamlogos/mlb/500/${getESPNAbbrev(abbrev)}.png&h=20&w=20"
+                         alt="${abbrev}"
+                         class="team-logo"
+                         onerror="this.style.display='none';">`;
+        }
+
+        // Load all data
+        async function loadData() {
+            try {
+                const [standings, players, quarters, tiers] = await Promise.all([
+                    fetch('data/standings.json').then(r => r.json()),
+                    fetch('data/players.json').then(r => r.json()),
+                    fetch('data/quarters.json').then(r => r.json()),
+                    fetch('data/tiers.json').then(r => r.json())
+                ]);
+
+                allData = { standings, players, quarters, tiers };
+
+                // Populate player dropdown
+                populatePlayerDropdown();
+
+                // Show deadline info
+                showDeadlineInfo();
+
+                // Check if tiers are available for next quarter
+                checkTiersAvailability();
+
+            } catch (error) {
+                console.error('Error loading data:', error);
+                showAlert('Error loading data. Please refresh the page.', 'error');
+            }
+        }
+
+        // Populate player dropdown
+        function populatePlayerDropdown() {
+            const select = document.getElementById('player-select');
+            allData.players.players.forEach(player => {
+                const option = document.createElement('option');
+                option.value = player.id;
+                option.textContent = player.name;
+                select.appendChild(option);
+            });
+
+            select.addEventListener('change', handlePlayerChange);
+        }
+
+        // Handle player selection change
+        function handlePlayerChange(e) {
+            const playerId = e.target.value;
+
+            if (!playerId) {
+                selectedPlayer = null;
+                document.getElementById('burned-teams-display').classList.add('hidden');
+                clearTierSelections();
+                document.getElementById('submit-btn').disabled = true;
+                return;
+            }
+
+            selectedPlayer = allData.players.players.find(p => p.id === playerId);
+
+            // Show burned teams
+            displayBurnedTeams();
+
+            // Populate tier selections
+            populateTierSelections();
+        }
+
+        // Display burned teams
+        function displayBurnedTeams() {
+            const display = document.getElementById('burned-teams-display');
+            const list = document.getElementById('burned-teams-list');
+
+            const burnedTeams = selectedPlayer.burnedTeams || [];
+
+            if (burnedTeams.length === 0) {
+                display.classList.add('hidden');
+                return;
+            }
+
+            list.innerHTML = burnedTeams.map(abbrev => {
+                const team = allData.standings.teams[abbrev];
+                return `
+                    <div class="burned-team-badge">
+                        ${renderTeamLogo(abbrev)}
+                        ${team ? team.name : abbrev}
+                    </div>
+                `;
+            }).join('');
+
+            display.classList.remove('hidden');
+        }
+
+        // Get next quarter for selection
+        function getNextQuarter() {
+            const currentQuarter = allData.quarters.currentQuarter;
+            const nextQuarterMap = { Q1: 'Q2', Q2: 'Q3', Q3: 'Q4', Q4: null };
+            return nextQuarterMap[currentQuarter];
+        }
+
+        // Check if tiers are available
+        function checkTiersAvailability() {
+            const nextQuarter = getNextQuarter();
+
+            if (!nextQuarter) {
+                showAlert('Season complete - no more quarters to select for.', 'error');
+                document.getElementById('player-select').disabled = true;
+                return false;
+            }
+
+            const tierAssignments = allData.tiers.tiers[nextQuarter];
+
+            if (!tierAssignments ||
+                (!tierAssignments.tier1?.length && !tierAssignments.tier2?.length &&
+                 !tierAssignments.tier3?.length && !tierAssignments.tier4?.length)) {
+                showAlert(`Tiers for ${nextQuarter} have not been announced yet. Check back later!`, 'error');
+                document.getElementById('player-select').disabled = true;
+                return false;
+            }
+
+            return true;
+        }
+
+        // Show deadline info
+        function showDeadlineInfo() {
+            const nextQuarter = getNextQuarter();
+
+            if (!nextQuarter) return;
+
+            const deadline = new Date(allData.quarters.quarters[nextQuarter].selectionDeadline);
+            const now = new Date();
+            const daysUntil = Math.ceil((deadline - now) / (1000 * 60 * 60 * 24));
+            const deadlineFormatted = deadline.toLocaleDateString('en-US', {
+                month: 'long',
+                day: 'numeric',
+                year: 'numeric'
+            });
+
+            let message = `Submitting picks for ${nextQuarter}. Deadline: ${deadlineFormatted}`;
+            let type = '';
+
+            if (daysUntil < 0) {
+                message = `⚠️ Deadline for ${nextQuarter} has passed!`;
+                type = 'error';
+            } else if (daysUntil <= 7) {
+                message = `⚠️ ${message} (${daysUntil} day${daysUntil !== 1 ? 's' : ''} remaining!)`;
+                type = 'error';
+            } else if (daysUntil <= 14) {
+                message = `⏰ ${message} (${daysUntil} days remaining)`;
+                type = '';
+            }
+
+            showAlert(message, type);
+        }
+
+        // Populate tier selections
+        function populateTierSelections() {
+            const container = document.getElementById('tier-selections');
+            const nextQuarter = getNextQuarter();
+
+            if (!nextQuarter) return;
+
+            const tierAssignments = allData.tiers.tiers[nextQuarter];
+            const burnedTeams = new Set(selectedPlayer.burnedTeams || []);
+
+            const tiers = ['tier1', 'tier2', 'tier3', 'tier4'];
+            const tierNames = ['Tier 1', 'Tier 2', 'Tier 3', 'Tier 4'];
+
+            container.innerHTML = tiers.map((tierKey, index) => {
+                const teams = tierAssignments[tierKey] || [];
+                const availableTeams = teams.filter(abbrev => !burnedTeams.has(abbrev));
+
+                return `
+                    <div class="tier-select-group">
+                        <label class="tier-label">${tierNames[index]}</label>
+                        <select id="${tierKey}" data-tier="${tierKey}" class="tier-select">
+                            <option value="">-- Select team --</option>
+                            ${availableTeams.map(abbrev => {
+                                const team = allData.standings.teams[abbrev];
+                                const teamName = team ? team.name : abbrev;
+                                return `<option value="${abbrev}">${teamName} (${abbrev})</option>`;
+                            }).join('')}
+                        </select>
+                        ${availableTeams.length === 0 ?
+                            '<p class="help-text" style="color: var(--red);">All teams burned!</p>' :
+                            `<p class="help-text">${availableTeams.length} team${availableTeams.length !== 1 ? 's' : ''} available</p>`
+                        }
+                    </div>
+                `;
+            }).join('');
+
+            // Add change listeners to tier selects
+            document.querySelectorAll('.tier-select').forEach(select => {
+                select.addEventListener('change', checkFormComplete);
+            });
+
+            checkFormComplete();
+        }
+
+        // Clear tier selections
+        function clearTierSelections() {
+            document.getElementById('tier-selections').innerHTML = '';
+        }
+
+        // Check if form is complete
+        function checkFormComplete() {
+            const tier1 = document.getElementById('tier1')?.value;
+            const tier2 = document.getElementById('tier2')?.value;
+            const tier3 = document.getElementById('tier3')?.value;
+            const tier4 = document.getElementById('tier4')?.value;
+
+            const isComplete = selectedPlayer && tier1 && tier2 && tier3 && tier4;
+            document.getElementById('submit-btn').disabled = !isComplete;
+        }
+
+        // Show alert
+        function showAlert(message, type = '') {
+            const alert = document.getElementById('alert');
+            alert.textContent = message;
+            alert.className = `alert ${type}`;
+            alert.classList.remove('hidden');
+        }
+
+        // Handle form submission
+        document.getElementById('submit-btn').addEventListener('click', function() {
+            const nextQuarter = getNextQuarter();
+
+            const picks = {
+                tier1: document.getElementById('tier1').value,
+                tier2: document.getElementById('tier2').value,
+                tier3: document.getElementById('tier3').value,
+                tier4: document.getElementById('tier4').value,
+                manualPicks: [
+                    document.getElementById('tier1').value,
+                    document.getElementById('tier2').value
+                ]
+            };
+
+            // Generate JSON output
+            const jsonOutput = {
+                playerId: selectedPlayer.id,
+                playerName: selectedPlayer.name,
+                quarter: nextQuarter,
+                picks: picks,
+                burnedTeamsUpdate: [...new Set([
+                    ...(selectedPlayer.burnedTeams || []),
+                    picks.tier1,
+                    picks.tier2,
+                    picks.tier3,
+                    picks.tier4
+                ])]
+            };
+
+            // Display JSON
+            const jsonCode = document.getElementById('json-code');
+            jsonCode.textContent = JSON.stringify(jsonOutput, null, 2);
+            document.getElementById('json-output').classList.remove('hidden');
+
+            // Scroll to JSON output
+            document.getElementById('json-output').scrollIntoView({ behavior: 'smooth' });
+
+            showAlert('✅ Picks generated! Copy the JSON below and send it to the commissioner.', 'success');
+        });
+
+        // Copy to clipboard
+        document.getElementById('copy-btn').addEventListener('click', function() {
+            const jsonCode = document.getElementById('json-code').textContent;
+            navigator.clipboard.writeText(jsonCode).then(() => {
+                this.textContent = '✓ Copied!';
+                setTimeout(() => {
+                    this.textContent = 'Copy to Clipboard';
+                }, 2000);
+            });
+        });
+
+        // Load data on page load
+        loadData();
+    </script>
+</body>
+</html>
