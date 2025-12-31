@@ -359,6 +359,31 @@
             font-style: italic;
         }
 
+        /* Random Assignment Notice */
+        .random-notice {
+            background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
+            border: 2px solid #2196f3;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .random-notice h3 {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.2rem;
+            color: var(--navy);
+            margin-bottom: 0.75rem;
+        }
+
+        .random-notice p {
+            margin-bottom: 0.5rem;
+            color: var(--navy);
+        }
+
+        .random-notice p:last-child {
+            margin-bottom: 0;
+        }
+
         /* Mobile Responsive */
         @media (max-width: 768px) {
             .container {
@@ -493,15 +518,39 @@
 
         // Populate player dropdown
         function populatePlayerDropdown() {
-            const select = document.getElementById('player-select');
-            allData.players.players.forEach(player => {
+            const playerSelect = document.getElementById('player-select');
+            const nextQuarter = getNextQuarter();
+
+            if (!nextQuarter) {
+                playerSelect.innerHTML = '<option value="">-- No upcoming quarters --</option>';
+                return;
+            }
+
+            // Filter out players who have already submitted for next quarter
+            const availablePlayers = allData.players.players.filter(player => {
+                return player.quarters[nextQuarter] === null || player.quarters[nextQuarter] === undefined;
+            });
+
+            if (availablePlayers.length === 0) {
+                playerSelect.innerHTML = '<option value="">-- All players have submitted --</option>';
+                return;
+            }
+
+            // Add default option
+            const defaultOption = document.createElement('option');
+            defaultOption.value = '';
+            defaultOption.textContent = '-- Select your name --';
+            playerSelect.appendChild(defaultOption);
+
+            // Add available players
+            availablePlayers.forEach(player => {
                 const option = document.createElement('option');
                 option.value = player.id;
                 option.textContent = player.name;
-                select.appendChild(option);
+                playerSelect.appendChild(option);
             });
 
-            select.addEventListener('change', handlePlayerChange);
+            playerSelect.addEventListener('change', handlePlayerChange);
         }
 
         // Handle player selection change
@@ -622,8 +671,9 @@
             const tierAssignments = allData.tiers.tiers[nextQuarter];
             const burnedTeams = new Set(selectedPlayer.burnedTeams || []);
 
-            const tiers = ['tier1', 'tier2', 'tier3', 'tier4'];
-            const tierNames = ['Tier 1', 'Tier 2', 'Tier 3', 'Tier 4'];
+            // ONLY show Tier 1 and Tier 2 dropdowns
+            const tiers = ['tier1', 'tier2'];
+            const tierNames = ['Tier 1', 'Tier 2'];
 
             container.innerHTML = tiers.map((tierKey, index) => {
                 const teams = tierAssignments[tierKey] || [];
@@ -631,7 +681,7 @@
 
                 return `
                     <div class="tier-select-group">
-                        <label class="tier-label">${tierNames[index]}</label>
+                        <label class="tier-label">${tierNames[index]} (Manual Pick)</label>
                         <select id="${tierKey}" data-tier="${tierKey}" class="tier-select">
                             <option value="">-- Select team --</option>
                             ${availableTeams.map(abbrev => {
@@ -647,6 +697,15 @@
                     </div>
                 `;
             }).join('');
+
+            // Add random assignment notice
+            container.innerHTML += `
+                <div class="random-notice">
+                    <h3>🎲 Random Assignment</h3>
+                    <p><strong>Tier 3</strong> and <strong>Tier 4</strong> teams will be randomly selected when you click "Generate Picks JSON" below.</p>
+                    <p class="help-text">These random picks can be teams you've used before (only your manual picks are permanently burned).</p>
+                </div>
+            `;
 
             // Add change listeners to tier selects
             document.querySelectorAll('.tier-select').forEach(select => {
@@ -665,10 +724,9 @@
         function checkFormComplete() {
             const tier1 = document.getElementById('tier1')?.value;
             const tier2 = document.getElementById('tier2')?.value;
-            const tier3 = document.getElementById('tier3')?.value;
-            const tier4 = document.getElementById('tier4')?.value;
 
-            const isComplete = selectedPlayer && tier1 && tier2 && tier3 && tier4;
+            // Only check tier1 and tier2 are selected
+            const isComplete = selectedPlayer && tier1 && tier2;
             document.getElementById('submit-btn').disabled = !isComplete;
         }
 
@@ -682,17 +740,33 @@
 
         // Handle form submission
         document.getElementById('submit-btn').addEventListener('click', function() {
+            // Disable button immediately to prevent multiple clicks
+            this.disabled = true;
+
             const nextQuarter = getNextQuarter();
+            const tierAssignments = allData.tiers.tiers[nextQuarter];
+
+            // Get manual picks
+            const tier1Pick = document.getElementById('tier1').value;
+            const tier2Pick = document.getElementById('tier2').value;
+
+            // Create set of manual picks to exclude from random selection
+            const manualPicks = new Set([tier1Pick, tier2Pick]);
+
+            // Randomly select Tier 3 (exclude same-quarter manual picks)
+            const tier3Pool = (tierAssignments.tier3 || []).filter(team => !manualPicks.has(team));
+            const tier3Pick = tier3Pool[Math.floor(Math.random() * tier3Pool.length)];
+
+            // Randomly select Tier 4 (exclude same-quarter manual picks)
+            const tier4Pool = (tierAssignments.tier4 || []).filter(team => !manualPicks.has(team));
+            const tier4Pick = tier4Pool[Math.floor(Math.random() * tier4Pool.length)];
 
             const picks = {
-                tier1: document.getElementById('tier1').value,
-                tier2: document.getElementById('tier2').value,
-                tier3: document.getElementById('tier3').value,
-                tier4: document.getElementById('tier4').value,
-                manualPicks: [
-                    document.getElementById('tier1').value,
-                    document.getElementById('tier2').value
-                ]
+                tier1: tier1Pick,
+                tier2: tier2Pick,
+                tier3: tier3Pick,
+                tier4: tier4Pick,
+                manualPicks: [tier1Pick, tier2Pick]  // Only T1 and T2
             };
 
             // Generate JSON output
@@ -704,9 +778,8 @@
                 burnedTeamsUpdate: [...new Set([
                     ...(selectedPlayer.burnedTeams || []),
                     picks.tier1,
-                    picks.tier2,
-                    picks.tier3,
-                    picks.tier4
+                    picks.tier2
+                    // NOTE: tier3 and tier4 NOT added - they can be reused
                 ])]
             };
 
@@ -718,7 +791,7 @@
             // Scroll to JSON output
             document.getElementById('json-output').scrollIntoView({ behavior: 'smooth' });
 
-            showAlert('✅ Picks generated! Copy the JSON below and send it to the commissioner.', 'success');
+            showAlert(`✅ Picks generated! Random assignments: Tier 3 = ${tier3Pick}, Tier 4 = ${tier4Pick}. Copy the JSON below.`, 'success');
         });
 
         // Copy to clipboard
