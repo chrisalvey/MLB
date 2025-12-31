@@ -377,12 +377,17 @@
         // Get next quarter needing tier assignments
         function getNextQuarter() {
             const quarters = ['Q1', 'Q2', 'Q3', 'Q4'];
-            const current = allData.tiers.currentQuarter;
-            const currentIndex = quarters.indexOf(current);
 
-            // Return the next quarter after current
-            if (currentIndex >= 0 && currentIndex < 3) {
-                return quarters[currentIndex + 1];
+            // Find the first quarter with empty tier assignments
+            for (const quarter of quarters) {
+                const tierData = allData.tiers.tiers[quarter];
+                if (tierData &&
+                    (!tierData.tier1 || tierData.tier1.length === 0) &&
+                    (!tierData.tier2 || tierData.tier2.length === 0) &&
+                    (!tierData.tier3 || tierData.tier3.length === 0) &&
+                    (!tierData.tier4 || tierData.tier4.length === 0)) {
+                    return quarter;
+                }
             }
 
             return null;
