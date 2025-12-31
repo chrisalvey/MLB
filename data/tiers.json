@@ -10,16 +10,16 @@
       "tier4": ["OAK", "MIA", "LAA", "PIT", "WSN", "CHW", "COL", "KCR"]
     },
     "Q2": {
-      "tier1": [],
-      "tier2": [],
-      "tier3": [],
-      "tier4": []
+      "tier1": ["PHI", "NYY", "LAD", "SEA", "TOR", "ATL"],
+      "tier2": ["MIL", "HOU", "SDP", "BOS", "NYM", "DET", "CHC", "TEX"],
+      "tier3": ["BAL", "CLE", "MIN", "ARI", "TBR", "STL", "CIN", "SFG"],
+      "tier4": ["KCR", "PIT", "LAA", "MIA", "CHW", "WSN", "COL", "OAK"]
     },
     "Q3": {
-      "tier1": [],
-      "tier2": [],
-      "tier3": [],
-      "tier4": []
+      "tier1": ["NYY", "LAD", "PHI", "ATL", "HOU", "SDP"],
+      "tier2": ["BOS", "NYM", "CHC", "TEX", "MIL", "SEA"],
+      "tier3": ["BAL", "CLE", "ARI", "SFG", "TBR", "CIN"],
+      "tier4": ["MIN", "STL", "PIT", "KCR", "WSN", "MIA"]
     },
     "Q4": {
       "tier1": [],
