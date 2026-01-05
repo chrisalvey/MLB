@@ -907,89 +907,6 @@
             display: none;
         }
 
-        /* Available Teams Section */
-        .available-teams-section {
-            margin-top: 3rem;
-        }
-
-        .available-teams-section h2 {
-            font-family: 'Playball', cursive;
-            font-size: 2rem;
-            color: var(--navy);
-            margin-bottom: 0.5rem;
-            text-align: center;
-        }
-
-        .available-teams-subtitle {
-            text-align: center;
-            color: var(--navy-lighter);
-            font-size: 0.9rem;
-            margin-bottom: 1.5rem;
-        }
-
-        .available-teams-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 1.5rem;
-            margin-bottom: 3rem;
-        }
-
-        .available-tier-card {
-            background: var(--white);
-            border-radius: 8px;
-            padding: 1.5rem;
-            box-shadow: 0 4px 15px rgba(15, 28, 46, 0.06);
-        }
-
-        .available-tier-card h3 {
-            font-family: 'Bebas Neue', sans-serif;
-            font-size: 1.4rem;
-            color: var(--navy);
-            margin-bottom: 0.5rem;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .tier-count {
-            font-size: 0.9rem;
-            color: var(--navy-lighter);
-            font-weight: 400;
-        }
-
-        .available-teams-list {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.5rem;
-            margin-top: 1rem;
-        }
-
-        .available-team-badge {
-            background: #e8f5e9;
-            border: 1px solid var(--green);
-            padding: 0.4rem 0.7rem;
-            border-radius: 4px;
-            font-size: 0.85rem;
-            font-weight: 600;
-            color: var(--green);
-            display: flex;
-            align-items: center;
-            gap: 0.4rem;
-            transition: all 0.2s;
-        }
-
-        .available-team-badge:hover {
-            background: var(--green);
-            color: var(--white);
-            transform: translateY(-1px);
-            box-shadow: 0 2px 8px rgba(45, 90, 61, 0.2);
-        }
-
-        .available-team-logo {
-            width: 18px;
-            height: 18px;
-        }
-
         /* Burned Teams Section */
         .burned-teams-section {
             margin-top: 3rem;
@@ -1520,13 +1437,6 @@
             <div id="tiers-content" class="loading">Loading tier data...</div>
         </div>
 
-        <!-- Available Teams for Next Quarter -->
-        <div class="available-teams-section">
-            <h2>Available Teams</h2>
-            <p class="available-teams-subtitle" id="availableTeamsSubtitle">Teams available for selection</p>
-            <div id="available-teams-content" class="loading">Loading available teams...</div>
-        </div>
-
         <!-- Burned Teams Summary -->
         <div class="burned-teams-section">
             <h2>Burned Teams</h2>
@@ -1744,7 +1654,6 @@
             renderRosters();
             renderStandings();
             renderTiers();
-            renderAvailableTeams();
             renderBurnedTeams();
         }
 
@@ -2228,80 +2137,6 @@
             `;
 
             document.getElementById('tiers-content').innerHTML = html;
-        }
-        // Render burned teams summary
-        function renderAvailableTeams() {
-            const quarters = allData.quarters.quarters;
-            const currentQuarter = allData.quarters.currentQuarter;
-            const nextQuarter = { Q1: 'Q2', Q2: 'Q3', Q3: 'Q4', Q4: null }[currentQuarter];
-
-            if (!nextQuarter) {
-                document.getElementById('available-teams-content').innerHTML = `
-                    <p style="text-align: center; color: var(--navy-lighter); font-style: italic;">Season complete - no upcoming quarters</p>
-                `;
-                return;
-            }
-
-            // Get tier assignments for next quarter
-            const tierAssignments = allData.tiers.tiers[nextQuarter];
-
-            // Check if tiers are defined for next quarter
-            if (!tierAssignments ||
-                (!tierAssignments.tier1?.length && !tierAssignments.tier2?.length &&
-                 !tierAssignments.tier3?.length && !tierAssignments.tier4?.length)) {
-                const deadline = new Date(quarters[nextQuarter].selectionDeadline);
-                const deadlineFormatted = deadline.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
-                document.getElementById('availableTeamsSubtitle').textContent = `${nextQuarter} tiers not yet announced (deadline: ${deadlineFormatted})`;
-                document.getElementById('available-teams-content').innerHTML = `
-                    <p style="text-align: center; color: var(--navy-lighter); font-style: italic;">Tier assignments for ${nextQuarter} will be announced soon</p>
-                `;
-                return;
-            }
-
-            // Collect all burned teams from all players
-            const allBurnedTeams = new Set();
-            allData.players.players.forEach(player => {
-                (player.burnedTeams || []).forEach(team => allBurnedTeams.add(team));
-            });
-
-            // Update subtitle with deadline
-            const deadline = new Date(quarters[nextQuarter].selectionDeadline);
-            const deadlineFormatted = deadline.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
-            document.getElementById('availableTeamsSubtitle').textContent = `Teams available for ${nextQuarter} selection (deadline: ${deadlineFormatted})`;
-
-            // Generate HTML for each tier
-            const tierNames = { tier1: 'Tier 1', tier2: 'Tier 2', tier3: 'Tier 3', tier4: 'Tier 4' };
-            const tiersHtml = ['tier1', 'tier2', 'tier3', 'tier4'].map(tierKey => {
-                const teams = tierAssignments[tierKey] || [];
-                const availableTeams = teams.filter(abbrev => !allBurnedTeams.has(abbrev));
-
-                return `
-                    <div class="available-tier-card">
-                        <h3>
-                            ${tierNames[tierKey]}
-                            <span class="tier-count">(${availableTeams.length} of ${teams.length} available)</span>
-                        </h3>
-                        <div class="available-teams-list">
-                            ${availableTeams.length > 0
-                                ? availableTeams.map(abbrev => {
-                                    const team = allData.standings.teams[abbrev];
-                                    return team ? `
-                                        <div class="available-team-badge">
-                                            ${renderTeamLogo(abbrev, 18, 'available-team-logo')}
-                                            ${abbrev}
-                                        </div>
-                                    ` : '';
-                                }).join('')
-                                : '<span style="color: var(--navy-lighter); font-style: italic;">All teams in this tier have been burned</span>'
-                            }
-                        </div>
-                    </div>
-                `;
-            }).join('');
-
-            document.getElementById('available-teams-content').innerHTML = `
-                <div class="available-teams-grid">${tiersHtml}</div>
-            `;
         }
 
         function renderBurnedTeams() {
