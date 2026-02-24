@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-02-23T10:51:23.361Z",
+  "lastUpdated": "2026-02-24T10:50:22.400Z",
   "season": 2025,
   "teams": {
     "TOR": {
@@ -8,10 +8,10 @@
       "wins": 94,
       "losses": 68,
       "winPct": 0.58,
-      "runsScored": 929,
-      "runsAllowed": 816,
-      "gamesPlayed": 185,
-      "runsPerGame": 5.02
+      "runsScored": 932,
+      "runsAllowed": 820,
+      "gamesPlayed": 186,
+      "runsPerGame": 5.01
     },
     "NYY": {
       "name": "Yankees",
@@ -19,9 +19,9 @@
       "wins": 94,
       "losses": 68,
       "winPct": 0.58,
-      "runsScored": 922,
-      "runsAllowed": 746,
-      "gamesPlayed": 175,
+      "runsScored": 928,
+      "runsAllowed": 748,
+      "gamesPlayed": 176,
       "runsPerGame": 5.27
     },
     "BOS": {
@@ -30,10 +30,10 @@
       "wins": 89,
       "losses": 73,
       "winPct": 0.549,
-      "runsScored": 823,
-      "runsAllowed": 726,
-      "gamesPlayed": 172,
-      "runsPerGame": 4.78
+      "runsScored": 824,
+      "runsAllowed": 728,
+      "gamesPlayed": 173,
+      "runsPerGame": 4.76
     },
     "TBR": {
       "name": "Rays",
@@ -41,10 +41,10 @@
       "wins": 77,
       "losses": 85,
       "winPct": 0.475,
-      "runsScored": 743,
-      "runsAllowed": 716,
-      "gamesPlayed": 168,
-      "runsPerGame": 4.42
+      "runsScored": 745,
+      "runsAllowed": 717,
+      "gamesPlayed": 169,
+      "runsPerGame": 4.41
     },
     "BAL": {
       "name": "Orioles",
@@ -52,10 +52,10 @@
       "wins": 75,
       "losses": 87,
       "winPct": 0.463,
-      "runsScored": 693,
-      "runsAllowed": 814,
-      "gamesPlayed": 167,
-      "runsPerGame": 4.15
+      "runsScored": 700,
+      "runsAllowed": 824,
+      "gamesPlayed": 168,
+      "runsPerGame": 4.17
     },
     "CLE": {
       "name": "Guardians",
@@ -63,10 +63,10 @@
       "wins": 88,
       "losses": 74,
       "winPct": 0.543,
-      "runsScored": 702,
-      "runsAllowed": 703,
-      "gamesPlayed": 174,
-      "runsPerGame": 4.03
+      "runsScored": 711,
+      "runsAllowed": 708,
+      "gamesPlayed": 175,
+      "runsPerGame": 4.06
     },
     "DET": {
       "name": "Tigers",
@@ -75,9 +75,9 @@
       "losses": 75,
       "winPct": 0.537,
       "runsScored": 808,
-      "runsAllowed": 759,
-      "gamesPlayed": 176,
-      "runsPerGame": 4.59
+      "runsAllowed": 762,
+      "gamesPlayed": 177,
+      "runsPerGame": 4.56
     },
     "KCR": {
       "name": "Royals",
@@ -85,10 +85,10 @@
       "wins": 82,
       "losses": 80,
       "winPct": 0.506,
-      "runsScored": 703,
-      "runsAllowed": 690,
-      "gamesPlayed": 171,
-      "runsPerGame": 4.11
+      "runsScored": 705,
+      "runsAllowed": 693,
+      "gamesPlayed": 172,
+      "runsPerGame": 4.1
     },
     "MIN": {
       "name": "Twins",
@@ -96,9 +96,9 @@
       "wins": 70,
       "losses": 92,
       "winPct": 0.432,
-      "runsScored": 717,
+      "runsScored": 720,
       "runsAllowed": 795,
-      "gamesPlayed": 169,
+      "gamesPlayed": 170,
       "runsPerGame": 4.24
     },
     "CHW": {
@@ -107,9 +107,9 @@
       "wins": 60,
       "losses": 102,
       "winPct": 0.37,
-      "runsScored": 689,
-      "runsAllowed": 780,
-      "gamesPlayed": 168,
+      "runsScored": 693,
+      "runsAllowed": 785,
+      "gamesPlayed": 169,
       "runsPerGame": 4.1
     },
     "SEA": {
@@ -119,9 +119,9 @@
       "losses": 72,
       "winPct": 0.556,
       "runsScored": 875,
-      "runsAllowed": 793,
-      "gamesPlayed": 181,
-      "runsPerGame": 4.83
+      "runsAllowed": 796,
+      "gamesPlayed": 182,
+      "runsPerGame": 4.81
     },
     "HOU": {
       "name": "Astros",
@@ -140,10 +140,10 @@
       "wins": 81,
       "losses": 81,
       "winPct": 0.5,
-      "runsScored": 718,
+      "runsScored": 724,
       "runsAllowed": 646,
-      "gamesPlayed": 170,
-      "runsPerGame": 4.22
+      "gamesPlayed": 171,
+      "runsPerGame": 4.23
     },
     "OAK": {
       "name": "Athletics",
@@ -151,10 +151,10 @@
       "wins": 76,
       "losses": 86,
       "winPct": 0.469,
-      "runsScored": 765,
-      "runsAllowed": 858,
-      "gamesPlayed": 169,
-      "runsPerGame": 4.53
+      "runsScored": 767,
+      "runsAllowed": 864,
+      "gamesPlayed": 170,
+      "runsPerGame": 4.51
     },
     "LAA": {
       "name": "Angels",
@@ -163,9 +163,9 @@
       "losses": 90,
       "winPct": 0.444,
       "runsScored": 696,
-      "runsAllowed": 882,
-      "gamesPlayed": 169,
-      "runsPerGame": 4.12
+      "runsAllowed": 888,
+      "gamesPlayed": 170,
+      "runsPerGame": 4.09
     },
     "PHI": {
       "name": "Phillies",
@@ -184,10 +184,10 @@
       "wins": 83,
       "losses": 79,
       "winPct": 0.512,
-      "runsScored": 796,
-      "runsAllowed": 728,
-      "gamesPlayed": 167,
-      "runsPerGame": 4.77
+      "runsScored": 800,
+      "runsAllowed": 731,
+      "gamesPlayed": 168,
+      "runsPerGame": 4.76
     },
     "MIA": {
       "name": "Marlins",
@@ -195,9 +195,9 @@
       "wins": 79,
       "losses": 83,
       "winPct": 0.488,
-      "runsScored": 739,
-      "runsAllowed": 851,
-      "gamesPlayed": 170,
+      "runsScored": 743,
+      "runsAllowed": 856,
+      "gamesPlayed": 171,
       "runsPerGame": 4.35
     },
     "ATL": {
@@ -206,10 +206,10 @@
       "wins": 76,
       "losses": 86,
       "winPct": 0.469,
-      "runsScored": 763,
-      "runsAllowed": 756,
-      "gamesPlayed": 169,
-      "runsPerGame": 4.51
+      "runsScored": 773,
+      "runsAllowed": 763,
+      "gamesPlayed": 170,
+      "runsPerGame": 4.55
     },
     "WSN": {
       "name": "Nationals",
@@ -228,9 +228,9 @@
       "wins": 97,
       "losses": 65,
       "winPct": 0.599,
-      "runsScored": 871,
-      "runsAllowed": 719,
-      "gamesPlayed": 179,
+      "runsScored": 876,
+      "runsAllowed": 726,
+      "gamesPlayed": 180,
       "runsPerGame": 4.87
     },
     "CHC": {
@@ -239,10 +239,10 @@
       "wins": 92,
       "losses": 70,
       "winPct": 0.568,
-      "runsScored": 830,
-      "runsAllowed": 716,
-      "gamesPlayed": 176,
-      "runsPerGame": 4.72
+      "runsScored": 833,
+      "runsAllowed": 718,
+      "gamesPlayed": 177,
+      "runsPerGame": 4.71
     },
     "CIN": {
       "name": "Reds",
@@ -261,10 +261,10 @@
       "wins": 78,
       "losses": 84,
       "winPct": 0.481,
-      "runsScored": 711,
-      "runsAllowed": 777,
-      "gamesPlayed": 168,
-      "runsPerGame": 4.23
+      "runsScored": 716,
+      "runsAllowed": 781,
+      "gamesPlayed": 169,
+      "runsPerGame": 4.24
     },
     "PIT": {
       "name": "Pirates",
@@ -272,10 +272,10 @@
       "wins": 71,
       "losses": 91,
       "winPct": 0.438,
-      "runsScored": 605,
-      "runsAllowed": 667,
-      "gamesPlayed": 169,
-      "runsPerGame": 3.58
+      "runsScored": 607,
+      "runsAllowed": 673,
+      "gamesPlayed": 170,
+      "runsPerGame": 3.57
     },
     "LAD": {
       "name": "Dodgers",
@@ -283,10 +283,10 @@
       "wins": 93,
       "losses": 69,
       "winPct": 0.574,
-      "runsScored": 922,
+      "runsScored": 925,
       "runsAllowed": 751,
-      "gamesPlayed": 182,
-      "runsPerGame": 5.07
+      "gamesPlayed": 183,
+      "runsPerGame": 5.05
     },
     "SDP": {
       "name": "Padres",
@@ -294,10 +294,10 @@
       "wins": 90,
       "losses": 72,
       "winPct": 0.556,
-      "runsScored": 741,
-      "runsAllowed": 658,
-      "gamesPlayed": 172,
-      "runsPerGame": 4.31
+      "runsScored": 748,
+      "runsAllowed": 663,
+      "gamesPlayed": 173,
+      "runsPerGame": 4.32
     },
     "SFG": {
       "name": "Giants",
@@ -305,10 +305,10 @@
       "wins": 81,
       "losses": 81,
       "winPct": 0.5,
-      "runsScored": 725,
-      "runsAllowed": 701,
-      "gamesPlayed": 166,
-      "runsPerGame": 4.37
+      "runsScored": 731,
+      "runsAllowed": 703,
+      "gamesPlayed": 167,
+      "runsPerGame": 4.38
     },
     "ARI": {
       "name": "D-backs",
@@ -316,9 +316,9 @@
       "wins": 80,
       "losses": 82,
       "winPct": 0.494,
-      "runsScored": 852,
-      "runsAllowed": 835,
-      "gamesPlayed": 171,
+      "runsScored": 857,
+      "runsAllowed": 844,
+      "gamesPlayed": 172,
       "runsPerGame": 4.98
     },
     "COL": {
@@ -327,9 +327,9 @@
       "wins": 43,
       "losses": 119,
       "winPct": 0.265,
-      "runsScored": 648,
-      "runsAllowed": 1068,
-      "gamesPlayed": 172,
+      "runsScored": 653,
+      "runsAllowed": 1072,
+      "gamesPlayed": 173,
       "runsPerGame": 3.77
     }
   },
@@ -339,14 +339,14 @@
         "wins": 35,
         "losses": 25,
         "winPct": 0.5833333333333334,
-        "runsScored": 344,
-        "runsPerGame": 5.02
+        "runsScored": 345,
+        "runsPerGame": 5.01
       },
       "NYY": {
         "wins": 35,
         "losses": 25,
         "winPct": 0.5833333333333334,
-        "runsScored": 341,
+        "runsScored": 343,
         "runsPerGame": 5.27
       },
       "BOS": {
@@ -354,55 +354,55 @@
         "losses": 27,
         "winPct": 0.55,
         "runsScored": 305,
-        "runsPerGame": 4.78
+        "runsPerGame": 4.76
       },
       "TBR": {
         "wins": 28,
         "losses": 31,
         "winPct": 0.4745762711864407,
-        "runsScored": 275,
-        "runsPerGame": 4.42
+        "runsScored": 276,
+        "runsPerGame": 4.41
       },
       "BAL": {
         "wins": 28,
         "losses": 32,
         "winPct": 0.4666666666666667,
-        "runsScored": 256,
-        "runsPerGame": 4.15
+        "runsScored": 259,
+        "runsPerGame": 4.17
       },
       "CLE": {
         "wins": 33,
         "losses": 27,
         "winPct": 0.55,
-        "runsScored": 260,
-        "runsPerGame": 4.03
+        "runsScored": 263,
+        "runsPerGame": 4.06
       },
       "DET": {
         "wins": 32,
         "losses": 28,
         "winPct": 0.5333333333333333,
         "runsScored": 299,
-        "runsPerGame": 4.59
+        "runsPerGame": 4.56
       },
       "KCR": {
         "wins": 30,
         "losses": 30,
         "winPct": 0.5,
-        "runsScored": 260,
-        "runsPerGame": 4.11
+        "runsScored": 261,
+        "runsPerGame": 4.1
       },
       "MIN": {
         "wins": 26,
         "losses": 34,
         "winPct": 0.43333333333333335,
-        "runsScored": 265,
+        "runsScored": 266,
         "runsPerGame": 4.24
       },
       "CHW": {
         "wins": 22,
         "losses": 38,
         "winPct": 0.36666666666666664,
-        "runsScored": 255,
+        "runsScored": 256,
         "runsPerGame": 4.1
       },
       "SEA": {
@@ -410,7 +410,7 @@
         "losses": 27,
         "winPct": 0.55,
         "runsScored": 324,
-        "runsPerGame": 4.83
+        "runsPerGame": 4.81
       },
       "HOU": {
         "wins": 32,
@@ -423,22 +423,22 @@
         "wins": 30,
         "losses": 30,
         "winPct": 0.5,
-        "runsScored": 266,
-        "runsPerGame": 4.22
+        "runsScored": 268,
+        "runsPerGame": 4.23
       },
       "OAK": {
         "wins": 28,
         "losses": 32,
         "winPct": 0.4666666666666667,
-        "runsScored": 283,
-        "runsPerGame": 4.53
+        "runsScored": 284,
+        "runsPerGame": 4.51
       },
       "LAA": {
         "wins": 27,
         "losses": 33,
         "winPct": 0.45,
         "runsScored": 258,
-        "runsPerGame": 4.12
+        "runsPerGame": 4.09
       },
       "PHI": {
         "wins": 36,
@@ -451,22 +451,22 @@
         "wins": 31,
         "losses": 29,
         "winPct": 0.5166666666666667,
-        "runsScored": 295,
-        "runsPerGame": 4.77
+        "runsScored": 296,
+        "runsPerGame": 4.76
       },
       "MIA": {
         "wins": 29,
         "losses": 31,
         "winPct": 0.48333333333333334,
-        "runsScored": 273,
+        "runsScored": 275,
         "runsPerGame": 4.35
       },
       "ATL": {
         "wins": 28,
         "losses": 32,
         "winPct": 0.4666666666666667,
-        "runsScored": 282,
-        "runsPerGame": 4.51
+        "runsScored": 286,
+        "runsPerGame": 4.55
       },
       "WSN": {
         "wins": 24,
@@ -479,15 +479,15 @@
         "wins": 36,
         "losses": 24,
         "winPct": 0.6,
-        "runsScored": 322,
+        "runsScored": 324,
         "runsPerGame": 4.87
       },
       "CHC": {
         "wins": 34,
         "losses": 26,
         "winPct": 0.5666666666666667,
-        "runsScored": 307,
-        "runsPerGame": 4.72
+        "runsScored": 308,
+        "runsPerGame": 4.71
       },
       "CIN": {
         "wins": 31,
@@ -500,49 +500,49 @@
         "wins": 29,
         "losses": 31,
         "winPct": 0.48333333333333334,
-        "runsScored": 263,
-        "runsPerGame": 4.23
+        "runsScored": 265,
+        "runsPerGame": 4.24
       },
       "PIT": {
         "wins": 26,
         "losses": 34,
         "winPct": 0.43333333333333335,
-        "runsScored": 224,
-        "runsPerGame": 3.58
+        "runsScored": 225,
+        "runsPerGame": 3.57
       },
       "LAD": {
         "wins": 34,
         "losses": 26,
         "winPct": 0.5666666666666667,
-        "runsScored": 341,
-        "runsPerGame": 5.07
+        "runsScored": 342,
+        "runsPerGame": 5.05
       },
       "SDP": {
         "wins": 33,
         "losses": 27,
         "winPct": 0.55,
-        "runsScored": 274,
-        "runsPerGame": 4.31
+        "runsScored": 277,
+        "runsPerGame": 4.32
       },
       "SFG": {
         "wins": 30,
         "losses": 30,
         "winPct": 0.5,
-        "runsScored": 268,
-        "runsPerGame": 4.37
+        "runsScored": 270,
+        "runsPerGame": 4.38
       },
       "ARI": {
         "wins": 30,
         "losses": 30,
         "winPct": 0.5,
-        "runsScored": 315,
+        "runsScored": 317,
         "runsPerGame": 4.98
       },
       "COL": {
         "wins": 16,
         "losses": 44,
         "winPct": 0.26666666666666666,
-        "runsScored": 240,
+        "runsScored": 242,
         "runsPerGame": 3.77
       }
     },
@@ -551,14 +551,14 @@
         "wins": 24,
         "losses": 17,
         "winPct": 0.5853658536585366,
-        "runsScored": 232,
-        "runsPerGame": 5.02
+        "runsScored": 233,
+        "runsPerGame": 5.01
       },
       "NYY": {
         "wins": 24,
         "losses": 17,
         "winPct": 0.5853658536585366,
-        "runsScored": 231,
+        "runsScored": 232,
         "runsPerGame": 5.27
       },
       "BOS": {
@@ -566,55 +566,55 @@
         "losses": 18,
         "winPct": 0.55,
         "runsScored": 206,
-        "runsPerGame": 4.78
+        "runsPerGame": 4.76
       },
       "TBR": {
         "wins": 19,
         "losses": 21,
         "winPct": 0.475,
         "runsScored": 186,
-        "runsPerGame": 4.42
+        "runsPerGame": 4.41
       },
       "BAL": {
         "wins": 19,
         "losses": 22,
         "winPct": 0.4634146341463415,
-        "runsScored": 173,
-        "runsPerGame": 4.15
+        "runsScored": 175,
+        "runsPerGame": 4.17
       },
       "CLE": {
         "wins": 22,
         "losses": 19,
         "winPct": 0.5365853658536586,
-        "runsScored": 176,
-        "runsPerGame": 4.03
+        "runsScored": 178,
+        "runsPerGame": 4.06
       },
       "DET": {
         "wins": 22,
         "losses": 19,
         "winPct": 0.5365853658536586,
         "runsScored": 202,
-        "runsPerGame": 4.59
+        "runsPerGame": 4.56
       },
       "KCR": {
         "wins": 21,
         "losses": 20,
         "winPct": 0.5121951219512195,
         "runsScored": 176,
-        "runsPerGame": 4.11
+        "runsPerGame": 4.1
       },
       "MIN": {
         "wins": 18,
         "losses": 23,
         "winPct": 0.43902439024390244,
-        "runsScored": 179,
+        "runsScored": 180,
         "runsPerGame": 4.24
       },
       "CHW": {
         "wins": 15,
         "losses": 26,
         "winPct": 0.36585365853658536,
-        "runsScored": 172,
+        "runsScored": 173,
         "runsPerGame": 4.1
       },
       "SEA": {
@@ -622,7 +622,7 @@
         "losses": 18,
         "winPct": 0.5609756097560976,
         "runsScored": 219,
-        "runsPerGame": 4.83
+        "runsPerGame": 4.81
       },
       "HOU": {
         "wins": 22,
@@ -635,22 +635,22 @@
         "wins": 20,
         "losses": 20,
         "winPct": 0.5,
-        "runsScored": 180,
-        "runsPerGame": 4.22
+        "runsScored": 181,
+        "runsPerGame": 4.23
       },
       "OAK": {
         "wins": 19,
         "losses": 22,
         "winPct": 0.4634146341463415,
-        "runsScored": 191,
-        "runsPerGame": 4.53
+        "runsScored": 192,
+        "runsPerGame": 4.51
       },
       "LAA": {
         "wins": 18,
         "losses": 23,
         "winPct": 0.43902439024390244,
         "runsScored": 174,
-        "runsPerGame": 4.12
+        "runsPerGame": 4.09
       },
       "PHI": {
         "wins": 24,
@@ -663,22 +663,22 @@
         "wins": 21,
         "losses": 20,
         "winPct": 0.5121951219512195,
-        "runsScored": 199,
-        "runsPerGame": 4.77
+        "runsScored": 200,
+        "runsPerGame": 4.76
       },
       "MIA": {
         "wins": 20,
         "losses": 21,
         "winPct": 0.4878048780487805,
-        "runsScored": 185,
+        "runsScored": 186,
         "runsPerGame": 4.35
       },
       "ATL": {
         "wins": 19,
         "losses": 22,
         "winPct": 0.4634146341463415,
-        "runsScored": 191,
-        "runsPerGame": 4.51
+        "runsScored": 193,
+        "runsPerGame": 4.55
       },
       "WSN": {
         "wins": 17,
@@ -691,7 +691,7 @@
         "wins": 24,
         "losses": 16,
         "winPct": 0.6,
-        "runsScored": 218,
+        "runsScored": 219,
         "runsPerGame": 4.87
       },
       "CHC": {
@@ -699,7 +699,7 @@
         "losses": 18,
         "winPct": 0.5609756097560976,
         "runsScored": 208,
-        "runsPerGame": 4.72
+        "runsPerGame": 4.71
       },
       "CIN": {
         "wins": 21,
@@ -712,49 +712,49 @@
         "wins": 20,
         "losses": 21,
         "winPct": 0.4878048780487805,
-        "runsScored": 178,
-        "runsPerGame": 4.23
+        "runsScored": 179,
+        "runsPerGame": 4.24
       },
       "PIT": {
         "wins": 18,
         "losses": 23,
         "winPct": 0.43902439024390244,
-        "runsScored": 151,
-        "runsPerGame": 3.58
+        "runsScored": 152,
+        "runsPerGame": 3.57
       },
       "LAD": {
         "wins": 23,
         "losses": 17,
         "winPct": 0.575,
         "runsScored": 231,
-        "runsPerGame": 5.07
+        "runsPerGame": 5.05
       },
       "SDP": {
         "wins": 23,
         "losses": 18,
         "winPct": 0.5609756097560976,
-        "runsScored": 185,
-        "runsPerGame": 4.31
+        "runsScored": 187,
+        "runsPerGame": 4.32
       },
       "SFG": {
         "wins": 20,
         "losses": 20,
         "winPct": 0.5,
-        "runsScored": 181,
-        "runsPerGame": 4.37
+        "runsScored": 183,
+        "runsPerGame": 4.38
       },
       "ARI": {
         "wins": 20,
         "losses": 21,
         "winPct": 0.4878048780487805,
-        "runsScored": 213,
+        "runsScored": 214,
         "runsPerGame": 4.98
       },
       "COL": {
         "wins": 11,
         "losses": 30,
         "winPct": 0.2682926829268293,
-        "runsScored": 162,
+        "runsScored": 163,
         "runsPerGame": 3.77
       }
     },
@@ -772,7 +772,7 @@
           "CHW"
         ],
         "combinedWinPct": 0.512,
-        "combinedRunsPerGame": 4.59,
+        "combinedRunsPerGame": 4.62,
         "rank": 4
       },
       "player2": {
@@ -784,7 +784,7 @@
           "PIT"
         ],
         "combinedWinPct": 0.533,
-        "combinedRunsPerGame": 4.74,
+        "combinedRunsPerGame": 4.75,
         "rank": 2
       },
       "player3": {
@@ -796,7 +796,7 @@
           "COL"
         ],
         "combinedWinPct": 0.479,
-        "combinedRunsPerGame": 4.75,
+        "combinedRunsPerGame": 4.78,
         "rank": 6
       },
       "player4": {
@@ -808,7 +808,7 @@
           "MIA"
         ],
         "combinedWinPct": 0.537,
-        "combinedRunsPerGame": 5.18,
+        "combinedRunsPerGame": 5.19,
         "rank": 1
       },
       "player5": {
@@ -820,7 +820,7 @@
           "OAK"
         ],
         "combinedWinPct": 0.517,
-        "combinedRunsPerGame": 4.92,
+        "combinedRunsPerGame": 4.94,
         "rank": 3
       },
       "player6": {
@@ -832,7 +832,7 @@
           "WSN"
         ],
         "combinedWinPct": 0.492,
-        "combinedRunsPerGame": 4.76,
+        "combinedRunsPerGame": 4.78,
         "rank": 5
       }
     },
@@ -846,7 +846,7 @@
           "LAA"
         ],
         "combinedWinPct": 0.512,
-        "combinedRunsPerGame": 5,
+        "combinedRunsPerGame": 5.01,
         "rank": 2
       },
       "player2": {
@@ -858,7 +858,7 @@
           "MIA"
         ],
         "combinedWinPct": 0.528,
-        "combinedRunsPerGame": 4.73,
+        "combinedRunsPerGame": 4.74,
         "rank": 1
       },
       "player3": {
@@ -870,7 +870,7 @@
           "WSN"
         ],
         "combinedWinPct": 0.509,
-        "combinedRunsPerGame": 4.89,
+        "combinedRunsPerGame": 4.9,
         "rank": 3
       },
       "player4": {
@@ -882,7 +882,7 @@
           "PIT"
         ],
         "combinedWinPct": 0.506,
-        "combinedRunsPerGame": 4.4,
+        "combinedRunsPerGame": 4.43,
         "rank": 4
       },
       "player5": {
@@ -894,7 +894,7 @@
           "COL"
         ],
         "combinedWinPct": 0.475,
-        "combinedRunsPerGame": 4.78,
+        "combinedRunsPerGame": 4.79,
         "rank": 6
       },
       "player6": {
@@ -906,7 +906,7 @@
           "CHW"
         ],
         "combinedWinPct": 0.476,
-        "combinedRunsPerGame": 4.65,
+        "combinedRunsPerGame": 4.68,
         "rank": 5
       }
     },
