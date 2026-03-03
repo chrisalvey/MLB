@@ -1,13 +1,13 @@
 {
-  "lastUpdated": "2025-12-29T19:00:00.000Z",
+  "lastUpdated": "2026-03-03T00:00:00.000Z",
   "season": 2026,
   "currentQuarter": "Q1",
   "tiers": {
     "Q1": {
-      "tier1": ["LAD", "NYY", "PHI", "ATL", "SEA", "TOR"],
-      "tier2": ["NYM", "BOS", "MIL", "SDP", "CHC", "DET", "HOU", "TEX"],
-      "tier3": ["CLE", "BAL", "CIN", "SFG", "ARI", "TBR", "MIN", "STL"],
-      "tier4": ["OAK", "MIA", "LAA", "PIT", "WSN", "CHW", "COL", "KCR"]
+      "tier1": ["LAD", "NYY", "PHI", "SEA", "NYM", "TOR"],
+      "tier2": ["BOS", "ATL", "MIL", "SDP", "CHC", "DET", "HOU", "BAL"],
+      "tier3": ["CLE", "CIN", "SFG", "ARI", "TBR", "TEX", "KCR", "MIN"],
+      "tier4": ["OAK", "MIA", "LAA", "PIT", "WSN", "CHW", "COL", "STL"]
     },
     "Q2": {
       "tier1": ["PHI", "NYY", "LAD", "SEA", "TOR", "ATL"],

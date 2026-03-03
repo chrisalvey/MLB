@@ -23,10 +23,10 @@ Personal Unique: You will never be randomly assigned a team you already chose ma
 2026 Season Tier Examples
 Based on early 2026 projections and World Series odds, here is how the tiers might look for your first quarter: 
 Tier 	Description	2026 Team Examples
-Tier 1	The Elites	Dodgers, Yankees, Phillies, Braves, Mariners, Blue Jays
-Tier 2	The Contenders	Mets, Red Sox, Brewers, Padres, Cubs, Tigers, Astros, Rangers
-Tier 3	The Middle	Guardians, Orioles, Reds, Giants, Diamondbacks, Rays, Twins, Cardinals
-Tier 4	The Basement	Athletics, Marlins, Angels, Pirates, Nationals, White Sox, Rockies, Royals
+Tier 1	The Elites	Dodgers, Yankees, Phillies, Mariners, Mets, Blue Jays
+Tier 2	The Contenders	Red Sox, Braves, Brewers, Padres, Cubs, Tigers, Astros, Orioles
+Tier 3	The Middle	Guardians, Reds, Giants, Diamondbacks, Rays, Rangers, Royals, Twins
+Tier 4	The Basement	Athletics, Marlins, Angels, Pirates, Nationals, White Sox, Rockies, Cardinals
 Why this is fun: By Quarter 4, you will have "burned" 4 Elite teams and 4 Strong teams. If you used the Dodgers and Yankees early, you might be stuck choosing the Mariners or a surging Tier 2 team for your final T1 slot, making the late-season tiers highly impactful.
 
 Tl;Dr.
@@ -60,7 +60,7 @@ All-Star Break: The 96th All-Star Game is July 14, 2026 in Philadelphia.
 Regular Season Ends: Sunday, September 27, 2026. 
 Example Tiers for 2026 (Quarter 1)
 Tier	Status	2026 Team Examples
-Tier 1	Elite	Dodgers, Yankees, Phillies, Braves, Mariners, Blue Jays
-Tier 2	Contenders	Mets, Red Sox, Brewers, Padres, Cubs, Tigers, Astros, Rangers
-Tier 3	Average	Guardians, Orioles, Reds, Giants, Diamondbacks, Rays, Twins, Cardinals
-Tier 4	Basement	Athletics, Marlins, Angels, Pirates, Nationals, White Sox, Rockies, Royals
+Tier 1	Elite	Dodgers, Yankees, Phillies, Mariners, Mets, Blue Jays
+Tier 2	Contenders	Red Sox, Braves, Brewers, Padres, Cubs, Tigers, Astros, Orioles
+Tier 3	Average	Guardians, Reds, Giants, Diamondbacks, Rays, Rangers, Royals, Twins
+Tier 4	Basement	Athletics, Marlins, Angels, Pirates, Nationals, White Sox, Rockies, Cardinals
