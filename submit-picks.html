@@ -492,11 +492,12 @@
         // Load all data
         async function loadData() {
             try {
+                const fetchOpts = { cache: 'no-store' };
                 const [standings, players, quarters, tiers] = await Promise.all([
-                    fetch('data/standings.json').then(r => r.json()),
-                    fetch('data/players.json').then(r => r.json()),
-                    fetch('data/quarters.json').then(r => r.json()),
-                    fetch('data/tiers.json').then(r => r.json())
+                    fetch('data/standings.json', fetchOpts).then(r => r.json()),
+                    fetch('data/players.json', fetchOpts).then(r => r.json()),
+                    fetch('data/quarters.json', fetchOpts).then(r => r.json()),
+                    fetch('data/tiers.json', fetchOpts).then(r => r.json())
                 ]);
 
                 allData = { standings, players, quarters, tiers };
@@ -655,7 +656,11 @@
             let message = `Submitting picks for ${nextQuarter}. Deadline: ${deadlineFormatted}`;
             let type = '';
 
-            if (daysUntil < 0) {
+            const quarterStatus = allData.quarters.quarters[nextQuarter].status;
+            if (daysUntil < 0 && quarterStatus === 'active') {
+                message = `📋 ${nextQuarter} is underway — submit your picks below.`;
+                type = '';
+            } else if (daysUntil < 0) {
                 message = `⚠️ Deadline for ${nextQuarter} has passed!`;
                 type = 'error';
             } else if (daysUntil <= 7) {
