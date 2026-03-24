@@ -599,10 +599,18 @@
             display.classList.remove('hidden');
         }
 
-        // Get next quarter for selection
+        // Get the quarter players should be submitting picks for.
+        // If the active quarter still has players without picks, submit for it.
+        // Otherwise submit for the next upcoming quarter.
         function getNextQuarter() {
             const currentQuarter = allData.quarters.currentQuarter;
             const nextQuarterMap = { Q1: 'Q2', Q2: 'Q3', Q3: 'Q4', Q4: null };
+
+            const anyMissingCurrent = allData.players.players.some(
+                p => !p.quarters[currentQuarter]
+            );
+            if (anyMissingCurrent) return currentQuarter;
+
             return nextQuarterMap[currentQuarter];
         }
 
