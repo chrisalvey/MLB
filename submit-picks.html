@@ -799,10 +799,20 @@
                     burnedTeams: updatedBurnedTeams
                 });
 
-                showAlert(`✅ Picks saved! ${selectedPlayer.name}: ${tier1Pick} (T1), ${tier2Pick} (T2), ${tier3Pick} (T3 random), ${tier4Pick} (T4 random)`, 'success');
-
-                // Reload to reflect new state
-                setTimeout(() => loadData(), 1500);
+                // Show success and hide the form so the message stays visible
+                document.querySelector('.form-container').classList.add('hidden');
+                const alert = document.getElementById('alert');
+                alert.innerHTML = `
+                    <strong>✅ Picks saved for ${selectedPlayer.name} — ${nextQuarter}!</strong><br><br>
+                    🏆 Tier 1: ${tier1Pick}<br>
+                    🥈 Tier 2: ${tier2Pick}<br>
+                    🎲 Tier 3 (random): ${tier3Pick}<br>
+                    🎲 Tier 4 (random): ${tier4Pick}<br><br>
+                    T1 &amp; T2 are now burned for the season.
+                `;
+                alert.className = 'alert success';
+                alert.classList.remove('hidden');
+                alert.scrollIntoView({ behavior: 'smooth' });
             } catch (error) {
                 console.error('Error saving picks:', error);
                 showAlert('❌ Error saving picks. Please try again.', 'error');
