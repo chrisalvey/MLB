@@ -1,13 +1,21 @@
 const fetch = require('node-fetch');
-const fs = require('fs').promises;
-const path = require('path');
+const { initializeApp, cert } = require('firebase-admin/app');
+const { getFirestore } = require('firebase-admin/firestore');
+
+// Initialize Firebase Admin
+const serviceAccount = process.env.FIREBASE_SERVICE_ACCOUNT
+  ? JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT)
+  : require('./serviceAccountKey.json');
+
+initializeApp({ credential: cert(serviceAccount) });
+const db = getFirestore();
 
 // MLB Stats API Base URL
 const MLB_API_BASE = 'https://statsapi.mlb.com/api/v1';
 
-// Configuration - Use 2025 for testing until 2026 season starts
-const SEASON_YEAR = 2025;
-const SEASON_START = '2025-03-20'; // 2025 season started March 20
+// Configuration
+const SEASON_YEAR = 2026;
+const SEASON_START = '2026-03-25';
 
 // Team abbreviation mapping (MLB API uses different IDs)
 const TEAM_ABBREV_MAP = {
@@ -19,17 +27,21 @@ const TEAM_ABBREV_MAP = {
   144: 'ATL', 145: 'CHW', 146: 'MIA', 147: 'NYY', 158: 'MIL'
 };
 
-// Helper function to read JSON file
-async function readJSON(filename) {
-  const filepath = path.join(__dirname, '..', 'data', filename);
-  const data = await fs.readFile(filepath, 'utf8');
-  return JSON.parse(data);
+// Read data from Firestore
+async function readFirestore(collection, docId) {
+  const snap = await db.collection(collection).doc(docId).get();
+  return snap.data();
 }
 
-// Helper function to write JSON file
-async function writeJSON(filename, data) {
-  const filepath = path.join(__dirname, '..', 'data', filename);
-  await fs.writeFile(filepath, JSON.stringify(data, null, 2));
+// Write data to Firestore
+async function writeFirestore(collection, docId, data) {
+  await db.collection(collection).doc(docId).set(data);
+}
+
+// Read all players from Firestore
+async function readPlayers() {
+  const snap = await db.collection('players').get();
+  return { players: snap.docs.map(d => d.data()) };
 }
 
 // Fetch current standings from MLB API
@@ -82,7 +94,6 @@ function calculateRunsFromSchedule(scheduleData) {
     if (!date.games) return;
 
     date.games.forEach(game => {
-      // Only count completed games
       if (game.status.statusCode !== 'F') return;
 
       const awayTeam = game.teams.away.team.id;
@@ -95,7 +106,6 @@ function calculateRunsFromSchedule(scheduleData) {
 
       if (!awayAbbrev || !homeAbbrev) return;
 
-      // Initialize team stats if needed
       if (!teamStats[awayAbbrev]) {
         teamStats[awayAbbrev] = { runsScored: 0, runsAllowed: 0, gamesPlayed: 0 };
       }
@@ -103,7 +113,6 @@ function calculateRunsFromSchedule(scheduleData) {
         teamStats[homeAbbrev] = { runsScored: 0, runsAllowed: 0, gamesPlayed: 0 };
       }
 
-      // Update stats
       teamStats[awayAbbrev].runsScored += awayScore;
       teamStats[awayAbbrev].runsAllowed += homeScore;
       teamStats[awayAbbrev].gamesPlayed += 1;
@@ -152,25 +161,20 @@ function parseStandings(standingsData, runsData) {
 }
 
 // Calculate quarterly stats for teams
-function calculateQuarterlyStats(teams, quarters, currentDate) {
+function calculateQuarterlyStats(teams, quarters) {
   const quarterlyStats = { Q1: {}, Q2: {}, Q3: {}, Q4: {} };
 
-  // For testing: simulate quarterly stats by dividing season stats
-  // Q1 = ~60 games (37% of season), Q2 = ~40 games (25%), Q3 = ~45 games (28%), Q4 = ~27 games (17%)
-  // In production, you'd fetch actual schedule data for each quarter date range
-
   const quarterProportions = {
-    Q1: 0.37, // ~60 games
-    Q2: 0.25, // ~40 games
-    Q3: 0.28, // ~45 games
-    Q4: 0.17  // ~27 games
+    Q1: 0.37,
+    Q2: 0.25,
+    Q3: 0.28,
+    Q4: 0.17
   };
 
   Object.keys(quarters.quarters).forEach(quarter => {
     const quarterInfo = quarters.quarters[quarter];
     const status = quarterInfo.status;
 
-    // Populate completed quarters and active quarter
     if (status === 'completed' || status === 'active') {
       const proportion = quarterProportions[quarter];
 
@@ -202,7 +206,6 @@ function calculatePlayerScores(players, teams, quarterlyStats) {
     players.players.forEach(player => {
       const quarterRoster = player.quarters[quarter];
 
-      // Skip if player hasn't made picks for this quarter
       if (!quarterRoster) return;
 
       const rosterTeams = [
@@ -214,7 +217,6 @@ function calculatePlayerScores(players, teams, quarterlyStats) {
 
       if (rosterTeams.length === 0) return;
 
-      // Calculate combined stats
       let totalWins = 0;
       let totalLosses = 0;
       let totalRuns = 0;
@@ -226,7 +228,6 @@ function calculatePlayerScores(players, teams, quarterlyStats) {
           totalWins += teamStats.wins;
           totalLosses += teamStats.losses;
           totalRuns += teamStats.runsScored;
-          // Estimate games from wins + losses
           const games = teamStats.wins + teamStats.losses;
           totalGames += games;
         }
@@ -245,14 +246,12 @@ function calculatePlayerScores(players, teams, quarterlyStats) {
         teams: rosterTeams,
         combinedWinPct: parseFloat(combinedWinPct.toFixed(3)),
         combinedRunsPerGame: parseFloat(combinedRunsPerGame.toFixed(2)),
-        rank: 0 // Will be calculated after sorting
+        rank: 0
       };
     });
 
-    // Calculate rankings for this quarter
     const scores = Object.values(playerScores[quarter]);
     scores.sort((a, b) => {
-      // Sort by win percentage, then by runs per game
       if (b.combinedWinPct !== a.combinedWinPct) {
         return b.combinedWinPct - a.combinedWinPct;
       }
@@ -272,30 +271,22 @@ async function sync() {
   try {
     console.log('Starting MLB data sync...');
 
-    // Read current data files
-    const players = await readJSON('players.json');
-    const quarters = await readJSON('quarters.json');
+    // Read current data from Firestore
+    const players = await readPlayers();
+    const quarters = await readFirestore('config', 'quarters');
 
-    // Fetch latest standings
+    // Fetch latest standings from MLB API
     const standingsData = await fetchStandings();
 
-    // Fetch schedule for the current season to get runs data
+    // Fetch schedule for runs data
     const today = new Date().toISOString().split('T')[0];
     const scheduleData = await fetchSchedule(SEASON_START, today);
 
-    // Calculate runs from schedule
     const runsData = calculateRunsFromSchedule(scheduleData);
-
-    // Parse standings
     const teams = parseStandings(standingsData, runsData);
-
-    // Calculate quarterly stats
-    const quarterlyStats = calculateQuarterlyStats(teams, quarters, today);
-
-    // Calculate player scores
+    const quarterlyStats = calculateQuarterlyStats(teams, quarters);
     const playerScores = calculatePlayerScores(players, teams, quarterlyStats);
 
-    // Build final standings object
     const standings = {
       lastUpdated: new Date().toISOString(),
       season: SEASON_YEAR,
@@ -304,8 +295,8 @@ async function sync() {
       playerScores
     };
 
-    // Write updated standings
-    await writeJSON('standings.json', standings);
+    // Write standings to Firestore
+    await writeFirestore('config', 'standings', standings);
 
     console.log('✓ Sync completed successfully!');
     console.log(`✓ Updated ${Object.keys(teams).length} teams`);
@@ -317,5 +308,4 @@ async function sync() {
   }
 }
 
-// Run sync
 sync();

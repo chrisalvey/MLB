@@ -456,16 +456,12 @@
             <button id="submit-btn" class="submit-btn" disabled>Submit Picks</button>
         </div>
 
-        <!-- JSON Output for Manual Update -->
-        <div id="json-output" class="json-output hidden">
-            <h2>Your Picks (JSON)</h2>
-            <p class="help-text">Copy this and update your players.json file:</p>
-            <pre id="json-code" class="json-code"></pre>
-            <button id="copy-btn" class="copy-btn">Copy to Clipboard</button>
-        </div>
     </div>
 
-    <script>
+    <script type="module">
+        import { db } from './firebase-config.js';
+        import { collection, getDocs, doc, getDoc, updateDoc } from 'https://www.gstatic.com/firebasejs/11.0.0/firebase-firestore.js';
+
         // Global data
         let allData = {};
         let selectedPlayer = null;
@@ -489,16 +485,24 @@
                          onerror="this.style.display='none';">`;
         }
 
-        // Load all data
+        // Load all data from Firestore
         async function loadData() {
             try {
-                const fetchOpts = { cache: 'no-store' };
-                const [standings, players, quarters, tiers] = await Promise.all([
-                    fetch('data/standings.json', fetchOpts).then(r => r.json()),
-                    fetch('data/players.json', fetchOpts).then(r => r.json()),
-                    fetch('data/quarters.json', fetchOpts).then(r => r.json()),
-                    fetch('data/tiers.json', fetchOpts).then(r => r.json())
+                const [standingsDoc, quartersDoc, tiersDoc, playersSnap] = await Promise.all([
+                    getDoc(doc(db, 'config', 'standings')),
+                    getDoc(doc(db, 'config', 'quarters')),
+                    getDoc(doc(db, 'config', 'tiers')),
+                    getDocs(collection(db, 'players'))
                 ]);
+
+                const standings = standingsDoc.data();
+                const quarters = quartersDoc.data();
+                const tiers = tiersDoc.data();
+                const players = {
+                    players: playersSnap.docs
+                        .map(d => d.data())
+                        .sort((a, b) => a.id.localeCompare(b.id))
+                };
 
                 allData = { standings, players, quarters, tiers };
 
@@ -752,7 +756,7 @@
         }
 
         // Handle form submission
-        document.getElementById('submit-btn').addEventListener('click', function() {
+        document.getElementById('submit-btn').addEventListener('click', async function() {
             // Disable button immediately to prevent multiple clicks
             this.disabled = true;
 
@@ -779,47 +783,31 @@
                 tier2: tier2Pick,
                 tier3: tier3Pick,
                 tier4: tier4Pick,
-                manualPicks: [tier1Pick, tier2Pick]  // Only T1 and T2
+                manualPicks: [tier1Pick, tier2Pick]
             };
 
-            // Deep clone the entire players data
-            const updatedPlayersData = JSON.parse(JSON.stringify(allData.players));
+            const updatedBurnedTeams = [...new Set([
+                ...(selectedPlayer.burnedTeams || []),
+                tier1Pick,
+                tier2Pick
+                // NOTE: tier3 and tier4 NOT added - they can be reused
+            ])];
 
-            // Find and update the selected player
-            const playerToUpdate = updatedPlayersData.players.find(p => p.id === selectedPlayer.id);
-            if (playerToUpdate) {
-                // Update the quarter picks
-                playerToUpdate.quarters[nextQuarter] = picks;
+            try {
+                await updateDoc(doc(db, 'players', selectedPlayer.id), {
+                    [`quarters.${nextQuarter}`]: picks,
+                    burnedTeams: updatedBurnedTeams
+                });
 
-                // Update burned teams (add only T1 and T2)
-                playerToUpdate.burnedTeams = [...new Set([
-                    ...(playerToUpdate.burnedTeams || []),
-                    picks.tier1,
-                    picks.tier2
-                    // NOTE: tier3 and tier4 NOT added - they can be reused
-                ])];
+                showAlert(`✅ Picks saved! ${selectedPlayer.name}: ${tier1Pick} (T1), ${tier2Pick} (T2), ${tier3Pick} (T3 random), ${tier4Pick} (T4 random)`, 'success');
+
+                // Reload to reflect new state
+                setTimeout(() => loadData(), 1500);
+            } catch (error) {
+                console.error('Error saving picks:', error);
+                showAlert('❌ Error saving picks. Please try again.', 'error');
+                this.disabled = false;
             }
-
-            // Display the complete updated players.json file
-            const jsonCode = document.getElementById('json-code');
-            jsonCode.textContent = JSON.stringify(updatedPlayersData, null, 2);
-            document.getElementById('json-output').classList.remove('hidden');
-
-            // Scroll to JSON output
-            document.getElementById('json-output').scrollIntoView({ behavior: 'smooth' });
-
-            showAlert(`✅ Picks generated! Random assignments: Tier 3 = ${tier3Pick}, Tier 4 = ${tier4Pick}. Copy the complete JSON below and replace the entire players.json file.`, 'success');
-        });
-
-        // Copy to clipboard
-        document.getElementById('copy-btn').addEventListener('click', function() {
-            const jsonCode = document.getElementById('json-code').textContent;
-            navigator.clipboard.writeText(jsonCode).then(() => {
-                this.textContent = '✓ Copied!';
-                setTimeout(() => {
-                    this.textContent = 'Copy to Clipboard';
-                }, 2000);
-            });
         });
 
         // Load data on page load

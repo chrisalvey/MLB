@@ -1452,7 +1452,10 @@
         </div>
     </div>
 
-    <script>
+    <script type="module">
+        import { db } from './firebase-config.js';
+        import { collection, getDocs, doc, getDoc } from 'https://www.gstatic.com/firebasejs/11.0.0/firebase-firestore.js';
+
         // Global state
         let currentQuarter = 'SEASON';
         let leaderboardQuarter = null; // Will be set to current quarter on load
@@ -1599,15 +1602,24 @@
             }
         }
 
-        // Fetch all data files
+        // Fetch all data from Firestore
         async function loadData() {
             try {
-                const [standings, players, quarters, tiers] = await Promise.all([
-                    fetch('data/standings.json').then(r => r.json()),
-                    fetch('data/players.json').then(r => r.json()),
-                    fetch('data/quarters.json').then(r => r.json()),
-                    fetch('data/tiers.json').then(r => r.json())
+                const [standingsDoc, quartersDoc, tiersDoc, playersSnap] = await Promise.all([
+                    getDoc(doc(db, 'config', 'standings')),
+                    getDoc(doc(db, 'config', 'quarters')),
+                    getDoc(doc(db, 'config', 'tiers')),
+                    getDocs(collection(db, 'players'))
                 ]);
+
+                const standings = standingsDoc.data();
+                const quarters = quartersDoc.data();
+                const tiers = tiersDoc.data();
+                const players = {
+                    players: playersSnap.docs
+                        .map(d => d.data())
+                        .sort((a, b) => a.id.localeCompare(b.id))
+                };
 
                 allData = { standings, players, quarters, tiers };
 
