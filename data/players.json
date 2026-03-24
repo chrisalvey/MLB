@@ -4,24 +4,12 @@
       "id": "player1",
       "name": "Chris",
       "quarters": {
-        "Q1": {
-          "tier1": "PHI",
-          "tier2": "CHC",
-          "tier3": "ARI",
-          "tier4": "MIA",
-          "manualPicks": [
-            "PHI",
-            "CHC"
-          ]
-        },
+        "Q1": null,
         "Q2": null,
         "Q3": null,
         "Q4": null
       },
-      "burnedTeams": [
-        "PHI",
-        "CHC"
-      ]
+      "burnedTeams": []
     },
     {
       "id": "player2",
@@ -60,12 +48,24 @@
       "id": "player5",
       "name": "Squints",
       "quarters": {
-        "Q1": null,
+        "Q1": {
+          "tier1": "SEA",
+          "tier2": "CHC",
+          "tier3": "KCR",
+          "tier4": "WSN",
+          "manualPicks": [
+            "SEA",
+            "CHC"
+          ]
+        },
         "Q2": null,
         "Q3": null,
         "Q4": null
       },
-      "burnedTeams": []
+      "burnedTeams": [
+        "SEA",
+        "CHC"
+      ]
     },
     {
       "id": "player6",
