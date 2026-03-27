@@ -175,19 +175,31 @@ function calculateQuarterlyStats(teams, quarters) {
     const quarterInfo = quarters.quarters[quarter];
     const status = quarterInfo.status;
 
-    if (status === 'completed' || status === 'active') {
+    if (status === 'active') {
+      // All games so far are within the active quarter — use full season stats directly
+      Object.keys(teams).forEach(abbrev => {
+        const team = teams[abbrev];
+        quarterlyStats[quarter][abbrev] = {
+          wins: team.wins,
+          losses: team.losses,
+          winPct: team.winPct,
+          runsScored: team.runsScored,
+          runsPerGame: team.runsPerGame
+        };
+      });
+    } else if (status === 'completed') {
+      // Proportional estimate for completed quarters
       const proportion = quarterProportions[quarter];
 
       Object.keys(teams).forEach(abbrev => {
         const team = teams[abbrev];
-        const quarterGames = Math.round(team.gamesPlayed * proportion);
         const quarterWins = Math.round(team.wins * proportion);
         const quarterLosses = Math.round(team.losses * proportion);
 
         quarterlyStats[quarter][abbrev] = {
           wins: quarterWins,
           losses: quarterLosses,
-          winPct: quarterGames > 0 ? quarterWins / (quarterWins + quarterLosses) : team.winPct,
+          winPct: (quarterWins + quarterLosses) > 0 ? quarterWins / (quarterWins + quarterLosses) : team.winPct,
           runsScored: Math.round(team.runsScored * proportion),
           runsPerGame: team.runsPerGame
         };
