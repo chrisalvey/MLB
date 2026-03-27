@@ -907,6 +907,75 @@
             display: none;
         }
 
+        /* Yesterday's Results Section */
+        .yesterday-section {
+            margin-top: 3rem;
+        }
+
+        .yesterday-section h2 {
+            font-family: 'Playball', cursive;
+            font-size: 1.8rem;
+            color: var(--navy);
+            margin-bottom: 0.25rem;
+        }
+
+        .yesterday-date {
+            color: #666;
+            font-size: 0.9rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .yesterday-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1.25rem;
+        }
+
+        .yesterday-card {
+            background: var(--white);
+            border-radius: 8px;
+            border: 1px solid var(--cream-dark);
+            overflow: hidden;
+        }
+
+        .yesterday-card-header {
+            background: var(--navy);
+            color: var(--cream);
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.1rem;
+            padding: 0.6rem 1rem;
+            letter-spacing: 0.05em;
+        }
+
+        .yesterday-team-row {
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            padding: 0.55rem 1rem;
+            border-bottom: 1px solid var(--cream-dark);
+            font-size: 0.88rem;
+        }
+
+        .yesterday-team-row:last-child {
+            border-bottom: none;
+        }
+
+        .yesterday-tier-badge {
+            font-size: 0.7rem;
+            color: #888;
+            min-width: 18px;
+        }
+
+        .yesterday-result {
+            margin-left: auto;
+            font-weight: 600;
+            font-size: 0.85rem;
+        }
+
+        .yesterday-result.win { color: var(--green); }
+        .yesterday-result.loss { color: var(--red); }
+        .yesterday-result.no-game { color: #aaa; font-weight: 400; font-style: italic; }
+
         /* Burned Teams Section */
         .burned-teams-section {
             margin-top: 3rem;
@@ -1424,6 +1493,13 @@
             <div id="leaderboard-content" class="loading">Loading standings...</div>
         </div>
 
+        <!-- Yesterday's Results -->
+        <div class="yesterday-section">
+            <h2>Yesterday's Results</h2>
+            <p class="yesterday-date" id="yesterday-date"></p>
+            <div id="yesterday-content" class="loading">Loading...</div>
+        </div>
+
         <!-- Player Rosters -->
         <div class="rosters-section">
             <h2>Player Rosters</h2>
@@ -1460,11 +1536,21 @@
         let currentQuarter = 'SEASON';
         let leaderboardQuarter = null; // Will be set to current quarter on load
         let allData = {};
+        let yesterdayResults = {}; // keyed by team abbreviation
         let sortColumn = null; // Current sort column
         let sortDirection = 'desc'; // 'asc' or 'desc'
 
         // Constants
         const QUARTERS = ['Q1', 'Q2', 'Q3', 'Q4'];
+
+        const TEAM_ID_MAP = {
+          108:'LAA',109:'ARI',110:'BAL',111:'BOS',112:'CHC',
+          113:'CIN',114:'CLE',115:'COL',116:'DET',117:'HOU',
+          118:'KCR',119:'LAD',120:'WSN',121:'NYM',133:'OAK',
+          134:'PIT',135:'SDP',136:'SEA',137:'SFG',138:'STL',
+          139:'TBR',140:'TEX',141:'TOR',142:'MIN',143:'PHI',
+          144:'ATL',145:'CHW',146:'MIA',147:'NYY',158:'MIL'
+        };
 
         // Map team abbreviations to ESPN CDN abbreviations
         function getESPNAbbrev(abbrev) {
@@ -1652,6 +1738,7 @@
                 // Check for upcoming deadlines
                 checkDeadline();
 
+                await loadYesterdayResults();
                 renderDashboard();
             } catch (error) {
                 console.error('Error loading data:', error);
@@ -1660,9 +1747,107 @@
             }
         }
 
+        // Fetch yesterday's game results from MLB API
+        async function loadYesterdayResults() {
+            const yesterday = new Date();
+            yesterday.setDate(yesterday.getDate() - 1);
+            const dateStr = yesterday.toISOString().split('T')[0];
+
+            const label = yesterday.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' });
+            document.getElementById('yesterday-date').textContent = label;
+
+            try {
+                const url = `https://statsapi.mlb.com/api/v1/schedule?sportId=1&startDate=${dateStr}&endDate=${dateStr}`;
+                const data = await fetch(url).then(r => r.json());
+
+                yesterdayResults = {};
+                const games = data.dates?.[0]?.games || [];
+
+                games.forEach(game => {
+                    if (game.status.statusCode !== 'F') return;
+                    const awayId = game.teams.away.team.id;
+                    const homeId = game.teams.home.team.id;
+                    const awayAbbrev = TEAM_ID_MAP[awayId];
+                    const homeAbbrev = TEAM_ID_MAP[homeId];
+                    if (!awayAbbrev || !homeAbbrev) return;
+
+                    const awayScore = game.teams.away.score ?? 0;
+                    const homeScore = game.teams.home.score ?? 0;
+
+                    yesterdayResults[awayAbbrev] = {
+                        won: game.teams.away.isWinner,
+                        score: awayScore,
+                        oppScore: homeScore,
+                        opponent: homeAbbrev
+                    };
+                    yesterdayResults[homeAbbrev] = {
+                        won: game.teams.home.isWinner,
+                        score: homeScore,
+                        oppScore: awayScore,
+                        opponent: awayAbbrev
+                    };
+                });
+            } catch (e) {
+                console.error('Failed to load yesterday results:', e);
+            }
+        }
+
+        // Render yesterday's results section
+        function renderYesterdayResults() {
+            const currentQ = allData.quarters.currentQuarter;
+            const players = allData.players.players;
+            const container = document.getElementById('yesterday-content');
+
+            const playersWithPicks = players.filter(p => p.quarters[currentQ]);
+
+            if (playersWithPicks.length === 0) {
+                container.innerHTML = '<p class="no-roster">No picks submitted yet for the current quarter.</p>';
+                return;
+            }
+
+            const cards = playersWithPicks.map(player => {
+                const roster = player.quarters[currentQ];
+                const teams = [
+                    { abbrev: roster.tier1, tier: 1 },
+                    { abbrev: roster.tier2, tier: 2 },
+                    { abbrev: roster.tier3, tier: 3 },
+                    { abbrev: roster.tier4, tier: 4 }
+                ];
+
+                const rows = teams.map(({ abbrev, tier }) => {
+                    const result = yesterdayResults[abbrev];
+                    let resultHtml;
+                    if (!result) {
+                        resultHtml = `<span class="yesterday-result no-game">Off day</span>`;
+                    } else if (result.won) {
+                        resultHtml = `<span class="yesterday-result win">W ${result.score}–${result.oppScore} vs ${result.opponent}</span>`;
+                    } else {
+                        resultHtml = `<span class="yesterday-result loss">L ${result.score}–${result.oppScore} vs ${result.opponent}</span>`;
+                    }
+
+                    return `
+                        <div class="yesterday-team-row">
+                            <span class="yesterday-tier-badge">T${tier}</span>
+                            ${renderTeamLogo(abbrev, 20)}
+                            <span>${abbrev}</span>
+                            ${resultHtml}
+                        </div>`;
+                }).join('');
+
+                return `
+                    <div class="yesterday-card">
+                        <div class="yesterday-card-header">${player.name}</div>
+                        ${rows}
+                    </div>`;
+            }).join('');
+
+            container.innerHTML = `<div class="yesterday-grid">${cards}</div>`;
+        }
+
         // Render the entire dashboard
         function renderDashboard() {
             renderLeaderboard();
+            renderYesterdayResults();
             renderRosters();
             renderStandings();
             renderTiers();
