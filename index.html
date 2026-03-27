@@ -1417,12 +1417,6 @@
             <p class="last-updated" id="lastUpdated">Loading...</p>
         </div>
 
-        <!-- Deadline Alert -->
-        <div id="deadline-alert" class="deadline-alert hidden">
-            <span class="deadline-icon">⏰</span>
-            <span id="deadline-message"></span>
-        </div>
-
         <!-- Quarter Selector -->
         <div class="quarter-selector">
             <button class="quarter-btn" data-quarter="Q1">
@@ -1441,7 +1435,7 @@
                 <div class="btn-label">Quarter 4</div>
                 <div class="btn-status" id="q4-status"></div>
             </button>
-            <button class="quarter-btn active" data-quarter="SEASON">
+            <button class="quarter-btn" data-quarter="SEASON">
                 <div class="btn-label">Season Total</div>
                 <div class="btn-status" id="season-status"></div>
             </button>
@@ -1480,6 +1474,12 @@
             <div id="rosters-content" class="loading">Loading rosters...</div>
         </div>
 
+        <!-- Deadline Alert -->
+        <div id="deadline-alert" class="deadline-alert hidden">
+            <span class="deadline-icon">⏰</span>
+            <span id="deadline-message"></span>
+        </div>
+
         <!-- Team Tiers -->
         <div class="tiers-section">
             <h2>Team Tiers</h2>
@@ -1507,7 +1507,7 @@
         import { collection, getDocs, doc, getDoc } from 'https://www.gstatic.com/firebasejs/11.0.0/firebase-firestore.js';
 
         // Global state
-        let currentQuarter = 'SEASON';
+        let currentQuarter = 'Q1'; // Will be updated to actual current quarter on load
         let leaderboardQuarter = null; // Will be set to current quarter on load
         let allData = {};
         let yesterdayResults = {}; // keyed by team abbreviation
@@ -1697,13 +1697,17 @@
                 document.getElementById('standingsUpdated').textContent =
                     `Last updated: ${lastUpdated.toLocaleDateString()} ${lastUpdated.toLocaleTimeString()}`;
 
-                // Set leaderboard quarter to current quarter and update button state
+                // Default both views to the current active quarter
+                currentQuarter = quarters.currentQuarter;
                 leaderboardQuarter = quarters.currentQuarter;
+
+                document.querySelectorAll('.quarter-btn').forEach(btn => {
+                    btn.classList.remove('active');
+                    if (btn.dataset.quarter === currentQuarter) btn.classList.add('active');
+                });
                 document.querySelectorAll('.leaderboard-quarter-btn').forEach(btn => {
                     btn.classList.remove('active');
-                    if (btn.dataset.quarter === leaderboardQuarter) {
-                        btn.classList.add('active');
-                    }
+                    if (btn.dataset.quarter === leaderboardQuarter) btn.classList.add('active');
                 });
 
                 // Update quarter statuses
