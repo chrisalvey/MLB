@@ -896,6 +896,17 @@
             overflow: hidden;
         }
 
+        .yesterday-card.grand-slam {
+            border: 2px solid var(--gold);
+            box-shadow: 0 0 16px rgba(212, 168, 83, 0.55);
+            animation: grand-slam-pulse 2.5s ease-in-out infinite;
+        }
+
+        @keyframes grand-slam-pulse {
+            0%, 100% { box-shadow: 0 0 12px rgba(212, 168, 83, 0.45); }
+            50%       { box-shadow: 0 0 26px rgba(212, 168, 83, 0.85); }
+        }
+
         .yesterday-card-header {
             background: var(--navy);
             color: var(--cream);
@@ -903,6 +914,22 @@
             font-size: 1.1rem;
             padding: 0.6rem 1rem;
             letter-spacing: 0.05em;
+        }
+
+        .yesterday-card.grand-slam .yesterday-card-header {
+            background: linear-gradient(135deg, #b8860b 0%, var(--gold) 50%, #b8860b 100%);
+            color: var(--navy);
+        }
+
+        .grand-slam-label {
+            font-size: 0.7rem;
+            font-weight: 700;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: var(--navy);
+            opacity: 0.8;
+            display: block;
+            margin-top: 1px;
         }
 
         .yesterday-team-row {
@@ -1767,6 +1794,8 @@
                     { abbrev: roster.tier4, tier: 4 }
                 ];
 
+                const isGrandSlam = teams.every(({ abbrev }) => yesterdayResults[abbrev]?.won === true);
+
                 const rows = teams.map(({ abbrev, tier }) => {
                     const result = yesterdayResults[abbrev];
                     let resultHtml;
@@ -1787,9 +1816,13 @@
                         </div>`;
                 }).join('');
 
+                const headerContent = isGrandSlam
+                    ? `${player.name} ⚾⚾⚾⚾<span class="grand-slam-label">Grand Slam!</span>`
+                    : player.name;
+
                 return `
-                    <div class="yesterday-card">
-                        <div class="yesterday-card-header">${player.name}</div>
+                    <div class="yesterday-card${isGrandSlam ? ' grand-slam' : ''}">
+                        <div class="yesterday-card-header">${headerContent}</div>
                         ${rows}
                     </div>`;
             }).join('');
