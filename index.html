@@ -691,29 +691,61 @@
             margin-bottom: 1.5rem;
         }
 
+        .standings-league {
+            margin-bottom: 2rem;
+        }
+
+        .standings-league-title {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.3rem;
+            letter-spacing: 0.08em;
+            color: var(--cream);
+            background: var(--navy);
+            padding: 0.4rem 1rem;
+            border-radius: 6px 6px 0 0;
+            margin-bottom: 0;
+        }
+
+        .standings-divisions {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 0 1rem;
+        }
+
+        .standings-division-title {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 0.95rem;
+            letter-spacing: 0.06em;
+            color: var(--navy);
+            background: var(--gold);
+            padding: 0.3rem 0.75rem;
+            margin-top: 0.75rem;
+            border-radius: 4px 4px 0 0;
+        }
+
         .standings-table {
             width: 100%;
             background: var(--white);
-            border-radius: 12px;
+            border-radius: 0 0 8px 8px;
             overflow: hidden;
             box-shadow: 0 4px 20px rgba(15, 28, 46, 0.06);
-            margin-bottom: 1rem;
+            margin-bottom: 0;
         }
 
         .standings-table th {
-            background: var(--navy);
+            background: var(--navy-lighter);
             color: var(--cream);
             font-family: 'Bebas Neue', sans-serif;
-            font-size: 0.9rem;
+            font-size: 0.8rem;
             letter-spacing: 0.05em;
-            padding: 1rem 0.75rem;
+            padding: 0.4rem 0.5rem;
             text-align: left;
         }
 
         .standings-table td {
-            padding: 0.75rem;
+            padding: 0.45rem 0.5rem;
             border-bottom: 1px solid var(--cream-dark);
-            font-size: 0.9rem;
+            font-size: 0.82rem;
         }
 
         .standings-table tr:last-child td {
@@ -724,8 +756,10 @@
             background: var(--cream);
         }
 
-        .standings-table tbody tr.hidden-team {
-            display: none;
+        @media (max-width: 768px) {
+            .standings-divisions {
+                grid-template-columns: 1fr;
+            }
         }
 
         .show-all-btn {
@@ -2223,46 +2257,56 @@
         function renderStandings() {
             const teams = allData.standings.teams;
 
-            // Convert to array and sort by win percentage
-            const sortedTeams = Object.values(teams).sort((a, b) => b.winPct - a.winPct);
+            const DIVISIONS = {
+                'American League': {
+                    'AL East':    ['BAL', 'BOS', 'NYY', 'TBR', 'TOR'],
+                    'AL Central': ['CHW', 'CLE', 'DET', 'KCR', 'MIN'],
+                    'AL West':    ['HOU', 'LAA', 'OAK', 'SEA', 'TEX']
+                },
+                'National League': {
+                    'NL East':    ['ATL', 'MIA', 'NYM', 'PHI', 'WSN'],
+                    'NL Central': ['CHC', 'CIN', 'MIL', 'PIT', 'STL'],
+                    'NL West':    ['ARI', 'COL', 'LAD', 'SDP', 'SFG']
+                }
+            };
 
-            const html = `
-                <table class="standings-table">
-                    <thead>
-                        <tr>
-                            <th>Team</th>
-                            <th>W</th>
-                            <th>L</th>
-                            <th>Win %</th>
-                            <th>Runs</th>
-                            <th>R/G</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        ${sortedTeams.map((team, index) => `
-                            <tr class="${index >= 5 ? 'hidden-team' : ''}">
-                                <td><strong>${team.name}</strong></td>
-                                <td>${team.wins}</td>
-                                <td>${team.losses}</td>
-                                <td>${(team.winPct * 100).toFixed(1)}%</td>
-                                <td>${team.runsScored}</td>
-                                <td>${team.runsPerGame.toFixed(2)}</td>
-                            </tr>
-                        `).join('')}
-                    </tbody>
-                </table>
-            `;
+            const divisionTable = (abbrevs) => {
+                const divTeams = abbrevs
+                    .map(a => teams[a])
+                    .filter(Boolean)
+                    .sort((a, b) => b.winPct - a.winPct || a.losses - b.losses);
+                return `
+                    <table class="standings-table">
+                        <thead><tr>
+                            <th>Team</th><th>W</th><th>L</th><th>Pct</th><th>R/G</th>
+                        </tr></thead>
+                        <tbody>
+                            ${divTeams.map(t => `
+                                <tr>
+                                    <td><strong>${t.abbreviation}</strong></td>
+                                    <td>${t.wins}</td>
+                                    <td>${t.losses}</td>
+                                    <td>${(t.winPct * 100).toFixed(0)}%</td>
+                                    <td>${t.runsPerGame.toFixed(2)}</td>
+                                </tr>`).join('')}
+                        </tbody>
+                    </table>`;
+            };
+
+            const html = Object.entries(DIVISIONS).map(([league, divisions]) => `
+                <div class="standings-league">
+                    <div class="standings-league-title">${league}</div>
+                    <div class="standings-divisions">
+                        ${Object.entries(divisions).map(([div, abbrevs]) => `
+                            <div>
+                                <div class="standings-division-title">${div}</div>
+                                ${divisionTable(abbrevs)}
+                            </div>`).join('')}
+                    </div>
+                </div>`).join('');
 
             document.getElementById('standings-content').innerHTML = html;
-
-            // Show the button if there are more than 5 teams
-            const showAllBtn = document.getElementById('show-all-standings');
-            if (sortedTeams.length > 5) {
-                showAllBtn.classList.remove('hidden');
-                showAllBtn.textContent = 'Show All Teams';
-            } else {
-                showAllBtn.classList.add('hidden');
-            }
+            document.getElementById('show-all-standings')?.classList.add('hidden');
         }
 
         // Render team tiers
